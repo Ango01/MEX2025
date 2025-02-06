@@ -45,7 +45,7 @@ class measurementHandler:
 				#For a simpler understanding of the model/coherent relationship I assumed that the relationship between the data points and exposure time are the same, even for lower intensities than what the model is based on.
 				#Therefore the model will be adjusted by a factor of original_val / measured_val - this makes the data from any exposure comparable because they are adjusted to the same exposure time. 
 				x_var = self.camera.setExposure
-				original_val = ((4700052390936943*x_var))/(9007199254740992 )-((6038085623309793*〖x_var〗^2))/(36893488147419103232 )+〖1370615134844229*x_var〗^3/(75557863725914323419136 )+6460865974696399/70368744177664
+				original_val = ((4700052390936943 * x_var) / (9007199254740992)) - ((6038085623309793 * x_var ** 2) / (36893488147419103232)) + (1370615134844229 * x_var ** 3) / (75557863725914323419136) + 6460865974696399 / 70368744177664
 				#BRDF = Pr/Pi * Omega_det * cos (theta_det), omdega_det = A/R^2, Pi = totIncidentLight, Pr = round(np.mean(circular_img) - NOISEimage, 4), theta_det = reflection angle from specular
 				measured_val = round(np.mean(circular_img) - NOISEimage, 4)
 				factor_diff = original_val / measured_val 
