@@ -35,7 +35,10 @@ class Raw10Viewer:
         
         image_data = process_raw10_image(self.raw10_file, self.width, self.height)
         if image_data is not None:
-            # Show processed_image.png
+            processed_img = Image.open("processed_image.png")
+            processed_img = processed_img.resize((500, 400), Image.LANCZOS)
+            self.tk_img = ImageTk.PhotoImage(processed_img)
+            self.canvas.create_image(250, 200, image=self.tk_img)
             messagebox.showinfo("Success", "Processing complete! Image saved as processed_image.png")
 
 if __name__ == "__main__":
