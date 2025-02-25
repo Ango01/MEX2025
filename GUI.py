@@ -27,16 +27,6 @@ class Raw10Viewer:
         file_path = filedialog.askopenfilename(filetypes=[("RAW10 files", "*.raw")])
         if file_path:
             self.raw10_file = file_path
-            image_data = process_raw10_image(self.raw10_file, self.width, self.height)
-            if image_data is not None:
-                self.display_image(image_data)
-
-    def display_image(self, image_array):
-        image_8bit = (image_array / 256).astype(np.uint8)  # Convert to 8-bit for display
-        img = Image.fromarray(image_8bit)
-        img = img.resize((500, 400), Image.LANCZOS)  # Resize to fit canvas
-        self.tk_img = ImageTk.PhotoImage(img)
-        self.canvas.create_image(250, 200, image=self.tk_img)
     
     def process_raw10(self):
         if not self.raw10_file:
@@ -45,7 +35,7 @@ class Raw10Viewer:
         
         image_data = process_raw10_image(self.raw10_file, self.width, self.height)
         if image_data is not None:
-            self.display_image(image_data)
+            # Show processed_image.png
             messagebox.showinfo("Success", "Processing complete! Image saved as processed_image.png")
 
 if __name__ == "__main__":
