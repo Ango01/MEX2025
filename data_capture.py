@@ -57,3 +57,36 @@ plt.grid(True)
 plt.show()
 
 print("Histogram plotted successfully. Grayscale image saved as 'converted_image.png'.")
+
+#Get image dimensions
+height, width = raw_image.shape
+
+# Extract color channels from Bayer pattern (SRGGB)
+B = raw_image[0::2, 0::2]  # Red pixels (every other row and column)
+G1 = raw_image[0::2, 1::2]  # Green pixels (top-left)
+G2 = raw_image[1::2, 0::2]  # Green pixels (bottom-right)
+R = raw_image[1::2, 1::2]  # Blue pixels (every other row and column)
+
+# Merge both green channels (optional, or analyze separately)
+G = (G1 + G2) / 2
+
+# Flatten pixel values for histogram plotting
+R_flat = R.flatten()
+G_flat = G.flatten()
+B_flat = B.flatten()
+
+# Plot histogram for all channels on the same plot
+plt.figure(figsize=(8, 6))
+plt.hist(R_flat, bins=50, color='red', alpha=0.6, edgecolor='black', label="Red Channel")
+plt.hist(G_flat, bins=50, color='green', alpha=0.6, edgecolor='black', label="Green Channel")
+plt.hist(B_flat, bins=50, color='blue', alpha=0.6, edgecolor='black', label="Blue Channel")
+
+plt.title("Pixel Intensity Histogram (RAW10 Data)")
+plt.xlabel("Pixel Intensity (0-1023)")
+plt.ylabel("Frequency")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+print("Histogram plotted successfully for all color channels.")
+
