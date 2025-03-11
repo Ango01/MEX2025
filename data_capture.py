@@ -62,10 +62,10 @@ print("Histogram plotted successfully. Grayscale image saved as 'converted_image
 height, width = raw_image.shape
 
 # Extract color channels from Bayer pattern (SRGGB)
-B = raw_image[0::2, 0::2]  # Red pixels (every other row and column)
-G1 = raw_image[0::2, 1::2]  # Green pixels (top-left)
-G2 = raw_image[1::2, 0::2]  # Green pixels (bottom-right)
-R = raw_image[1::2, 1::2]  # Blue pixels (every other row and column)
+B = raw_image[0::2, 0::2]   # Blue pixels in even rows
+G1 = raw_image[0::2, 1::2]  # Green pixels in even rows
+G2 = raw_image[1::2, 0::2]  # Green pixels in odd rows
+R = raw_image[1::2, 1::2]   # Red pixels in odd rows
 
 # Merge both green channels (optional, or analyze separately)
 G = (G1 + G2) / 2
