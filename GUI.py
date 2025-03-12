@@ -1,47 +1,47 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox
-import numpy as np
-import cv2
-from PIL import Image, ImageTk
-from RAW10_processing import process_raw10_image
+from tkinter import Label, Button, StringVar
+from picamera2 import Picamera2
+import time
 
-class Raw10Viewer:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Image Viewer & Processor")
-        
-        self.canvas = tk.Canvas(root, width=500, height=400, bg="gray")
-        self.canvas.pack()
-        
-        self.btn_load = tk.Button(root, text="Load RAW10 Image", command=self.load_raw10)
-        self.btn_load.pack(pady=10)
-        
-        self.btn_process = tk.Button(root, text="Process RAW10 Image", command=self.process_raw10)
-        self.btn_process.pack(pady=10)
-        
-        self.raw10_file = None
-        self.width = 1456  # Change based on your camera
-        self.height = 1088  # Change based on your camera
+# Initialize camera
+picam2 = Picamera2()
+config = picam2.create_still_configuration(raw={"format": "SRGGB10", "size": (1456, 1088)})
+picam2.configure(config)
 
-    def load_raw10(self):
-        file_path = filedialog.askopenfilename(filetypes=[("RAW10 files", "*.raw")])
-        if file_path:
-            self.raw10_file = file_path
-    
-    def process_raw10(self):
-        if not self.raw10_file:
-            messagebox.showwarning("Warning", "No RAW10 file loaded!")
-            return
-        
-        image_data = process_raw10_image(self.raw10_file, self.width, self.height)
-        if image_data is not None:
-            processed_img = Image.open("processed_image.png")
-            processed_img = processed_img.resize((500, 400), Image.LANCZOS)
-            self.tk_img = ImageTk.PhotoImage(processed_img)
-            self.canvas.create_image(250, 200, image=self.tk_img)
-            messagebox.showinfo("Success", "Processing complete! Image saved as processed_image.png")
+# Function to capture RAW data
+def capture_image():
+    status_var.set("Capturing Image...")
+    root.update_idletasks()  # Update UI
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = Raw10Viewer(root)
-    root.mainloop()
+    picam2.start()
+    time.sleep(1)  # Allow camera to stabilize
+
+    file_name = "image.dng"
+    picam2.capture_file(file_name, name="raw")
+    picam2.stop()
+
+    status_var.set(f"Image saved: {file_name}")
+
+# Create main GUI window
+root = tk.Tk()
+root.title("Optical Scattering Measurement")
+root.geometry("400x200")
+
+# UI Elements
+status_var = StringVar()
+status_var.set("Press 'Capture Image' to start")
+
+Label(root, text="BSDF Data Capture", font=("Arial", 14)).pack(pady=10)
+Label(root, textvariable=status_var, font=("Arial", 12), fg="blue").pack(pady=5)
+
+capture_button = Button(root, text="Capture Image", font=("Arial", 12), command=capture_image)
+capture_button.pack(pady=10)
+
+# Run the Tkinter loop
+root.mainloop()
+
+
+
+
+
+

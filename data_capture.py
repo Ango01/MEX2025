@@ -4,36 +4,34 @@ import numpy as np
 import rawpy
 import cv2
 import matplotlib.pyplot as plt
-from gauss import gaussian_2d
-from scipy.optimize import curve_fit
 
 # Initialize camera
 picam2 = Picamera2()
 
-# Configure RAW capture
+# Configure RAW10 capture
 config = picam2.create_still_configuration(raw={"format": "SRGGB10", "size": (1456, 1088)})
 picam2.configure(config)
 
 picam2.set_controls({
-   "ExposureTime": 1000,  # Set exposure time (in microseconds)
-   "AnalogueGain": 1.0,    # Set gain to 1.0 (no artificial brightness boost)
-   "AeEnable": False,      # Disable auto-exposure
-   "AwbEnable": False,     # Disable auto white balance
+  "ExposureTime": 1000,  # Set exposure time (in microseconds)
+  "AnalogueGain": 1.0,    # Set gain to 1.0 (no artificial brightness boost)
+  "AeEnable": False,      # Disable auto-exposure
+  "AwbEnable": False,     # Disable auto white balance
 })
 
-# Start camera and capture RAW data
+# Start camera and capture RAW data in a file
 picam2.start()
 time.sleep(1)
 
-dng_file = "image.dng"
-picam2.capture_file(dng_file, name="raw")
+image_file = "image.dng"
+picam2.capture_file(image_file, name="raw")
 
 picam2.stop()
 
 # Open the DNG file using rawpy
-with rawpy.imread(dng_file) as raw:
-    # Extract the raw sensor data
-    raw_image = raw.raw_image_visible.astype(np.uint16)  # Convert to 16-bit
+with rawpy.imread(image_file) as raw:
+   # Extract the raw sensor data
+   raw_image = raw.raw_image_visible.astype(np.uint16)  # Convert to 16-bit
 
 # Normalize the intensity values to range 0-1023 (10-bit)
 max_value = 1023  # Since RAW10 stores 10-bit pixel values
@@ -45,9 +43,6 @@ cv2.imwrite("converted_image.png", normalized_image)
 
 # Flatten the image array to 1D for histogram plotting
 pixel_values = raw_image.flatten()
-print("Min intensity:", np.min(pixel_values))
-print("Max intensity:", np.max(pixel_values))
-print("Mean intensity:", np.mean(pixel_values))
 
 # Plot histogram of pixel intensity values
 plt.figure(figsize=(8, 6))
@@ -60,15 +55,14 @@ plt.show()
 
 print("Histogram plotted successfully. Grayscale image saved as 'converted_image.png'.")
 
-#Get image dimensions
+# Get image dimensions
 height, width = raw_image.shape
 
-
-# Extract color channels from Bayer pattern (SRGGB)
-B = raw_image[0::2, 0::2]   # Blue pixels in even rows
-G1 = raw_image[0::2, 1::2]  # Green pixels in even rows
-G2 = raw_image[1::2, 0::2]  # Green pixels in odd rows
-R = raw_image[1::2, 1::2]   # Red pixels in odd rows
+# Extract color channels from Bayer pattern (SBGGR)
+B = raw_image[0::2, 0::2]   # Blue pixels (even rows, even cols)
+G1 = raw_image[0::2, 1::2]  # Green pixels (even rows, odd cols)
+G2 = raw_image[1::2, 0::2]  # Green pixels (odd rows, even cols)
+R = raw_image[1::2, 1::2]   # Red pixels (odd rows, odd cols)
 
 # Merge both green channels (optional, or analyze separately)
 G = (G1 + G2) / 2
@@ -93,6 +87,7 @@ plt.show()
 
 print("Histogram plotted successfully for all color channels.")
 
+"""""
 R_norm = R / 1023.0
 G_norm = G / 1023.0
 B_norm = B / 1023.0
@@ -142,7 +137,6 @@ plt.title("Fitted 2D Gaussian")
 
 plt.show()
 
-"""
 # Resize extracted channels to match original image size
 R_resized = cv2.resize(R, (width, height), interpolation=cv2.INTER_LINEAR)
 G_resized = cv2.resize(G, (width, height), interpolation=cv2.INTER_LINEAR)
