@@ -52,6 +52,15 @@ for angle in angles:
    plt.grid(True)
    plt.show()
 
+   # Plot Heatmap of RAW Image
+   plt.figure(figsize=(8,6))
+   plt.imshow(raw_image, cmap='inferno', aspect='auto')
+   plt.colorbar(label="Pixel Intensity (0-1023)")
+   plt.title(f"Heatmap of RAW Image at {angle} Degrees")
+   plt.xlabel("X Pixels")
+   plt.ylabel("Y Pixels")
+   plt.show()
+
    ## ---- Extract Color Channels from SBGGR10 Bayer Pattern ---- ##
    # Bayer pattern: SBGGR (Blue in top-left)
    blue = raw_image[0::2, 0::2]    # Blue pixels (every 2nd row, every 2nd column)
