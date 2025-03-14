@@ -63,19 +63,19 @@ for angle in angles:
 
    ## ---- Extract Color Channels from SBGGR10 Bayer Pattern ---- ##
    # Bayer pattern: SBGGR (Blue in top-left)
-   blue = raw_image[0::2, 0::2]    # Blue pixels (every 2nd row, every 2nd column)
-   green1 = raw_image[0::2, 1::2]  # Green pixels (row 1, col 2)
-   green2 = raw_image[1::2, 0::2]  # Green pixels (row 2, col 1)
-   red = raw_image[1::2, 1::2]     # Red pixels (every 2nd row, every 2nd column)
+   B = raw_image[0::2, 0::2]     # Blue pixels (every 2nd row, every 2nd column)
+   G1 = raw_image[0::2, 1::2]    # Green pixels (row 1, col 2)
+   G2 = raw_image[1::2, 0::2]    # Green pixels (row 2, col 1)
+   R = raw_image[1::2, 1::2]     # Red pixels (every 2nd row, every 2nd column)
 
    # Merge both Green channels for better statistics
-   green = np.concatenate((green1.flatten(), green2.flatten()))
+   G = np.concatenate((G1.flatten(), G2.flatten()))
 
    # Plot histograms for each color channel
    plt.figure(figsize=(8, 6))
-   plt.hist(red.flatten(), bins=50, color='red', alpha=0.6, label="Red", edgecolor='black')
-   plt.hist(green.flatten(), bins=50, color='green', alpha=0.6, label="Green", edgecolor='black')
-   plt.hist(blue.flatten(), bins=50, color='blue', alpha=0.6, label="Blue", edgecolor='black')
+   plt.hist(R.flatten(), bins=50, color='red', alpha=0.6, label="Red", edgecolor='black')
+   plt.hist(G.flatten(), bins=50, color='green', alpha=0.6, label="Green", edgecolor='black')
+   plt.hist(B.flatten(), bins=50, color='blue', alpha=0.6, label="Blue", edgecolor='black')
    plt.title(f"Color Channel Histograms at {angle} Degrees")
    plt.xlabel("Pixel Intensity (0-1023)")
    plt.ylabel("Frequency")
@@ -83,15 +83,22 @@ for angle in angles:
    plt.grid(True)
    plt.show()
 
+   # Normalize pixel intensities
+   R_norm = R / 1023.0
+   G_norm = G / 1023.0
+   B_norm = B / 1023.0
+
+   # Store BSDF values
+   bsdf_data = {"angle": [], "red_bsdf": [], "green_bsdf": [], "blue_bsdf": []}
+   bsdf_data["angle"].append(angle)
+   bsdf_data["red_bsdf"].append(R_norm)
+   bsdf_data["green_bsdf"].append(G_norm)
+   bsdf_data["blue_bsdf"].append(B_norm)
+
 picam2.stop()
 print("Capture sequence completed.")
 
-
 """""
-R_norm = R / 1023.0
-G_norm = G / 1023.0
-B_norm = B / 1023.0
-
 # Create meshgrid for pixel coordinates
 x = np.linspace(0, width // 2 - 1, width // 2)
 y = np.linspace(0, height // 2 - 1, height // 2)
@@ -135,17 +142,5 @@ plt.imshow(Z_fit, cmap="hot", extent=[0, width//2, 0, height//2])
 plt.colorbar(label="Fitted Intensity")
 plt.title("Fitted 2D Gaussian")
 
-plt.show()
-
-# Resize extracted channels to match original image size
-R_resized = cv2.resize(R, (width, height), interpolation=cv2.INTER_LINEAR)
-G_resized = cv2.resize(G, (width, height), interpolation=cv2.INTER_LINEAR)
-B_resized = cv2.resize(B, (width, height), interpolation=cv2.INTER_LINEAR)
-
-
-# Save or display the image
-plt.imshow(G_resized)
-
-plt.title("Reconstructed RGB Image")
 plt.show()
 """
