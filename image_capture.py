@@ -10,11 +10,11 @@ import os
 picam2 = Picamera2()
 
 # Configure RAW10 capture
-config = picam2.create_still_configuration(raw={"format": "SBGGR10", "size": (1456, 1088)})
+config = picam2.create_still_configuration(raw={"format": "SRGGB10", "size": (1456, 1088)})
 picam2.configure(config)
 
 picam2.set_controls({
-   "ExposureTime": 1000,  # Set exposure time (in microseconds)
+   "ExposureTime": 5000,  # Set exposure time (in microseconds)
    "AnalogueGain": 1.0,    # Set gain to 1.0 (no artificial brightness boost)
    "AeEnable": False,      # Disable auto-exposure
    "AwbEnable": False,     # Disable auto white balance
@@ -38,7 +38,7 @@ for angle in angles:
 
    # Open the DNG file using rawpy
    with rawpy.imread(image_file) as raw:
-       raw_image = raw.raw_image_visible.astype(np.uint16)  # Convert to 16-bit
+      raw_image = raw.raw_image_visible.astype(np.uint16)  # Convert to 16-bit
 
    # Flatten the image for histogram
    pixel_values = raw_image.flatten()
@@ -61,6 +61,11 @@ for angle in angles:
    plt.ylabel("Y Pixels")
    plt.show()
 
+   # Print details
+   print(f"Min Pixel Value: {np.min(raw_image)}")
+   print(f"Max Pixel Value: {np.max(raw_image)}")
+   print(f"Mean Intensity: {np.mean(raw_image)}")
+
    ## ---- Extract Color Channels from SBGGR10 Bayer Pattern ---- ##
    # Bayer pattern: SBGGR (Blue in top-left)
    B = raw_image[0::2, 0::2]     # Blue pixels (every 2nd row, every 2nd column)
@@ -82,6 +87,8 @@ for angle in angles:
    plt.legend()
    plt.grid(True)
    plt.show()
+
+   print(f"Mean Intensity R: {np.mean(R)}")
 
    # Normalize pixel intensities
    R_norm = R / 1023.0
