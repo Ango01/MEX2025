@@ -63,6 +63,3 @@ for image_file in dng_files:
     plt.show()
 
 print("Demosaicing process completed.")
-
-
-

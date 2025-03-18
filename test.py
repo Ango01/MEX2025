@@ -1,4 +1,3 @@
-
 from picamera2 import Picamera2
 import time
 import numpy as np
@@ -6,7 +5,6 @@ import rawpy
 import cv2
 import matplotlib.pyplot as plt
 import os
-import pandas as pd
 
 # Initialize camera
 picam2 = Picamera2()

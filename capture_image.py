@@ -40,12 +40,9 @@ for angle in angles:
   with rawpy.imread(image_file) as raw:
       raw_image = raw.raw_image_visible.astype(np.uint16)  # Convert to 16-bit
 
-  # Flatten the image for histogram
-  pixel_values = raw_image.flatten()
-
   # Plot histogram of RAW pixel intensities
   plt.figure(figsize=(8, 6))
-  plt.hist(pixel_values, bins=50, color='blue', alpha=0.7, edgecolor='black')
+  plt.hist(raw_image.flatten(), bins=50, color='blue', alpha=0.7, edgecolor='black')
   plt.title(f"Pixel Intensity Histogram at {angle} Degrees")
   plt.xlabel("Pixel Intensity (0-1023)")
   plt.ylabel("Frequency")
@@ -68,8 +65,8 @@ for angle in angles:
   G2 = raw_image[1::2, 0::2]    # Green pixels (row 2, col 1)
   R = raw_image[1::2, 1::2]     # Red pixels (every 2nd row, every 2nd column)
 
-  # Merge both Green channels for better statistics
-  G = np.concatenate((G1.flatten(), G2.flatten()))
+  # Average both Green channels
+  G = (G1 + G2) / 2
 
   # Plot histograms for each color channel
   plt.figure(figsize=(8, 6))
@@ -82,6 +79,30 @@ for angle in angles:
   plt.legend()
   plt.grid(True)
   plt.show()
+
+  # Normalize channels (optional, for visualization)
+  R_norm = R / np.max(R)
+  G_norm = G / np.max(G)
+  B_norm = B / np.max(B)
+
+  # Plot Heatmaps of Each Color Channel
+  fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+  axes[0].imshow(R_norm, cmap='Reds', aspect='auto')
+  axes[0].set_title("Red Channel (Scattering Intensity)")
+  axes[1].imshow(G_norm, cmap='Greens', aspect='auto')
+  axes[1].set_title("Green Channel (Scattering Intensity)")
+  axes[2].imshow(B_norm, cmap='Blues', aspect='auto')
+  axes[2].set_title("Blue Channel (Scattering Intensity)")
+  plt.show()
+
+  # Find Brightest Spot in Each Channel
+  _, max_R, _, max_loc_R = cv2.minMaxLoc(R_norm)
+  _, max_G, _, max_loc_G = cv2.minMaxLoc(G_norm)
+  _, max_B, _, max_loc_B = cv2.minMaxLoc(B_norm)
+
+  print(f"Brightest Spot in Red: {max_loc_R}, Intensity: {max_R:.4f}")
+  print(f"Brightest Spot in Green: {max_loc_G}, Intensity: {max_G:.4f}")
+  print(f"Brightest Spot in Blue: {max_loc_B}, Intensity: {max_B:.4f}")
 
 picam2.stop()
 print("Capture sequence completed.")
