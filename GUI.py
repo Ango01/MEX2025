@@ -12,6 +12,12 @@ class MeasurementGUI:
 
         self.picam2 = None  # Camera instance
         self.running = False
+        self.measurement_type_var = tk.StringVar(value="both")  # Default: Measure both BRDF & BTDF
+
+        ttk.Label(root, text="Measurement Type:").pack()
+        ttk.Radiobutton(root, text="BRDF (Reflection Only)", variable=self.measurement_type_var, value="brdf").pack()
+        ttk.Radiobutton(root, text="BTDF (Transmission Only)", variable=self.measurement_type_var, value="btdf").pack()
+        ttk.Radiobutton(root, text="Both BRDF & BTDF", variable=self.measurement_type_var, value="both").pack()
 
         # Measurement Parameters
         ttk.Label(root, text="Measurement Parameters", font=("Arial", 12, "bold")).pack(pady=5)
@@ -88,42 +94,27 @@ class MeasurementGUI:
             messagebox.showerror("Error", "Camera initialization failed. Please check your setup.")
 
     def measurement_process(self):
-        """Run the measurement process by capturing images at different angles."""
+        """Pass measurement parameters to capture_measurement()"""
         if not self.picam2:
             messagebox.showerror("Error", "Camera is not ready. Click 'Prepare Camera' first.")
             return
+
+        measurement_type = self.measurement_type_var.get()
 
         self.status_label.config(text="Status: Running...")
         self.start_button.config(state=tk.DISABLED)
         self.stop_button.config(state=tk.NORMAL)
         self.running = True
 
-        num_steps = self.num_steps_var.get()
-        angle_light_azimuthal = self.angle_light_azimuthal_var.get()
-        angle_light_radial = self.angle_light_radial_var.get()
-        angle_detector_azimuthal = self.angle_detector_azimuthal_var.get()
-        angle_detector_radial = self.angle_detector_radial_var.get()
-
-        for i in range(num_steps):
-            if not self.running:
-                break
-
-            current_angle_light_azimuthal = i * angle_light_azimuthal
-            current_angle_light_radial = i * angle_light_radial
-            current_angle_detector_azimuthal = i * angle_detector_azimuthal
-            current_angle_detector_radial = i * angle_detector_radial
-
-            print(f"Capturing image at Light({current_angle_light_azimuthal}°, {current_angle_light_radial}°) ",
-                  f"Detector({current_angle_detector_azimuthal}°, {current_angle_detector_radial}°)")
-
-            image_file = capture_image.capture_image(self.picam2)
-
-            if image_file:
-                self.status_label.config(text=f"Captured at step {i+1}/{num_steps}")
-            else:
-                self.status_label.config(text=f"Error at step {i+1}/{num_steps}", foreground="red")
-
-            time.sleep(1)  # Delay before next capture
+        capture_image.capture_measurement(
+            self.picam2,
+            measurement_type,
+            self.num_steps_var.get(),
+            self.angle_light_azimuthal_var.get(),
+            self.angle_light_radial_var.get(),
+            self.angle_detector_azimuthal_var.get(),
+            self.angle_detector_radial_var.get(),
+        )
 
         self.status_label.config(text="Status: Completed")
         self.start_button.config(state=tk.NORMAL)
