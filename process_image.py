@@ -27,27 +27,47 @@ def plot_heatmap(image, angle):
     plt.title(f"Heatmap of Scattered Light at {angle}°")
     plt.show()
 
-def extract_intensity_data(image):
-    """Extract key intensity values for BSDF analysis."""
-    avg_intensity = np.mean(image)  # Mean intensity of the whole image
-    max_intensity = np.max(image)  # Maximum intensity value
-    min_intensity = np.min(image)  # Minimum intensity value
-    return avg_intensity, max_intensity, min_intensity
+def extract_color_channels(image):
+    """Extract Red, Green, and Blue color channels from a Bayer RAW image."""
+    # Bayer pattern: SBGGR (Blue in top-left)
+    B = image[0::2, 0::2]     # Blue pixels (every 2nd row, every 2nd column)
+    G1 = image[0::2, 1::2]    # Green pixels (row 1, col 2)
+    G2 = image[1::2, 0::2]    # Green pixels (row 2, col 1)
+    R = image[1::2, 1::2]     # Red pixels (every 2nd row, every 2nd column)
 
-def save_intensity_data(image_path, angle, measurement_type, output_csv="scattering_data.csv"):
-    """Save intensity data into a CSV file for later BSDF analysis."""
-    image = process_raw_image(image_path)
-    avg_intensity, max_intensity, min_intensity = extract_intensity_data(image)
+    # Combine both Green channels into a single 2D array
+    G = np.concatenate((G1, G2), axis=0)  # Keep Green values in 2D
+    
+    print(R.shape, G.shape, B.shape)
+    return R, G, B
 
-    file_exists = os.path.isfile(output_csv)
-    with open(output_csv, "a", newline="") as f:
-        writer = csv.writer(f)
-        if not file_exists:
-            writer.writerow(["Measurement Type", "Angle", "Avg Intensity", "Max Intensity", "Min Intensity"])
-        writer.writerow([measurement_type, angle, avg_intensity, max_intensity, min_intensity])
+def plot_color_heatmaps(R, G, B, angle):
+    """Plot separate heatmaps for Red, Green, and Blue channels in 2D."""
+    fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+    
+    axes[0].imshow(R, cmap='Reds', aspect='auto')
+    axes[0].set_title(f"Red Channel at {angle}°")
+    
+    axes[1].imshow(G, cmap='Greens', aspect='auto')
+    axes[1].set_title(f"Green Channel at {angle}°")
+    
+    axes[2].imshow(B, cmap='Blues', aspect='auto')
+    axes[2].set_title(f"Blue Channel at {angle}°")
+    
+    plt.show()
 
-    print(f"Data saved for {measurement_type} at {angle}°")
-
+def plot_color_histogram(R, G, B, angle):
+    """Plot histograms for Red, Green, and Blue channels together."""
+    plt.figure(figsize=(8, 6))
+    plt.hist(R.flatten(), bins=50, color='red', alpha=0.6, label="Red", edgecolor='black')
+    plt.hist(G.flatten(), bins=50, color='green', alpha=0.6, label="Green", edgecolor='black')
+    plt.hist(B.flatten(), bins=50, color='blue', alpha=0.6, label="Blue", edgecolor='black')
+    plt.title(f"Color Channel Histograms at {angle}°")
+    plt.xlabel("Pixel Intensity")
+    plt.ylabel("Frequency")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
 # Example usage
 if __name__ == "__main__":
@@ -56,4 +76,6 @@ if __name__ == "__main__":
     processed_image = process_raw_image(image_path)
     plot_intensity_histogram(processed_image, angle)
     plot_heatmap(processed_image, angle)
-    save_intensity_data(image_path, angle)
+    R, G, B = extract_color_channels(processed_image)
+    plot_color_heatmaps(R, G, B, angle)
+    plot_color_histogram(R, G, B, angle)
