@@ -113,8 +113,6 @@ class MeasurementGUI:
             self.angle_light_radial_entry.config(state=tk.DISABLED)
             self.angle_light_radial_var.set(0.0)  # Reset unused field to zero
 
-
-
     def measurement_process(self):
         """Pass measurement parameters to capture_measurement()"""
         if not self.picam2:

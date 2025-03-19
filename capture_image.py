@@ -27,7 +27,6 @@ def capture_measurement(picam2, measurement_type, num_steps, angle_light_azimuth
 
     print(f"Completed step {i+1}/{num_steps}")
 
-
 def capture_image(picam2, output_folder="Captured_Images"):
     """Capture a RAW10 image using an initialized Picamera2 instance."""
     if picam2 is None:
