@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import threading
 import time
-import capture_image
+import capture_image, camera
 
 class MeasurementGUI:
     def __init__(self, root):
@@ -30,11 +30,15 @@ class MeasurementGUI:
         
         # Control Buttons
         ttk.Label(root, text="Automation Controls", font=("Arial", 12, "bold")).pack(pady=5)
-        self.start_button = ttk.Button(root, text="Start Measurement", command=self.start_measurement)
-        self.start_button.pack(pady=2)
+
+        self.prepare_button = ttk.Button(root, text="Prepare Camera", command=self.prepare_camera)
+        self.prepare_button.pack(pady=5)
+
+        self.start_button = ttk.Button(root, text="Start Measurement", command=self.start_measurement, state=tk.DISABLED)
+        self.start_button.pack(pady=5)
         
         self.stop_button = ttk.Button(root, text="Stop Measurement", command=self.stop_measurement, state=tk.DISABLED)
-        self.stop_button.pack(pady=2)
+        self.stop_button.pack(pady=5)
         
         # Export Button
         ttk.Button(root, text="Export Results", command=self.export_results).pack(pady=10)
@@ -44,14 +48,24 @@ class MeasurementGUI:
         self.status_label.pack(pady=5)
         
         self.running = False
+
+    def prepare_camera(self):
+        exposure = self.exposure_var.get()
     
+        if not exposure:
+            messagebox.showerror("Error", "Please enter an exposure time.")
+            return
+        
+        self.picam2 = camera.initialize_camera(exposure)
+        self.start_button.config(state=tk.NORMAL)
+        self.status_label.config(text="Status: Camera Ready", foreground="green")
+
     def measurement_process(self):
         self.status_label.config(text="Status: Running...")
         self.start_button.config(state=tk.DISABLED)
         self.stop_button.config(state=tk.NORMAL)
         
-        angle_increment = self.angle_var.get()
-        exposure = self.exposure_var.get()
+        angle_increment = int(self.angle_var.get())
 
         num_steps = 10 # Capture 10 images at different angles
 
@@ -62,7 +76,7 @@ class MeasurementGUI:
             current_angle = i * angle_increment
             print(f"Moving to {current_angle} degrees")
             
-            image_file = capture_image.capture_image(current_angle, exposure)
+            image_file = capture_image.capture_image(self.picam2, current_angle)
             print(f"Image saved at: {image_file}")
 
             time.sleep(1)  # Simulating measurement time
