@@ -34,18 +34,20 @@ def extract_intensity_data(image):
     min_intensity = np.min(image)  # Minimum intensity value
     return avg_intensity, max_intensity, min_intensity
 
-def save_intensity_data(image_path, angle, output_csv="scattering_data.csv"):
+def save_intensity_data(image_path, angle, measurement_type, output_csv="scattering_data.csv"):
     """Save intensity data into a CSV file for later BSDF analysis."""
     image = process_raw_image(image_path)
     avg_intensity, max_intensity, min_intensity = extract_intensity_data(image)
-    
+
     file_exists = os.path.isfile(output_csv)
     with open(output_csv, "a", newline="") as f:
         writer = csv.writer(f)
         if not file_exists:
-            writer.writerow(["Angle", "Avg Intensity", "Max Intensity", "Min Intensity"])
-        writer.writerow([angle, avg_intensity, max_intensity, min_intensity])
-    print(f"Data saved for angle {angle}°")
+            writer.writerow(["Measurement Type", "Angle", "Avg Intensity", "Max Intensity", "Min Intensity"])
+        writer.writerow([measurement_type, angle, avg_intensity, max_intensity, min_intensity])
+
+    print(f"Data saved for {measurement_type} at {angle}°")
+
 
 # Example usage
 if __name__ == "__main__":

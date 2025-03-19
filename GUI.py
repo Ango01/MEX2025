@@ -103,13 +103,16 @@ class MeasurementGUI:
         self.angle_detector_azimuthal_entry.config(state=tk.NORMAL)
         self.angle_detector_radial_entry.config(state=tk.NORMAL)
 
-        # If BRDF (Reflection), the light source moves fully, but the detector only rotates
+        # If BRDF (Reflection), the detector does NOT tilt
         if measurement_type == "brdf":
-            self.angle_detector_radial_entry.config(state=tk.DISABLED)  # Disable detector tilt
+            self.angle_detector_radial_entry.config(state=tk.DISABLED)
+            self.angle_detector_radial_var.set(0.0)  # Reset unused field to zero
 
-        # If BTDF (Transmission), the detector moves fully, but the light source only rotates
+        # If BTDF (Transmission), the light source does NOT tilt
         elif measurement_type == "btdf":
-            self.angle_light_radial_entry.config(state=tk.DISABLED)  # Disable light tilt
+            self.angle_light_radial_entry.config(state=tk.DISABLED)
+            self.angle_light_radial_var.set(0.0)  # Reset unused field to zero
+
 
 
     def measurement_process(self):
@@ -147,6 +150,7 @@ class MeasurementGUI:
     def stop_measurement(self):
         """Stop the measurement process."""
         self.running = False
+        camera.stop_camera(self.picam2)  # Ensure camera stops
         self.status_label.config(text="Status: Stopped")
 
     def export_results(self):
