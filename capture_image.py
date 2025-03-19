@@ -6,39 +6,36 @@ import cv2
 import matplotlib.pyplot as plt
 import os
 
-# Initialize camera
-picam2 = Picamera2()
-
-# Configure RAW10 capture
-config = picam2.create_still_configuration(raw={"format": "SRGGB10", "size": (1456, 1088)})
-picam2.configure(config)
-
-picam2.set_controls({
-  "ExposureTime": 5000,  # Set exposure time (in microseconds)
-  "AnalogueGain": 1.0,    # Set gain to 1.0 (no artificial brightness boost)
-  "AeEnable": False,      # Disable auto-exposure
-  "AwbEnable": False,     # Disable auto white balance
-})
-
-angles = range(0, 10, 10)  # Capture images at every 10 degrees
-
-# Create a folder to store images
-output_folder = "Captured_Images"
-os.makedirs(output_folder, exist_ok=True)
-
-picam2.start()
-time.sleep(1)  # Allow camera to warm up
-
-for angle in angles:
+def capture_image(angle, exposure):
+  # Initialize camera
+  picam2 = Picamera2()
+   
+  # Configure RAW10 capture
+  config = picam2.create_still_configuration(raw={"format": "SRGGB10", "size": (1456, 1088)})
+  picam2.configure(config)
+   
+  picam2.set_controls({
+    "ExposureTime": exposure,  # Set exposure time (in microseconds)
+    "AnalogueGain": 1.0,    # Set gain to 1.0 (no artificial brightness boost)
+    "AeEnable": False,      # Disable auto-exposure
+    "AwbEnable": False,     # Disable auto white balance
+  }) 
+   
+  # Create a folder to store images
+  output_folder = "Captured_Images"
+  os.makedirs(output_folder, exist_ok=True)
+   
+  picam2.start()
+  time.sleep(1)  # Allow camera to warm up
+   
   input(f"Press Enter to capture image at {angle} degrees...")
-
   image_file = os.path.join(output_folder, f"image_{angle}.dng")
   picam2.capture_file(image_file, name="raw")
   print(f"Captured image at {angle} degrees")
-
+      
   # Open the DNG file using rawpy
   with rawpy.imread(image_file) as raw:
-      raw_image = raw.raw_image_visible.astype(np.uint16)  # Convert to 16-bit
+    raw_image = raw.raw_image_visible.astype(np.uint16)  # Convert to 16-bit
 
   # Plot histogram of RAW pixel intensities
   plt.figure(figsize=(8, 6))
@@ -80,7 +77,7 @@ for angle in angles:
   plt.grid(True)
   plt.show()
 
-  # Normalize channels (optional, for visualization)
+  # Normalize channels for visualization
   R_norm = R / np.max(R)
   G_norm = G / np.max(G)
   B_norm = B / np.max(B)
@@ -103,7 +100,9 @@ for angle in angles:
   print(f"Brightest Spot in Red: {max_loc_R}, Intensity: {max_R:.4f}")
   print(f"Brightest Spot in Green: {max_loc_G}, Intensity: {max_G:.4f}")
   print(f"Brightest Spot in Blue: {max_loc_B}, Intensity: {max_B:.4f}")
+      
+  picam2.stop()
+  print("Capture sequence completed.")
 
-picam2.stop()
-print("Capture sequence completed.")
+  return image_file
 
