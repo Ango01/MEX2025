@@ -8,7 +8,7 @@ class MeasurementGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Optical Scattering Measurement Device")
-        self.root.geometry("500x400")
+        self.root.geometry("500x500")
 
         self.picam2 = None  # Camera instance
         self.running = False
@@ -21,10 +21,30 @@ class MeasurementGUI:
         self.material_entry = ttk.Entry(root, textvariable=self.material_var)
         self.material_entry.pack()
 
-        self.angle_var = tk.DoubleVar()
-        ttk.Label(root, text="Angle Increment (°):").pack()
-        self.angle_entry = ttk.Entry(root, textvariable=self.angle_var)
-        self.angle_entry.pack()
+        self.angle_light_azimuthal_var = tk.DoubleVar()
+        ttk.Label(root, text="Light Source Azimuthal Increment (°):").pack()
+        self.angle_light_azimuthal_entry = ttk.Entry(root, textvariable=self.angle_light_azimuthal_var)
+        self.angle_light_azimuthal_entry.pack()
+
+        self.angle_light_radial_var = tk.DoubleVar()
+        ttk.Label(root, text="Light Source Radial Increment (°):").pack()
+        self.angle_light_radial_entry = ttk.Entry(root, textvariable=self.angle_light_radial_var)
+        self.angle_light_radial_entry.pack()
+
+        self.angle_detector_azimuthal_var = tk.DoubleVar()
+        ttk.Label(root, text="Detector Azimuthal Increment (°):").pack()
+        self.angle_detector_azimuthal_entry = ttk.Entry(root, textvariable=self.angle_detector_azimuthal_var)
+        self.angle_detector_azimuthal_entry.pack()
+
+        self.angle_detector_radial_var = tk.DoubleVar()
+        ttk.Label(root, text="Detector Radial Increment (°):").pack()
+        self.angle_detector_radial_entry = ttk.Entry(root, textvariable=self.angle_detector_radial_var)
+        self.angle_detector_radial_entry.pack()
+
+        self.num_steps_var = tk.IntVar()
+        ttk.Label(root, text="Number of Steps:").pack()
+        self.num_steps_entry = ttk.Entry(root, textvariable=self.num_steps_var)
+        self.num_steps_entry.pack()
 
         self.exposure_var = tk.DoubleVar()
         ttk.Label(root, text="Exposure Time (μs):").pack()
@@ -78,26 +98,33 @@ class MeasurementGUI:
         self.stop_button.config(state=tk.NORMAL)
         self.running = True
 
-        angle_increment = int(self.angle_var.get())
-        num_steps = 10  # Capture 10 images
+        num_steps = self.num_steps_var.get()
+        angle_light_azimuthal = self.angle_light_azimuthal_var.get()
+        angle_light_radial = self.angle_light_radial_var.get()
+        angle_detector_azimuthal = self.angle_detector_azimuthal_var.get()
+        angle_detector_radial = self.angle_detector_radial_var.get()
 
         for i in range(num_steps):
             if not self.running:
                 break
 
-            current_angle = i * angle_increment
-            print(f"Capturing image at {current_angle} degrees...")
+            current_angle_light_azimuthal = i * angle_light_azimuthal
+            current_angle_light_radial = i * angle_light_radial
+            current_angle_detector_azimuthal = i * angle_detector_azimuthal
+            current_angle_detector_radial = i * angle_detector_radial
 
-            image_file = capture_image.capture_image(self.picam2, current_angle)
+            print(f"Capturing image at Light({current_angle_light_azimuthal}°, {current_angle_light_radial}°) ",
+                  f"Detector({current_angle_detector_azimuthal}°, {current_angle_detector_radial}°)")
+
+            image_file = capture_image.capture_image(self.picam2)
 
             if image_file:
-                self.status_label.config(text=f"Captured at {current_angle}°")
+                self.status_label.config(text=f"Captured at step {i+1}/{num_steps}")
             else:
-                self.status_label.config(text=f"Error at {current_angle}°", foreground="red")
+                self.status_label.config(text=f"Error at step {i+1}/{num_steps}", foreground="red")
 
             time.sleep(1)  # Delay before next capture
 
-        camera.stop_camera(self.picam2)  # Stop the camera after measurement
         self.status_label.config(text="Status: Completed")
         self.start_button.config(state=tk.NORMAL)
         self.stop_button.config(state=tk.DISABLED)
@@ -108,9 +135,8 @@ class MeasurementGUI:
         threading.Thread(target=self.measurement_process, daemon=True).start()
 
     def stop_measurement(self):
-        """Stop the measurement process and properly shut down the camera."""
+        """Stop the measurement process."""
         self.running = False
-        camera.stop_camera(self.picam2)  # Ensure camera is stopped
         self.status_label.config(text="Status: Stopped")
 
     def export_results(self):
@@ -118,12 +144,6 @@ class MeasurementGUI:
         file_path = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv"), ("All Files", "*.*")])
         if file_path:
             with open(file_path, "w") as file:
-                file.write("Material, Angle, Exposure\n")
-                file.write(f"{self.material_var.get()}, {self.angle_var.get()}, {self.exposure_var.get()}\n")
+                file.write("Material, Steps, Light_Azimuthal, Light_Radial, Detector_Azimuthal, Detector_Radial\n")
+                file.write(f"{self.material_var.get()}, {self.num_steps_var.get()}, {self.angle_light_azimuthal_var.get()}, {self.angle_light_radial_var.get()}, {self.angle_detector_azimuthal_var.get()}, {self.angle_detector_radial_var.get()}\n")
             messagebox.showinfo("Export", "Results exported successfully!")
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = MeasurementGUI(root)
-    root.mainloop()
-
