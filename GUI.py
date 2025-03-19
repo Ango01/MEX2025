@@ -1,20 +1,19 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import threading
-import time
 import capture_image, camera
 
 class MeasurementGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Optical Scattering Measurement Device")
-        self.root.geometry("500x550")
+        self.root.geometry("500x650")
 
         self.picam2 = None  # Camera instance
         self.running = False
         self.measurement_type_var = tk.StringVar(value="both")  # Default: Measure both BRDF & BTDF
 
-        ttk.Label(root, text="Measurement Type:").pack()
+        ttk.Label(root, text="Measurement Type", font=("Arial", 12, "bold")).pack(pady=5)
         ttk.Radiobutton(root, text="BRDF (Reflection Only)", variable=self.measurement_type_var, value="brdf", command=self.update_angle_inputs).pack()
         ttk.Radiobutton(root, text="BTDF (Transmission Only)", variable=self.measurement_type_var, value="btdf", command=self.update_angle_inputs).pack()
         ttk.Radiobutton(root, text="Both BRDF & BTDF", variable=self.measurement_type_var, value="both", command=self.update_angle_inputs).pack()
@@ -112,8 +111,6 @@ class MeasurementGUI:
         elif measurement_type == "btdf":
             self.angle_light_radial_entry.config(state=tk.DISABLED)
             self.angle_light_radial_var.set(0.0)  # Reset unused field to zero
-
-
 
     def measurement_process(self):
         """Pass measurement parameters to capture_measurement()"""
