@@ -8,7 +8,7 @@ class MeasurementGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Optical Scattering Measurement Device")
-        self.root.geometry("500x500")
+        self.root.geometry("500x550")
 
         self.picam2 = None  # Camera instance
         self.running = False
@@ -147,3 +147,8 @@ class MeasurementGUI:
                 file.write("Material, Steps, Light_Azimuthal, Light_Radial, Detector_Azimuthal, Detector_Radial\n")
                 file.write(f"{self.material_var.get()}, {self.num_steps_var.get()}, {self.angle_light_azimuthal_var.get()}, {self.angle_light_radial_var.get()}, {self.angle_detector_azimuthal_var.get()}, {self.angle_detector_radial_var.get()}\n")
             messagebox.showinfo("Export", "Results exported successfully!")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = MeasurementGUI(root)
+    root.mainloop()
