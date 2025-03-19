@@ -15,9 +15,9 @@ class MeasurementGUI:
         self.measurement_type_var = tk.StringVar(value="both")  # Default: Measure both BRDF & BTDF
 
         ttk.Label(root, text="Measurement Type:").pack()
-        ttk.Radiobutton(root, text="BRDF (Reflection Only)", variable=self.measurement_type_var, value="brdf").pack()
-        ttk.Radiobutton(root, text="BTDF (Transmission Only)", variable=self.measurement_type_var, value="btdf").pack()
-        ttk.Radiobutton(root, text="Both BRDF & BTDF", variable=self.measurement_type_var, value="both").pack()
+        ttk.Radiobutton(root, text="BRDF (Reflection Only)", variable=self.measurement_type_var, value="brdf", command=self.update_angle_inputs).pack()
+        ttk.Radiobutton(root, text="BTDF (Transmission Only)", variable=self.measurement_type_var, value="btdf", command=self.update_angle_inputs).pack()
+        ttk.Radiobutton(root, text="Both BRDF & BTDF", variable=self.measurement_type_var, value="both", command=self.update_angle_inputs).pack()
 
         # Measurement Parameters
         ttk.Label(root, text="Measurement Parameters", font=("Arial", 12, "bold")).pack(pady=5)
@@ -92,6 +92,25 @@ class MeasurementGUI:
             messagebox.showinfo("Camera Ready", "Camera is configured and ready for measurement.")
         else:
             messagebox.showerror("Error", "Camera initialization failed. Please check your setup.")
+    
+    def update_angle_inputs(self):
+        """Enable or disable angle fields based on measurement type selection."""
+        measurement_type = self.measurement_type_var.get()
+
+        # Reset all fields to default state
+        self.angle_light_azimuthal_entry.config(state=tk.NORMAL)
+        self.angle_light_radial_entry.config(state=tk.NORMAL)
+        self.angle_detector_azimuthal_entry.config(state=tk.NORMAL)
+        self.angle_detector_radial_entry.config(state=tk.NORMAL)
+
+        # If BRDF (Reflection), the light source moves fully, but the detector only rotates
+        if measurement_type == "brdf":
+            self.angle_detector_radial_entry.config(state=tk.DISABLED)  # Disable detector tilt
+
+        # If BTDF (Transmission), the detector moves fully, but the light source only rotates
+        elif measurement_type == "btdf":
+            self.angle_light_radial_entry.config(state=tk.DISABLED)  # Disable light tilt
+
 
     def measurement_process(self):
         """Pass measurement parameters to capture_measurement()"""
