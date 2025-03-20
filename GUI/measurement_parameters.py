@@ -51,9 +51,23 @@ class MeasurementParametersWindow:
         # Back button to return to measurement type selection
         self.back_button = ttk.Button(root, text="Back", command=self.go_back)
         self.back_button.pack(pady=5)
+        
+        # Disable unnecessary fields based on measurement type
+        self.update_angle_inputs()
+    
+    def update_angle_inputs(self):
+        """Enable or disable angle fields based on measurement type selection."""
+        if self.measurement_type == "brdf":
+            self.angle_detector_radial_entry.config(state=tk.DISABLED)
+            self.angle_detector_radial_var.set(0.0)  # Reset unused field to zero
+
+        elif self.measurement_type == "btdf":
+            self.angle_light_radial_entry.config(state=tk.DISABLED)
+            self.angle_light_radial_var.set(0.0)  # Reset unused field to zero
     
     def next_window(self):
-        # Destroy current window and open Automation Controls
+        """Open the automation controls window."""
+        from GUI.automation_controls import AutomationControlsWindow  # Delayed import
         self.root.destroy()
         new_root = tk.Tk()
         AutomationControlsWindow(new_root, self.measurement_type, self.get_parameters())
@@ -61,7 +75,7 @@ class MeasurementParametersWindow:
     
     def go_back(self):
         """Go back to the measurement type selection window."""
-        from GUI.measurement_type import MeasurementTypeWindow
+        from GUI.measurement_type import MeasurementTypeWindow  # Delayed import
         self.root.destroy()
         new_root = tk.Tk()
         MeasurementTypeWindow(new_root)
