@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 import pandas as pd
 import capture_image, camera, process_image
+import threading
 
 class AutomationControlsWindow:
     """Class to handle the automation controls for the measurement process."""
@@ -45,7 +46,8 @@ class AutomationControlsWindow:
         except ValueError:
             messagebox.showerror("Error", "Please enter a valid exposure time.")
             return
-
+        
+        print(f"Exposure time: ", exposure)
         self.picam2 = camera.initialize_camera(exposure)
 
         if self.picam2:
@@ -55,16 +57,17 @@ class AutomationControlsWindow:
             messagebox.showerror("Error", "Camera initialization failed. Please check your setup.")
     
     def start_measurement(self):
-        """Perform the measurement process and capture scattering data."""
-
+        """Perform the measurement process and capture scattering data in a separate thread."""
         self.status_label.config(text="Status: Running...", foreground="blue")
         self.start_button.config(state=tk.DISABLED)
-        self.stop_button.config(state=tk.NORMAL)
-        
-        # Define the filename for storing measurement data
-        dataset_file = f"scattering_data_{self.measurement_type}.csv"
+        self.stop_button.config(state=tk.NORMAL)  
 
-        # Capture measurement images and save data
+        # Run the measurement process in a separate thread to avoid freezing the GUI
+        measurement_thread = threading.Thread(target=self.run_measurement_process, daemon=True)
+        measurement_thread.start()
+
+    def run_measurement_process(self):
+        """Captures measurement images and saves scattering data."""
         capture_image.capture_measurement(
             self.picam2,
             self.measurement_type,
