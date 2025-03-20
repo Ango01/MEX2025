@@ -27,11 +27,12 @@ def capture_measurement(picam2, measurement_type, num_steps, angle_light_azimuth
 
     print(f"Completed step {i+1}/{num_steps}")
 
-def capture_image(picam2, output_folder="Captured_Images"):
+def capture_image(picam2):
     """Capture a RAW10 image using an initialized Picamera2 instance."""
     if picam2 is None:
         raise ValueError("Camera is not initialized. Call initialize_camera() first.")
     
+    output_folder = "Captured_Images"
     os.makedirs(output_folder, exist_ok=True)  # Ensure output folder exists
     
     image_count = len(os.listdir(output_folder))  # Count existing images for unique filenames

@@ -9,7 +9,7 @@ def initialize_camera(exposure):
     picam2.configure(config)
         
     picam2.set_controls({
-      "ExposureTime": int(exposure),  
+      "ExposureTime": exposure,  
       "AnalogueGain": 1.0,
       "AeEnable": False,
       "AwbEnable": False,
@@ -26,7 +26,7 @@ def initialize_camera(exposure):
     return None  # Return None to indicate failure
 
 def stop_camera(picam2):
-  """Safely stop the camera."""
+  """Stop the camera."""
   if picam2:
     picam2.stop()
     print("Camera stopped successfully.")

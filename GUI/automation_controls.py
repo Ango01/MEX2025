@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
-import threading
-import capture_image, camera, process_image
 import pandas as pd
+import capture_image, camera, process_image
 
 class AutomationControlsWindow:
+    """Class to handle the automation controls for the measurement process."""
     def __init__(self, root, measurement_type, parameters):
         self.root = root
         self.root.title("Automation Controls")
@@ -28,7 +28,7 @@ class AutomationControlsWindow:
         self.stop_button = ttk.Button(root, text="Stop Measurement", command=self.stop_measurement, state=tk.DISABLED)
         self.stop_button.pack(pady=5)
         
-        self.export_button = ttk.Button(root, text="Export Dataset", command=self.export_dataset)
+        self.export_button = ttk.Button(root, text="Export Dataset", command=self.export_dataset, state=tk.DISABLED)
         self.export_button.pack(pady=10)
         
         # If user selects "both", provide BSDF calculation option
@@ -37,8 +37,9 @@ class AutomationControlsWindow:
             self.bsdf_button.pack(pady=10)
     
     def prepare_camera(self):
+        """Initialize and configure the camera for measurement."""
         try:
-            exposure = int(self.parameters["exposure"])
+            exposure = self.parameters["exposure"]
         except ValueError:
             messagebox.showerror("Error", "Please enter a valid exposure time.")
             return
@@ -48,24 +49,24 @@ class AutomationControlsWindow:
         if self.picam2:
             self.start_button.config(state=tk.NORMAL)
             self.status_label.config(text="Status: Camera Ready", foreground="green")
-            messagebox.showinfo("Camera Ready", "Camera is configured and ready for measurement.")
         else:
             messagebox.showerror("Error", "Camera initialization failed. Please check your setup.")
     
     def start_measurement(self):
+        """Perform the measurement process and capture scattering data."""
         self.running = True
-        threading.Thread(target=self.measurement_process, daemon=True).start()
-    
-    def measurement_process(self):
         if not self.picam2:
             messagebox.showerror("Error", "Camera is not ready. Click 'Prepare Camera' first.")
             return
 
-        self.status_label.config(text="Status: Running...", foreground="orange")
+        self.status_label.config(text="Status: Running...", foreground="blue")
         self.start_button.config(state=tk.DISABLED)
         self.stop_button.config(state=tk.NORMAL)
         
+        # Define the filename for storing measurement data
         dataset_file = f"scattering_data_{self.measurement_type}.csv"
+
+        # Capture measurement images and save data
         capture_image.capture_measurement(
             self.picam2,
             self.measurement_type,
@@ -73,8 +74,7 @@ class AutomationControlsWindow:
             self.parameters["angle_light_azimuthal"],
             self.parameters["angle_light_radial"],
             self.parameters["angle_detector_azimuthal"],
-            self.parameters["angle_detector_radial"],
-            dataset_file
+            self.parameters["angle_detector_radial"]
         )
         
         self.status_label.config(text=f"Status: {self.measurement_type.upper()} Dataset Ready", foreground="green")
@@ -85,12 +85,16 @@ class AutomationControlsWindow:
             self.bsdf_button.config(state=tk.NORMAL)
     
     def stop_measurement(self):
+        """Stop the measurement process."""
         self.running = False
         camera.stop_camera(self.picam2)
         self.status_label.config(text="Status: Stopped", foreground="red")
     
     def export_dataset(self):
+        """Export the captured measurement dataset as a CSV file."""
         dataset_file = f"scattering_data_{self.measurement_type}.csv"
+
+        # Open a file save dialog to select export location
         file_path = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv"), ("All Files", "*.*")])
         if file_path:
             df = pd.read_csv(dataset_file)
@@ -98,5 +102,6 @@ class AutomationControlsWindow:
             messagebox.showinfo("Export", f"{self.measurement_type.upper()} Dataset exported successfully!")
     
     def compute_bsdf(self):
+        """Compute the BSDF dataset by combining BRDF and BTDF data."""
         process_image.compute_bsdf("scattering_data_brdf.csv", "scattering_data_btdf.csv", "scattering_data_bsdf.csv")
         messagebox.showinfo("BSDF Computation", "BSDF dataset has been generated successfully!")
