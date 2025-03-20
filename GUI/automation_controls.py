@@ -35,6 +35,9 @@ class AutomationControlsWindow:
         if self.measurement_type == "both":
             self.bsdf_button = ttk.Button(root, text="Get BSDF Dataset", command=self.compute_bsdf, state=tk.DISABLED)
             self.bsdf_button.pack(pady=10)
+
+        self.back_button = ttk.Button(root, text="Back", command=self.go_back)
+        self.back_button.pack(pady=5)
     
     def prepare_camera(self):
         """Initialize and configure the camera for measurement."""
@@ -80,6 +83,7 @@ class AutomationControlsWindow:
         self.status_label.config(text=f"Status: {self.measurement_type.upper()} Dataset Ready", foreground="green")
         self.start_button.config(state=tk.NORMAL)
         self.stop_button.config(state=tk.DISABLED)
+        self.export_button.config(state=tk.NORMAL)
         
         if self.measurement_type == "both":
             self.bsdf_button.config(state=tk.NORMAL)
@@ -105,3 +109,11 @@ class AutomationControlsWindow:
         """Compute the BSDF dataset by combining BRDF and BTDF data."""
         process_image.compute_bsdf("scattering_data_brdf.csv", "scattering_data_btdf.csv", "scattering_data_bsdf.csv")
         messagebox.showinfo("BSDF Computation", "BSDF dataset has been generated successfully!")
+    
+    def go_back(self):
+        """Go back to the measurement parameters window."""
+        from GUI.measurement_parameters import MeasurementParametersWindow  # Delayed import
+        self.root.destroy()
+        new_root = tk.Tk()
+        MeasurementParametersWindow(new_root)
+        new_root.mainloop()
