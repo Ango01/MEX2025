@@ -12,7 +12,6 @@ class AutomationControlsWindow:
         self.measurement_type = measurement_type
         self.parameters = parameters
         self.picam2 = None
-        self.running = False
         
         ttk.Label(root, text="Automation Controls", font=("Arial", 14, "bold")).pack(pady=20)
 
@@ -57,10 +56,6 @@ class AutomationControlsWindow:
     
     def start_measurement(self):
         """Perform the measurement process and capture scattering data."""
-        self.running = True
-        if not self.picam2:
-            messagebox.showerror("Error", "Camera is not ready. Click 'Prepare Camera' first.")
-            return
 
         self.status_label.config(text="Status: Running...", foreground="blue")
         self.start_button.config(state=tk.DISABLED)
@@ -90,7 +85,6 @@ class AutomationControlsWindow:
     
     def stop_measurement(self):
         """Stop the measurement process."""
-        self.running = False
         camera.stop_camera(self.picam2)
         self.status_label.config(text="Status: Stopped", foreground="red")
     
@@ -115,5 +109,5 @@ class AutomationControlsWindow:
         from GUI.measurement_parameters import MeasurementParametersWindow  # Delayed import
         self.root.destroy()
         new_root = tk.Tk()
-        MeasurementParametersWindow(new_root)
+        MeasurementParametersWindow(new_root, self.measurement_type_var.get())
         new_root.mainloop()
