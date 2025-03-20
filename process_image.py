@@ -1,6 +1,6 @@
 import rawpy
 import numpy as np
-import cv2
+import pandas as pd
 import os
 import csv
 import matplotlib.pyplot as plt
@@ -68,6 +68,30 @@ def plot_color_histogram(R, G, B, angle):
     plt.legend()
     plt.grid(True)
     plt.show()
+
+def save_intensity_data(image_path, angle, measurement_type, output_csv="scattering_data.csv"):
+    """Save 2D Red, Green, and Blue intensity data into a CSV file for BSDF analysis."""
+    image = process_raw_image(image_path)
+    R, G, B = extract_color_channels(image)
+    avg_R = np.mean(R)
+    avg_G = np.mean(G)
+    avg_B = np.mean(B)
+    file_exists = os.path.isfile(output_csv)
+    with open(output_csv, "a", newline="") as f:
+        writer = csv.writer(f)
+        if not file_exists:
+            writer.writerow(["Measurement Type", "Angle", "Avg R Intensity", "Avg G Intensity", "Avg B Intensity"])
+        writer.writerow([measurement_type, angle, avg_R, avg_G, avg_B])
+    print(f"Data saved for {measurement_type} at {angle}°")
+
+def compute_bsdf(brdf_file, btdf_file, output_file="scattering_data_bsdf.csv"):
+    """Compute BSDF by summing BRDF and BTDF datasets."""
+    df_brdf = pd.read_csv(brdf_file)
+    df_btdf = pd.read_csv(btdf_file)
+    df_bsdf = df_brdf.copy()
+    df_bsdf[["Avg R Intensity", "Avg G Intensity", "Avg B Intensity"]] += df_btdf[["Avg R Intensity", "Avg G Intensity", "Avg B Intensity"]]
+    df_bsdf.to_csv(output_file, index=False)
+    print("BSDF dataset saved successfully!")
 
 # Example usage
 if __name__ == "__main__":

@@ -1,13 +1,14 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 import threading
-import capture_image, camera
+import capture_image, camera, process_image
+import pandas as pd
 
 class AutomationControlsWindow:
     def __init__(self, root, measurement_type, parameters):
         self.root = root
         self.root.title("Automation Controls")
-        self.root.geometry("500x400")
+        self.root.geometry("500x450")
         self.measurement_type = measurement_type
         self.parameters = parameters
         self.picam2 = None
@@ -27,11 +28,13 @@ class AutomationControlsWindow:
         self.stop_button = ttk.Button(root, text="Stop Measurement", command=self.stop_measurement, state=tk.DISABLED)
         self.stop_button.pack(pady=5)
         
-        ttk.Button(root, text="Export Results", command=self.export_results).pack(pady=10)
+        self.export_button = ttk.Button(root, text="Export Dataset", command=self.export_dataset)
+        self.export_button.pack(pady=10)
         
-        # Back button to return to measurement parameters
-        self.back_button = ttk.Button(root, text="Back", command=self.go_back)
-        self.back_button.pack(pady=5)
+        # If user selects "both", provide BSDF calculation option
+        if self.measurement_type == "both":
+            self.bsdf_button = ttk.Button(root, text="Get BSDF Dataset", command=self.compute_bsdf, state=tk.DISABLED)
+            self.bsdf_button.pack(pady=10)
     
     def prepare_camera(self):
         try:
@@ -62,6 +65,7 @@ class AutomationControlsWindow:
         self.start_button.config(state=tk.DISABLED)
         self.stop_button.config(state=tk.NORMAL)
         
+        dataset_file = f"scattering_data_{self.measurement_type}.csv"
         capture_image.capture_measurement(
             self.picam2,
             self.measurement_type,
@@ -70,24 +74,29 @@ class AutomationControlsWindow:
             self.parameters["angle_light_radial"],
             self.parameters["angle_detector_azimuthal"],
             self.parameters["angle_detector_radial"],
+            dataset_file
         )
         
-        self.status_label.config(text="Status: Completed", foreground="green")
+        self.status_label.config(text=f"Status: {self.measurement_type.upper()} Dataset Ready", foreground="green")
         self.start_button.config(state=tk.NORMAL)
         self.stop_button.config(state=tk.DISABLED)
+        
+        if self.measurement_type == "both":
+            self.bsdf_button.config(state=tk.NORMAL)
     
     def stop_measurement(self):
         self.running = False
         camera.stop_camera(self.picam2)
         self.status_label.config(text="Status: Stopped", foreground="red")
     
-    def export_results(self):
-        messagebox.showinfo("Export", "Results exported successfully!")
+    def export_dataset(self):
+        dataset_file = f"scattering_data_{self.measurement_type}.csv"
+        file_path = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv"), ("All Files", "*.*")])
+        if file_path:
+            df = pd.read_csv(dataset_file)
+            df.to_csv(file_path, index=False)
+            messagebox.showinfo("Export", f"{self.measurement_type.upper()} Dataset exported successfully!")
     
-    def go_back(self):
-        """Go back to the measurement parameters window."""
-        from GUI.measurement_parameters import MeasurementParametersWindow
-        self.root.destroy()
-        new_root = tk.Tk()
-        MeasurementParametersWindow(new_root, self.measurement_type)
-        new_root.mainloop()
+    def compute_bsdf(self):
+        process_image.compute_bsdf("scattering_data_brdf.csv", "scattering_data_btdf.csv", "scattering_data_bsdf.csv")
+        messagebox.showinfo("BSDF Computation", "BSDF dataset has been generated successfully!")
