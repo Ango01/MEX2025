@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
 import capture_image, camera
-from measurement_parameters import MeasurementParametersWindow
 
 class AutomationControlsWindow:
     def __init__(self, root, measurement_type, parameters):
@@ -87,6 +86,7 @@ class AutomationControlsWindow:
     
     def go_back(self):
         """Go back to the measurement parameters window."""
+        from GUI.measurement_parameters import MeasurementParametersWindow
         self.root.destroy()
         new_root = tk.Tk()
         MeasurementParametersWindow(new_root, self.measurement_type)

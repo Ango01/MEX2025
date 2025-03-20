@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from measurement_parameters import MeasurementParametersWindow
+from GUI.measurement_parameters import MeasurementParametersWindow
 
 class MeasurementTypeWindow:
     def __init__(self, root):

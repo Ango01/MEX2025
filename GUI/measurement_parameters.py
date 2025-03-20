@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from automation_controls import AutomationControlsWindow
-from measurement_type import MeasurementTypeWindow
+from GUI.automation_controls import AutomationControlsWindow
 
 class MeasurementParametersWindow:
     def __init__(self, root, measurement_type):
@@ -62,6 +61,7 @@ class MeasurementParametersWindow:
     
     def go_back(self):
         """Go back to the measurement type selection window."""
+        from GUI.measurement_type import MeasurementTypeWindow
         self.root.destroy()
         new_root = tk.Tk()
         MeasurementTypeWindow(new_root)
