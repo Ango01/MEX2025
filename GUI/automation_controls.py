@@ -16,17 +16,22 @@ class AutomationControlsWindow:
         
         ttk.Label(root, text="Automation Controls", font=("Arial", 14, "bold")).pack(pady=20)
 
-        self.status_label = ttk.Label(root, text="Status: Idle", foreground="blue").pack(pady=5)
+        self.status_label = ttk.Label(root, text="Status: Idle", foreground="blue")
+        self.status_label.pack(pady=5)
         
         self.prepare_button = ttk.Button(root, text="Prepare Camera", command=self.prepare_camera).pack(pady=10)
-        self.start_button = ttk.Button(root, text="Start Measurement", command=self.start_measurement, state=tk.DISABLED).pack(pady=10)
-        self.stop_button = ttk.Button(root, text="Stop Measurement", command=self.stop_measurement, state=tk.DISABLED).pack(pady=10)
+        self.start_button = ttk.Button(root, text="Start Measurement", command=self.start_measurement, state=tk.DISABLED)
+        self.start_button.pack(pady=10)
+        self.stop_button = ttk.Button(root, text="Stop Measurement", command=self.stop_measurement, state=tk.DISABLED)
+        self.stop_button.pack(pady=10)
         
-        self.export_button = ttk.Button(root, text="Export Dataset", command=self.export_dataset, state=tk.DISABLED).pack(pady=20)
+        self.export_button = ttk.Button(root, text="Export Dataset", command=self.export_dataset, state=tk.DISABLED)
+        self.export_button.pack(pady=20)
        
         # If user selects "both", provide BSDF calculation option
         if self.measurement_type == "both":
-            self.bsdf_button = ttk.Button(root, text="Get BSDF Dataset", command=self.compute_bsdf, state=tk.DISABLED).pack(pady=10)
+            self.bsdf_button = ttk.Button(root, text="Get BSDF Dataset", command=self.compute_bsdf, state=tk.DISABLED)
+            self.bsdf_button.pack(pady=10)
 
         # Back button
         self.back_button = ttk.Button(root, text="Back", command=self.go_back)
