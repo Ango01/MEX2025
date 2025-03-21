@@ -14,9 +14,9 @@ class MeasurementTypeWindow:
         # Store the selected measurement type
         self.measurement_type_var = tk.StringVar(value="")  
         
-        ttk.Radiobutton(root, text="BRDF (Reflection Only)", variable=self.measurement_type_var, value="brdf").pack()
-        ttk.Radiobutton(root, text="BTDF (Transmission Only)", variable=self.measurement_type_var, value="btdf").pack()
-        ttk.Radiobutton(root, text="Both BRDF & BTDF", variable=self.measurement_type_var, value="both").pack()
+        ttk.Radiobutton(root, text="BRDF (Reflection Only)", variable=self.measurement_type_var, value="brdf").pack(pady=10)
+        ttk.Radiobutton(root, text="BTDF (Transmission Only)", variable=self.measurement_type_var, value="btdf").pack(pady=10)
+        ttk.Radiobutton(root, text="Both BRDF & BTDF", variable=self.measurement_type_var, value="both").pack(pady=10)
         
         ttk.Button(root, text="Next", command=self.next_window).pack(pady=20)
     

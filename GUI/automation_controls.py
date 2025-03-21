@@ -48,7 +48,7 @@ class AutomationControlsWindow:
             return
         
         print(f"Exposure time: ", exposure)
-        self.picam2 = camera.initialize_camera(exposure)
+        self.picam2 = camera.initialize_camera(exposure) ##--- UPDATE: automatic exposure
 
         if self.picam2:
             self.start_button.config(state=tk.NORMAL)
@@ -77,7 +77,7 @@ class AutomationControlsWindow:
             self.parameters["angle_detector_azimuthal"],
             self.parameters["angle_detector_radial"]
         )
-        
+
         self.status_label.config(text=f"Status: {self.measurement_type.upper()} Dataset Ready", foreground="green")
         self.start_button.config(state=tk.NORMAL)
         self.stop_button.config(state=tk.DISABLED)

@@ -1,7 +1,7 @@
 from picamera2 import Picamera2
 import time
 
-def initialize_camera(exposure):
+def initialize_camera():
   """Initialize and configure Picamera2 for RAW10 capture."""
   try:
     picam2 = Picamera2()
@@ -9,14 +9,14 @@ def initialize_camera(exposure):
     picam2.configure(config)
         
     picam2.set_controls({
-      "ExposureTime": exposure,  
+      "ExposureTime": 5000,  
       "AnalogueGain": 1.0,
       "AeEnable": False,
       "AwbEnable": False,
     }) 
 
     picam2.start()
-    time.sleep(1)  # Allow camera to stabilize
+    time.sleep(2)  # Allow camera to stabilize
 
     print("Camera initialized and ready.")
     return picam2  # Return the camera instance

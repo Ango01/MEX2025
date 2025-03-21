@@ -8,54 +8,57 @@ class MeasurementParametersWindow:
         self.root.title("Measurement Parameters")
         self.root.geometry("500x450")
         self.measurement_type = measurement_type
-        
+
         ttk.Label(root, text="Enter Measurement Parameters", font=("Arial", 14, "bold")).pack(pady=20)
-        
+
         self.material_var = tk.StringVar()
         ttk.Label(root, text="Sample Material:").pack()
         self.material_entry = ttk.Entry(root, textvariable=self.material_var)
         self.material_entry.pack()
-        
+
+        # Dropdown options
+        angle_options = [1.0, 2.5, 5.0, 10.0, 15.0, 30.0]
+        step_options = [1, 3, 5, 10, 15, 20]
+
+        # Light Source Azimuthal Increment
         self.angle_light_azimuthal_var = tk.DoubleVar()
         ttk.Label(root, text="Light Source Azimuthal Increment (°):").pack()
-        self.angle_light_azimuthal_entry = ttk.Entry(root, textvariable=self.angle_light_azimuthal_var)
+        self.angle_light_azimuthal_entry = ttk.Combobox(root, textvariable=self.angle_light_azimuthal_var, values=angle_options, state="readonly")
         self.angle_light_azimuthal_entry.pack()
 
+        # Light Source Radial Increment
         self.angle_light_radial_var = tk.DoubleVar()
         ttk.Label(root, text="Light Source Radial Increment (°):").pack()
-        self.angle_light_radial_entry = ttk.Entry(root, textvariable=self.angle_light_radial_var)
+        self.angle_light_radial_entry = ttk.Combobox(root, textvariable=self.angle_light_radial_var, values=angle_options, state="readonly")
         self.angle_light_radial_entry.pack()
 
+        # Detector Azimuthal Increment
         self.angle_detector_azimuthal_var = tk.DoubleVar()
         ttk.Label(root, text="Detector Azimuthal Increment (°):").pack()
-        self.angle_detector_azimuthal_entry = ttk.Entry(root, textvariable=self.angle_detector_azimuthal_var)
+        self.angle_detector_azimuthal_entry = ttk.Combobox(root, textvariable=self.angle_detector_azimuthal_var, values=angle_options, state="readonly")
         self.angle_detector_azimuthal_entry.pack()
 
+        # Detector Radial Increment
         self.angle_detector_radial_var = tk.DoubleVar()
         ttk.Label(root, text="Detector Radial Increment (°):").pack()
-        self.angle_detector_radial_entry = ttk.Entry(root, textvariable=self.angle_detector_radial_var)
+        self.angle_detector_radial_entry = ttk.Combobox(root, textvariable=self.angle_detector_radial_var, values=angle_options, state="readonly")
         self.angle_detector_radial_entry.pack()
-        
+
+        # Number of Steps
         self.num_steps_var = tk.IntVar()
         ttk.Label(root, text="Number of Steps:").pack()
-        self.num_steps_entry = ttk.Entry(root, textvariable=self.num_steps_var)
+        self.num_steps_entry = ttk.Combobox(root, textvariable=self.num_steps_var, values=step_options, state="readonly")
         self.num_steps_entry.pack()
 
-        self.exposure_var = tk.IntVar()
-        ttk.Label(root, text="Exposure Time (μs):").pack()
-        self.exposure_entry = ttk.Entry(root, textvariable=self.exposure_var)
-        self.exposure_entry.pack()
-        
         ttk.Button(root, text="Next", command=self.next_window).pack(pady=20)
-        
-        # Back button to return to measurement type selection
+
+        # Back button
         self.back_button = ttk.Button(root, text="Back", command=self.go_back)
         self.back_button.pack(pady=5)
-        
-        # Disable unnecessary fields based on measurement type
+
         self.update_angle_inputs()
     
-    def update_angle_inputs(self):
+    def update_angle_inputs(self): ###--- UPDATE: range for BRDF/BTDF
         """Enable or disable angle fields based on measurement type selection."""
         if self.measurement_type == "brdf":
             self.angle_detector_radial_entry.config(state=tk.DISABLED)
@@ -90,5 +93,4 @@ class MeasurementParametersWindow:
             "angle_detector_azimuthal": self.angle_detector_azimuthal_var.get(),
             "angle_detector_radial": self.angle_detector_radial_var.get(),
             "num_steps": self.num_steps_var.get(),
-            "exposure": self.exposure_var.get(),
         }
