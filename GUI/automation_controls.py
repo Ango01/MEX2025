@@ -57,9 +57,10 @@ class AutomationControlsWindow:
         capture_image.capture_measurement(
             self.picam2,
             self.measurement_type,
-            self.parameters["num_steps"],
+            self.parameters["num_steps_light"],
             self.parameters["angle_light_azimuthal"],
             self.parameters["angle_light_radial"],
+            self.parameters["num_steps_detector"],
             self.parameters["angle_detector_azimuthal"],
             self.parameters["angle_detector_radial"]
         )

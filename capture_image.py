@@ -1,42 +1,50 @@
 import os
 import process_image
 
-def capture_measurement(picam2, measurement_type, num_steps, angle_light_azimuthal, angle_light_radial, angle_detector_azimuthal, angle_detector_radial):
-  """Capture BRDF, BTDF, or both based on user selection."""
-  if picam2 is None:
-    raise ValueError("Camera is not initialized. Call initialize_camera() first.")
+def capture_measurement(picam2, measurement_type,
+                        light_num_steps, light_azimuthal_inc, light_radial_inc,
+                        detector_num_steps, detector_azimuthal_inc, detector_radial_inc):
+    """Capture BRDF, BTDF, or both using nested loop logic for light and detector."""
+    if picam2 is None:
+        raise ValueError("Camera is not initialized. Call initialize_camera() first.")
 
-  captured_images = []
+    captured_images = []
 
-  for i in range(num_steps):
-    # Compute angles for this step
-    current_angle_light_azimuthal = i * angle_light_azimuthal
-    current_angle_light_radial = i * angle_light_radial
-    current_angle_detector_azimuthal = i * angle_detector_azimuthal
-    current_angle_detector_radial = i * angle_detector_radial
+    for i in range(light_num_steps):
+        current_light_azimuthal = i * light_azimuthal_inc
+        current_light_radial = i * light_radial_inc
 
-    # Measure BRDF (Reflection)
-    if measurement_type in ["brdf", "both"]:
-      print(f"Capturing BRDF at {current_angle_light_azimuthal}°, {current_angle_light_radial}°")
-      image_file = capture_image(picam2)
-      if image_file:
-        captured_images.append((image_file, "brdf", current_angle_light_azimuthal))
+        # In real setup, move light source motors here
+        print(f"[Light] Position {i+1}/{light_num_steps} at Azimuthal {current_light_azimuthal}°, Radial {current_light_radial}°")
 
-    # Measure BTDF (Transmission)
-    if measurement_type in ["btdf", "both"]:
-      print(f"Capturing BTDF at {current_angle_detector_azimuthal}°, {current_angle_detector_radial}°")
-      image_file = capture_image(picam2)
-      if image_file:
-        captured_images.append((image_file, "btdf", current_angle_detector_azimuthal))
+        for j in range(detector_num_steps):
+            current_detector_azimuthal = j * detector_azimuthal_inc
+            current_detector_radial = j * detector_radial_inc
 
-    print(f"Completed step {i+1}/{num_steps}")
+            # In real setup, move detector motors here
+            print(f"[Detector] Position {j+1}/{detector_num_steps} at Azimuthal {current_detector_azimuthal}°, Radial {current_detector_radial}°")
 
-  # Process each image after capture
-  for image_file, meas_type, angle in captured_images:
-    raw_image = process_image.process_raw_image(image_file)
-    R, G, B = process_image.extract_color_channels(raw_image)
-    # Call user-defined scattering calculations here
-    #process_image.calculate_scattering(R, G, B, meas_type, angle)
+            # Capture based on measurement type
+            if measurement_type in ["brdf", "both"]:
+                print("Capturing BRDF image...")
+                image_file = capture_image(picam2)
+                if image_file:
+                    captured_images.append((image_file, "brdf", current_light_azimuthal, current_detector_azimuthal))
+
+            if measurement_type in ["btdf", "both"]:
+                print("Capturing BTDF image...")
+                image_file = capture_image(picam2)
+                if image_file:
+                    captured_images.append((image_file, "btdf", current_light_azimuthal, current_detector_azimuthal))
+
+    print(f"Completed full scan with {light_num_steps} light positions and {detector_num_steps} detector positions each.")
+
+    # Process each image after capture
+    for image_file, meas_type, light_angle, detector_angle in captured_images:
+        raw_image = process_image.process_raw_image(image_file)
+        R, G, B = process_image.extract_color_channels(raw_image)
+        # Optional: Call user-defined scattering calculations here
+        # process_image.calculate_scattering(R, G, B, meas_type, light_angle, detector_angle)
 
 def capture_image(picam2):
     """Capture a RAW10 image using an initialized Picamera2 instance."""

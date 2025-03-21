@@ -40,11 +40,16 @@ class MeasurementParametersWindow:
         ttk.Label(root, text="Detector Radial Increment (°):").pack(pady=10)
         self.angle_detector_radial_entry = ttk.Combobox(root, textvariable=self.angle_detector_radial_var, values=angle_options, state="readonly").pack()
 
-        # Number of Steps
-        self.num_steps_var = tk.IntVar()
-        ttk.Label(root, text="Number of Steps:").pack(pady=10)
-        self.num_steps_entry = ttk.Combobox(root, textvariable=self.num_steps_var, values=step_options, state="readonly").pack()
+        # Number of Steps for light source
+        self.light_num_steps_var = tk.IntVar()
+        ttk.Label(root, text="Number of Steps (light source):").pack(pady=10)
+        self.num_steps_entry = ttk.Combobox(root, textvariable=self.light_num_steps, values=step_options, state="readonly").pack()
 
+        # Number of Steps for detector
+        self.detector_num_steps_var = tk.IntVar()
+        ttk.Label(root, text="Number of Steps (detector):").pack(pady=10)
+        self.num_steps_entry = ttk.Combobox(root, textvariable=self.detetcor_num_steps_var, values=step_options, state="readonly").pack()
+        
         ttk.Button(root, text="Next", command=self.next_window).pack(pady=20)
 
         # Back button
@@ -71,7 +76,8 @@ class MeasurementParametersWindow:
             self.angle_detector_radial_var.get() == 0.0 or
             self.angle_detector_azimuthal_var.get() == 0.0 or
             self.angle_detector_radial_var.get() == 0.0 or
-            self.num_steps_var.get() == 0
+            self.light_num_steps.get() == 0 or
+            self.detector_num_steps.get()  == 0
         ):
             messagebox.showwarning("Missing Input", "Please fill in all measurement parameters before continuing.")
             return
@@ -98,5 +104,6 @@ class MeasurementParametersWindow:
             "angle_light_radial": self.angle_light_radial_var.get(),
             "angle_detector_azimuthal": self.angle_detector_azimuthal_var.get(),
             "angle_detector_radial": self.angle_detector_radial_var.get(),
-            "num_steps": self.num_steps_var.get(),
+            "num_steps_light": self.light_num_steps.get(),
+            "num_steps_detector": self.detector_num_steps.get()
         }
