@@ -1,20 +1,20 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 class MeasurementParametersWindow:
     """Class to create a window for entering measurement parameters."""
     def __init__(self, root, measurement_type):
         self.root = root
         self.root.title("Measurement Parameters")
-        self.root.geometry("500x450")
+        self.root.geometry("500x550")
         self.measurement_type = measurement_type
 
         ttk.Label(root, text="Enter Measurement Parameters", font=("Arial", 14, "bold")).pack(pady=20)
 
+        # Sample Material
         self.material_var = tk.StringVar()
-        ttk.Label(root, text="Sample Material:").pack()
-        self.material_entry = ttk.Entry(root, textvariable=self.material_var)
-        self.material_entry.pack()
+        ttk.Label(root, text="Sample Material:").pack(pady=10)
+        self.material_entry = ttk.Entry(root, textvariable=self.material_var).pack()
 
         # Dropdown options
         angle_options = [1.0, 2.5, 5.0, 10.0, 15.0, 30.0]
@@ -22,33 +22,28 @@ class MeasurementParametersWindow:
 
         # Light Source Azimuthal Increment
         self.angle_light_azimuthal_var = tk.DoubleVar()
-        ttk.Label(root, text="Light Source Azimuthal Increment (°):").pack()
-        self.angle_light_azimuthal_entry = ttk.Combobox(root, textvariable=self.angle_light_azimuthal_var, values=angle_options, state="readonly")
-        self.angle_light_azimuthal_entry.pack()
+        ttk.Label(root, text="Light Source Azimuthal Increment (°):").pack(pady=10)
+        self.angle_light_azimuthal_entry = ttk.Combobox(root, textvariable=self.angle_light_azimuthal_var, values=angle_options, state="readonly").pack()
 
         # Light Source Radial Increment
         self.angle_light_radial_var = tk.DoubleVar()
-        ttk.Label(root, text="Light Source Radial Increment (°):").pack()
-        self.angle_light_radial_entry = ttk.Combobox(root, textvariable=self.angle_light_radial_var, values=angle_options, state="readonly")
-        self.angle_light_radial_entry.pack()
+        ttk.Label(root, text="Light Source Radial Increment (°):").pack(pady=10)
+        self.angle_light_radial_entry = ttk.Combobox(root, textvariable=self.angle_light_radial_var, values=angle_options, state="readonly").pack()
 
         # Detector Azimuthal Increment
         self.angle_detector_azimuthal_var = tk.DoubleVar()
-        ttk.Label(root, text="Detector Azimuthal Increment (°):").pack()
-        self.angle_detector_azimuthal_entry = ttk.Combobox(root, textvariable=self.angle_detector_azimuthal_var, values=angle_options, state="readonly")
-        self.angle_detector_azimuthal_entry.pack()
+        ttk.Label(root, text="Detector Azimuthal Increment (°):").pack(pady=10)
+        self.angle_detector_azimuthal_entry = ttk.Combobox(root, textvariable=self.angle_detector_azimuthal_var, values=angle_options, state="readonly").pack()
 
         # Detector Radial Increment
         self.angle_detector_radial_var = tk.DoubleVar()
-        ttk.Label(root, text="Detector Radial Increment (°):").pack()
-        self.angle_detector_radial_entry = ttk.Combobox(root, textvariable=self.angle_detector_radial_var, values=angle_options, state="readonly")
-        self.angle_detector_radial_entry.pack()
+        ttk.Label(root, text="Detector Radial Increment (°):").pack(pady=10)
+        self.angle_detector_radial_entry = ttk.Combobox(root, textvariable=self.angle_detector_radial_var, values=angle_options, state="readonly").pack()
 
         # Number of Steps
         self.num_steps_var = tk.IntVar()
-        ttk.Label(root, text="Number of Steps:").pack()
-        self.num_steps_entry = ttk.Combobox(root, textvariable=self.num_steps_var, values=step_options, state="readonly")
-        self.num_steps_entry.pack()
+        ttk.Label(root, text="Number of Steps:").pack(pady=10)
+        self.num_steps_entry = ttk.Combobox(root, textvariable=self.num_steps_var, values=step_options, state="readonly").pack()
 
         ttk.Button(root, text="Next", command=self.next_window).pack(pady=20)
 
@@ -70,6 +65,17 @@ class MeasurementParametersWindow:
     
     def next_window(self):
         """Close the current window and open the Automation Controls window."""
+        if (
+            self.material_var.get().strip() == "" or
+            self.angle_light_azimuthal_var.get() == 0.0 or
+            self.angle_detector_radial_var.get() == 0.0 or
+            self.angle_detector_azimuthal_var.get() == 0.0 or
+            self.angle_detector_radial_var.get() == 0.0 or
+            self.num_steps_var.get() == 0
+        ):
+            messagebox.showwarning("Missing Input", "Please fill in all measurement parameters before continuing.")
+            return
+        
         from GUI.automation_controls import AutomationControlsWindow  # Delayed import
         self.root.destroy()
         new_root = tk.Tk()
@@ -77,7 +83,7 @@ class MeasurementParametersWindow:
         new_root.mainloop()
     
     def go_back(self):
-        """Go back to the measurement type selection window."""
+        """Go back to the Measurement Type window."""
         from GUI.measurement_type import MeasurementTypeWindow  # Delayed import
         self.root.destroy()
         new_root = tk.Tk()

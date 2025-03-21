@@ -3,23 +3,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def save_intensity_data(image_path, angle, measurement_type):
-    """Save 2D Red, Green, and Blue intensity data into a CSV file."""
-    image = process_raw_image(image_path)
-    R, G, B = extract_color_channels(image)
-    avg_R = np.mean(R)
-    avg_G = np.mean(G)
-    avg_B = np.mean(B)
-
-    output_csv = "scattering_data.csv"
-    file_exists = os.path.isfile(output_csv)
-    with open(output_csv, "a", newline="") as f:
-        writer = csv.writer(f)
-        if not file_exists:
-            writer.writerow(["Measurement Type", "Angle", "Avg R Intensity", "Avg G Intensity", "Avg B Intensity"])
-        writer.writerow([measurement_type, angle, avg_R, avg_G, avg_B])
-    print(f"Data saved for {measurement_type} at {angle}°")
-
 def process_raw_image(image_path):
     """Load a RAW image, convert it to a 16-bit grayscale NumPy array."""
     with rawpy.imread(image_path) as raw:
