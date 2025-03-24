@@ -86,7 +86,10 @@ for angle in angles:
         plt.ylabel("Y Pixels")
         plt.show()
     
-    for channel_name, channel_data in zip(["Red", "Green", "Blue"], [R, G, B]):
+    for channel_name, channel_data in zip(
+        ["Red", "Green1", "Green2", "Blue"],
+        [R, G1, G2, B]
+    ):
         # Create X, Y meshgrid
         y_indices, x_indices = np.indices(channel_data.shape)
 
