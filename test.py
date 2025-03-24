@@ -6,13 +6,12 @@ import matplotlib.pyplot as plt
 import os
 from scipy.optimize import curve_fit
 
-# 2D Gaussian function
-def twoD_Gaussian(coords, amplitude, xo, yo, sigma_x, sigma_y, offset):
+def two_d_gaussian(coords, amplitude, xo, yo, sigma_x, sigma_y, offset):
     x, y = coords
     xo = float(xo)
     yo = float(yo)
     g = offset + amplitude * np.exp(
-        -(((x - xo)**2)/(2*sigma_x**2) + ((y - yo)**2)/(2*sigma_y**2))
+        -(((x - xo) ** 2) / (2 * sigma_x ** 2) + ((y - yo) ** 2) / (2 * sigma_y ** 2))
     )
     return g.ravel()
 
@@ -54,6 +53,7 @@ for angle in angles:
     G1 = raw_image[0::2, 1::2]    # Green 1
     G2 = raw_image[1::2, 0::2]    # Green 2
     R = raw_image[1::2, 1::2]     # Red
+
     G = np.concatenate((G1.flatten(), G2.flatten()))
 
     # Compute integrated intensities
@@ -85,51 +85,50 @@ for angle in angles:
         plt.xlabel("X Pixels")
         plt.ylabel("Y Pixels")
         plt.show()
+    
+    for channel_name, channel_data in zip(["Red", "Green", "Blue"], [R, G, B]):
+        # Create X, Y meshgrid
+        y_indices, x_indices = np.indices(channel_data.shape)
 
-    # Optional: radial profile (center to edge)
-    # center_y, center_x = raw_image.shape[0]//2, raw_image.shape[1]//2
-    # y, x = np.indices(R.shape)
-    # r = np.sqrt((x - center_x//2)**2 + (y - center_y//2)**2)
-    # r = r.astype(np.int32)
-    # radial_mean = np.bincount(r.ravel(), R.ravel()) / np.maximum(1, np.bincount(r.ravel()))
-    # plt.plot(radial_mean)
-    # plt.title(f"Radial Intensity Profile (Red) at {angle}°")
-    # plt.xlabel("Radius (pixels)")
-    # plt.ylabel("Mean Intensity")
-    # plt.grid(True)
-    # plt.show()
+        # Initial guess for the parameters
+        initial_guess = (
+            np.max(channel_data),               # amplitude
+            channel_data.shape[1] / 2,          # xo
+            channel_data.shape[0] / 2,          # yo
+            channel_data.shape[1] / 4,          # sigma_x
+            channel_data.shape[0] / 4,          # sigma_y
+            np.min(channel_data)                # offset
+        )
 
-    # Example using green channel (G1)
-    data = G1.astype(float)
-    x = np.arange(data.shape[1])
-    y = np.arange(data.shape[0])
-    x, y = np.meshgrid(x, y)
+        try:
+            popt, _ = curve_fit(
+                two_d_gaussian,
+                (x_indices, y_indices),
+                channel_data.ravel(),
+                p0=initial_guess,
+                maxfev=5000
+            )
 
-    # Initial guess for parameters: amp, x0, y0, sigma_x, sigma_y, offset
-    initial_guess = (np.max(data), data.shape[1]//2, data.shape[0]//2, 30, 30, np.min(data))
+            data_fitted = two_d_gaussian((x_indices, y_indices), *popt).reshape(channel_data.shape)
 
-    # Fit
-    popt, _ = curve_fit(twoD_Gaussian, (x, y), data.ravel(), p0=initial_guess)
+            # Plot original + fitted surface
+            plt.figure(figsize=(12, 5))
 
-    # Extract parameters
-    amplitude, x0, y0, sigma_x, sigma_y, offset = popt
-    print(f"2D Gaussian Fit: Center=({x0:.1f}, {y0:.1f}), σ_x={sigma_x:.2f}, σ_y={sigma_y:.2f}")
+            plt.subplot(1, 2, 1)
+            plt.imshow(channel_data, cmap='viridis', aspect='auto')
+            plt.title(f"{channel_name} Channel - Raw Data at {angle}°")
+            plt.colorbar()
 
-    # Plot fitted vs. original
-    fitted_data = twoD_Gaussian((x, y), *popt).reshape(data.shape)
+            plt.subplot(1, 2, 2)
+            plt.imshow(data_fitted, cmap='viridis', aspect='auto')
+            plt.title(f"{channel_name} Channel - 2D Gaussian Fit at {angle}°")
+            plt.colorbar()
 
-plt.figure(figsize=(10, 4))
-plt.subplot(1, 2, 1)
-plt.imshow(data, cmap='Greens')
-plt.title("Original Green Channel")
-plt.colorbar()
+            plt.tight_layout()
+            plt.show()
 
-plt.subplot(1, 2, 2)
-plt.imshow(fitted_data, cmap='Greens')
-plt.title("2D Gaussian Fit")
-plt.colorbar()
-plt.show()
-
+        except RuntimeError:
+            print(f"Could not fit 2D Gaussian to {channel_name} channel at {angle}°")
 
 picam2.stop()
 
