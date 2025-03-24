@@ -43,12 +43,12 @@ class MeasurementParametersWindow:
         # Number of Steps for light source
         self.light_num_steps_var = tk.IntVar()
         ttk.Label(root, text="Number of Steps (light source):").pack(pady=10)
-        self.num_steps_entry = ttk.Combobox(root, textvariable=self.light_num_steps_var, values=step_options, state="readonly").pack()
+        self.light_num_steps_entry = ttk.Combobox(root, textvariable=self.light_num_steps_var, values=step_options, state="readonly").pack()
 
         # Number of Steps for detector
         self.detector_num_steps_var = tk.IntVar()
         ttk.Label(root, text="Number of Steps (detector):").pack(pady=10)
-        self.num_steps_entry = ttk.Combobox(root, textvariable=self.detector_num_steps_var, values=step_options, state="readonly").pack()
+        self.detector_num_steps_entry = ttk.Combobox(root, textvariable=self.detector_num_steps_var, values=step_options, state="readonly").pack()
         
         ttk.Button(root, text="Next", command=self.next_window).pack(pady=20)
 
@@ -104,6 +104,6 @@ class MeasurementParametersWindow:
             "angle_light_radial": self.angle_light_radial_var.get(),
             "angle_detector_azimuthal": self.angle_detector_azimuthal_var.get(),
             "angle_detector_radial": self.angle_detector_radial_var.get(),
-            "num_steps_light": self.light_num_steps_var.get(),
-            "num_steps_detector": self.detector_num_steps_var.get()
+            "light_num_steps": self.light_num_steps_var.get(),
+            "detector_num_steps": self.detector_num_steps_var.get()
         }

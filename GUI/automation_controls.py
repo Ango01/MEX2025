@@ -19,9 +19,12 @@ class AutomationControlsWindow:
         self.status_label = ttk.Label(root, text="Status: Idle", foreground="blue")
         self.status_label.pack(pady=5)
         
-        self.prepare_button = ttk.Button(root, text="Prepare Camera", command=self.prepare_camera).pack(pady=10)
+        self.prepare_button = ttk.Button(root, text="Prepare Camera", command=self.prepare_camera)
+        self.prepare_button.pack(pady=10)
+
         self.start_button = ttk.Button(root, text="Start Measurement", command=self.start_measurement, state=tk.DISABLED)
         self.start_button.pack(pady=10)
+
         self.stop_button = ttk.Button(root, text="Stop Measurement", command=self.stop_measurement, state=tk.DISABLED)
         self.stop_button.pack(pady=10)
         
@@ -50,6 +53,7 @@ class AutomationControlsWindow:
     def start_measurement(self):
         """Perform the measurement process and capture scattering data in a separate thread."""
         self.status_label.config(text="Status: Running...", foreground="blue")
+        self.prepare_button.config(state=tk.DISABLED)
         self.start_button.config(state=tk.DISABLED)
         self.stop_button.config(state=tk.NORMAL)  
 
@@ -62,10 +66,10 @@ class AutomationControlsWindow:
         capture_image.capture_measurement(
             self.picam2,
             self.measurement_type,
-            self.parameters["num_steps_light"],
+            self.parameters["light_num_steps"],
             self.parameters["angle_light_azimuthal"],
             self.parameters["angle_light_radial"],
-            self.parameters["num_steps_detector"],
+            self.parameters["detector_num_steps"],
             self.parameters["angle_detector_azimuthal"],
             self.parameters["angle_detector_radial"]
         )
@@ -82,7 +86,9 @@ class AutomationControlsWindow:
         """Stop the measurement process."""
         camera.stop_camera(self.picam2)
         self.status_label.config(text="Status: Stopped", foreground="red")
-    
+
+        self.prepare_button.config(state=tk.NORMAL)
+        
     def export_dataset(self):
         """Export the captured measurement dataset as a CSV file."""
         dataset_file = f"scattering_data_{self.measurement_type}.csv"
