@@ -4,6 +4,12 @@ import numpy as np
 import rawpy
 import matplotlib.pyplot as plt
 import os
+from scipy.optimize import curve_fit
+
+# 2D Gaussian model
+def gaussian_2d(xy, amp, x0, y0, sigma_x, sigma_y, offset):
+    x, y = xy
+    return (amp * np.exp(-(((x - x0) ** 2) / (2 * sigma_x ** 2) + ((y - y0) ** 2) / (2 * sigma_y ** 2))) + offset).ravel()
 
 # Initialize camera
 picam2 = Picamera2()
@@ -88,6 +94,31 @@ for angle in angles:
     # plt.grid(True)
     # plt.show()
 
+    # Choose the channel to analyze (e.g., G1 or R)
+    Z = G1.astype(np.float64)
+    x = np.arange(Z.shape[1])
+    y = np.arange(Z.shape[0])
+    x, y = np.meshgrid(x, y)
+
+    # Initial guess: amplitude, x0, y0, sigma_x, sigma_y, offset
+    initial_guess = (np.max(Z), Z.shape[1] // 2, Z.shape[0] // 2, 20, 20, np.min(Z))
+
+    # Fit
+    params, _ = curve_fit(gaussian_2d, (x, y), Z.ravel(), p0=initial_guess)
+    amp, x0, y0, sigma_x, sigma_y, offset = params
+
+    print("2D Gaussian Fit (Green Channel):\\nCenter = ({x0:.2f}, {y0:.2f}), Sigma_x = {sigma_x:.2f}, Sigma_y = {sigma_y:.2f}, Amplitude = {amp:.2f}")
+
+    # Visualize fit
+    fit_data = gaussian_2d((x, y), *params).reshape(Z.shape)
+
+    plt.figure(figsize=(8,6))
+    plt.imshow(Z, cmap='Greens', alpha=0.6, label='Original')
+    plt.contour(fit_data, colors='k', linewidths=1)
+    plt.title("2D Gaussian Fit - Green Channel")
+    plt.colorbar(label="Pixel Intensity")
+    plt.show()
+
 picam2.stop()
 
 # ---- Plot intensity vs. angle ----
@@ -106,5 +137,3 @@ plt.title("Scattering Intensity vs. Angle")
 plt.legend()
 plt.grid(True)
 plt.show()
-
-print("Scattering analysis completed.")
