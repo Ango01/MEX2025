@@ -6,10 +6,15 @@ import matplotlib.pyplot as plt
 import os
 from scipy.optimize import curve_fit
 
-# 2D Gaussian model
-def gaussian_2d(xy, amp, x0, y0, sigma_x, sigma_y, offset):
-    x, y = xy
-    return (amp * np.exp(-(((x - x0) ** 2) / (2 * sigma_x ** 2) + ((y - y0) ** 2) / (2 * sigma_y ** 2))) + offset).ravel()
+# 2D Gaussian function
+def twoD_Gaussian(coords, amplitude, xo, yo, sigma_x, sigma_y, offset):
+    x, y = coords
+    xo = float(xo)
+    yo = float(yo)
+    g = offset + amplitude * np.exp(
+        -(((x - xo)**2)/(2*sigma_x**2) + ((y - yo)**2)/(2*sigma_y**2))
+    )
+    return g.ravel()
 
 # Initialize camera
 picam2 = Picamera2()
@@ -24,7 +29,7 @@ picam2.set_controls({
     "AwbEnable": False,
 })
 
-angles = range(0, 91, 10)  # Capture images every 10 degrees
+angles = range(0, 10, 10)  # Capture images every 10 degrees
 output_folder = "Captured_Images"
 os.makedirs(output_folder, exist_ok=True)
 
@@ -94,30 +99,37 @@ for angle in angles:
     # plt.grid(True)
     # plt.show()
 
-    # Choose the channel to analyze (e.g., G1 or R)
-    Z = G1.astype(np.float64)
-    x = np.arange(Z.shape[1])
-    y = np.arange(Z.shape[0])
+    # Example using green channel (G1)
+    data = G1.astype(float)
+    x = np.arange(data.shape[1])
+    y = np.arange(data.shape[0])
     x, y = np.meshgrid(x, y)
 
-    # Initial guess: amplitude, x0, y0, sigma_x, sigma_y, offset
-    initial_guess = (np.max(Z), Z.shape[1] // 2, Z.shape[0] // 2, 20, 20, np.min(Z))
+    # Initial guess for parameters: amp, x0, y0, sigma_x, sigma_y, offset
+    initial_guess = (np.max(data), data.shape[1]//2, data.shape[0]//2, 30, 30, np.min(data))
 
     # Fit
-    params, _ = curve_fit(gaussian_2d, (x, y), Z.ravel(), p0=initial_guess)
-    amp, x0, y0, sigma_x, sigma_y, offset = params
+    popt, _ = curve_fit(twoD_Gaussian, (x, y), data.ravel(), p0=initial_guess)
 
-    print("2D Gaussian Fit (Green Channel):\\nCenter = ({x0:.2f}, {y0:.2f}), Sigma_x = {sigma_x:.2f}, Sigma_y = {sigma_y:.2f}, Amplitude = {amp:.2f}")
+    # Extract parameters
+    amplitude, x0, y0, sigma_x, sigma_y, offset = popt
+    print(f"2D Gaussian Fit: Center=({x0:.1f}, {y0:.1f}), σ_x={sigma_x:.2f}, σ_y={sigma_y:.2f}")
 
-    # Visualize fit
-    fit_data = gaussian_2d((x, y), *params).reshape(Z.shape)
+    # Plot fitted vs. original
+    fitted_data = twoD_Gaussian((x, y), *popt).reshape(data.shape)
 
-    plt.figure(figsize=(8,6))
-    plt.imshow(Z, cmap='Greens', alpha=0.6, label='Original')
-    plt.contour(fit_data, colors='k', linewidths=1)
-    plt.title("2D Gaussian Fit - Green Channel")
-    plt.colorbar(label="Pixel Intensity")
-    plt.show()
+plt.figure(figsize=(10, 4))
+plt.subplot(1, 2, 1)
+plt.imshow(data, cmap='Greens')
+plt.title("Original Green Channel")
+plt.colorbar()
+
+plt.subplot(1, 2, 2)
+plt.imshow(fitted_data, cmap='Greens')
+plt.title("2D Gaussian Fit")
+plt.colorbar()
+plt.show()
+
 
 picam2.stop()
 
