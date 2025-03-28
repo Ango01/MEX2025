@@ -61,6 +61,47 @@ for angle in angles:
   plt.ylabel("Y Pixels")
   plt.show()
 
+  # Image shape
+  h, w = raw_image.shape
+  center_x, center_y = w // 2, h // 2
+
+  # Define circular ROI radius in pixels (adjust to match beam diameter)
+  radius = 50  # for example, 50 pixels
+
+  # Create a circular mask
+  Y, X = np.ogrid[:h, :w]
+  dist_from_center = np.sqrt((X - center_x)**2 + (Y - center_y)**2)
+  mask = dist_from_center <= radius
+
+  # Apply the mask
+  roi = raw_image[mask]
+
+  plt.figure(figsize=(8, 6))
+  plt.hist(roi, bins=50, color='purple', alpha=0.7, edgecolor='black')
+  plt.title(f"Pixel Intensity Histogram in Circular ROI at {angle} Degrees")
+  plt.xlabel("Pixel Intensity (0-1023)")
+  plt.ylabel("Frequency")
+  plt.grid(True)
+  plt.show()
+
+  print(f"ROI Mean Intensity: {np.mean(roi):.2f}")
+  print(f"ROI Max Intensity: {np.max(roi)}")
+  print(f"ROI Std Dev: {np.std(roi):.2f}")
+
+  plt.figure(figsize=(8, 6))
+  plt.imshow(raw_image, cmap='inferno')
+  plt.title(f"Heatmap with Circular ROI Overlay at {angle} Degrees")
+  plt.colorbar(label="Pixel Intensity")
+
+  # Show circular ROI as a contour
+  mask_outline = np.ma.masked_where(~mask, mask)
+  plt.contour(mask_outline, colors='cyan', linewidths=1)
+
+  plt.xlabel("X Pixels")
+  plt.ylabel("Y Pixels")
+  plt.show()
+
+
   ## ---- Extract Color Channels from SBGGR10 Bayer Pattern ---- ##
   # Bayer pattern: SBGGR (Blue in top-left)
   B = raw_image[0::2, 0::2]     # Blue pixels (every 2nd row, every 2nd column)
