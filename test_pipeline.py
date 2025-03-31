@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 from scipy.ndimage import center_of_mass
 import subprocess
 import rawpy
@@ -83,31 +84,39 @@ def plot_radial_profile(profile):
     plt.tight_layout()
     plt.show()
 
-def show_image_with_markers(image, center=None):
+def show_image(image, center=None, max_radius=200, step=25):
     """
     Displays the image with optional markers:
     - Red 'x' at the brightest pixel
-    - Green '+' at the computed center (if provided)
+    - Green '+' at the estimated center
+    - Concentric red cicrles centered at the scattering center
     """
-    plt.figure(figsize=(8, 6))
-    plt.imshow(image, cmap='gray', origin='upper')
-    plt.colorbar(label='Intensity')
+    fig, ax = plt.subplots(figsize=(8,6))
+    ax.imshow(image, cmap='gray', origin='upper')
+    ax.set_title("Scattered Light Image with Markers and Circles")
+    ax.set_xlabel("X (pixels)")
+    ax.set_ylabel("Y (pixels)")
 
-    # Mark brightest pixel (in red)
+    # Add colorbar
+    cbar = plt.colorbar(ax.imshow(image, cmap='gray'), ax=ax)
+    cbar.set_label("Intensity")
+
+    # Brightest pixel
     max_pos = np.unravel_index(np.argmax(image), image.shape)
-    plt.plot(max_pos[1], max_pos[0], 'rx', markersize=12, label='Brightest pixel')
+    ax.plot(max_pos[1], max_pos[0], 'rx', markersize=10, label='Brightest pixel')
 
-    # Mark computed center (in green), if given
+    # Estimated center
     if center is not None:
-        plt.plot(center[1], center[0], 'g+', markersize=12, label='Estimated center')
+        ax.plot(center[1], center[0], 'g+', markersize=10, label='Estimated center')
 
-    plt.title("Scattered Light Image with Markers")
-    plt.xlabel("X (pixels)")
-    plt.ylabel("Y (pixels)")
-    plt.legend()
+        # Draw concentric circles
+        for r in range(step, max_radius + step, step):
+            circle = patches.Circle((center[1], center[0]), r, edgecolor='red', facecolor='none', linestyle='--', linewidth=0.7)
+            ax.add_patch(circle)
+
+    ax.legend()
     plt.tight_layout()
     plt.show()
-
 
 # -----------------------------------------------------------
 # STEP 6: Main Pipeline
@@ -131,7 +140,7 @@ def main():
 
     print("Plotting...")
     plot_radial_profile(profile)
-    show_image_with_markers(raw_img, center=center)
+    show_image(raw_img, center=center)
 
 if __name__ == "__main__":
     main()
