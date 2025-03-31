@@ -66,7 +66,9 @@ for angle in angles:
   center_x, center_y = w // 2, h // 2
 
   # Define circular ROI radius in pixels (adjust to match beam diameter)
-  radius = 50  # for example, 50 pixels
+  #radius = 50  # for example, 50 pixels
+  beam_diameter_pixels = 1 / 0.00345
+  radius = int(round(beam_diameter_pixels / 2))
 
   # Create a circular mask
   Y, X = np.ogrid[:h, :w]
