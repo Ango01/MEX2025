@@ -17,8 +17,8 @@ def extract_color_channels(image):
     G2 = image[1::2, 0::2]    # Green pixels (row 2, col 1)
     R = image[1::2, 1::2]     # Red pixels (every 2nd row, every 2nd column)
 
-    # Combine both Green channels into a single 2D array
-    G = np.concatenate((G1, G2), axis=0) 
+    # Combine both Green channels
+    G = G1 + G2 / 2
 
     return R, G, B
 

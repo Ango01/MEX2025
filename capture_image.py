@@ -14,7 +14,6 @@ def capture_image(picam2, meas_type, light_angle, detector_angle, output_folder)
 
     picam2.capture_file(image_file, name="raw")
     print(f"Captured image: {image_file}")
-    save_metadata(image_file, meas_type, light_angle, detector_angle)
 
     return image_file
 
@@ -82,18 +81,8 @@ def capture_measurement(picam2, measurement_type, fixed_range,
 
     print(f"Completed full scan with {light_steps} light positions and {detector_steps} detector positions.")
 
-def process_single_image(image_file, meas_type, light_angle, detector_angle):
+def process_single_image(image_file):
     raw_image = process_image.process_raw_image(image_file)
     R, G, B = process_image.extract_color_channels(raw_image)
-    process_image.calculate_scattering(R, G, B, meas_type, light_angle, detector_angle)
-
-def save_metadata(image_file, meas_type, light_angle, detector_angle):
-    metadata_file = image_file.replace(".dng", ".json")
-    metadata = {
-        "measurement_type": meas_type,
-        "light_azimuthal": light_angle,
-        "detector_azimuthal": detector_angle
-    }
-    
-    with open(metadata_file, "w") as f:
-        json.dump(metadata, f, indent=4)
+    # ROI
+    # Mean Intensity
