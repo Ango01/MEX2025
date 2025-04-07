@@ -1,5 +1,7 @@
 import os
 import json
+import time
+import motors  # Arduino motor control functions
 import process_image
 
 def capture_image(picam2, meas_type, light_angle, detector_angle, output_folder):
@@ -16,46 +18,69 @@ def capture_image(picam2, meas_type, light_angle, detector_angle, output_folder)
 
     return image_file
 
-def capture_measurement(picam2, measurement_type,
-                        light_num_steps, light_azimuthal_inc, light_radial_inc,
-                        detector_num_steps, detector_azimuthal_inc, detector_radial_inc):
-    """Capture BRDF, BTDF, or both with metadata and processing."""
+def capture_measurement(picam2, measurement_type, fixed_range,
+                        light_azimuthal_inc, light_radial_inc,
+                        detector_azimuthal_inc, detector_radial_inc):
+    """Capture BRDF, BTDF, or both with metadata and motor control."""
+
     if picam2 is None:
         raise ValueError("Camera is not initialized. Call initialize_camera() first.")
 
     output_folder = "Captured_Images"
     os.makedirs(output_folder, exist_ok=True)
 
-    total_steps = light_num_steps * detector_num_steps
+    # Calculate steps from increments
+    light_steps = int(fixed_range / max(light_azimuthal_inc, 1))
+    detector_steps = int(fixed_range / max(detector_azimuthal_inc, 1))
+    total_steps = light_steps * detector_steps
     current_step = 1
 
-    for i in range(light_num_steps):
-        current_light_azimuthal = i * light_azimuthal_inc
-        current_light_radial = i * light_radial_inc
+    # Set angular offset depending on measurement type
+    if measurement_type == "brdf":
+        light_base = detector_base = 0
+    elif measurement_type == "btdf":
+        light_base = detector_base = 180
+    else:  # "both"
+        light_base = detector_base = 0
 
-        print(f"[Light] Position {i+1}/{light_num_steps} at Azimuthal {current_light_azimuthal}°, Radial {current_light_radial}°")
+    for i in range(light_steps):
+        light_azimuthal = light_base + i * light_azimuthal_inc
+        light_radial = i * light_radial_inc
 
-        for j in range(detector_num_steps):
-            current_detector_azimuthal = j * detector_azimuthal_inc
-            current_detector_radial = j * detector_radial_inc
+        print(f"[Light] Position {i+1}/{light_steps} at Azimuthal {light_azimuthal}°, Radial {light_radial}°")
 
-            print(f"[Detector] Position {j+1}/{detector_num_steps} at Azimuthal {current_detector_azimuthal}°, Radial {current_detector_radial}°")
+        # Move light source
+       # motors.move_light_azimuthal(light_azimuthal)
+        #motors.move_light_radial(light_radial)
+        #time.sleep(0.5)
 
+        for j in range(detector_steps):
+            detector_azimuthal = detector_base + j * detector_azimuthal_inc
+            detector_radial = j * detector_radial_inc
+
+            print(f"[Detector] Position {j+1}/{detector_steps} at Azimuthal {detector_azimuthal}°, Radial {detector_radial}°")
+
+            # Move detector
+            motors.move_detector_azimuthal(detector_azimuthal)
+            motors.move_detector_radial(detector_radial)
+            time.sleep(0.5)
+
+            # Capture image depending on measurement type
             if measurement_type in ["brdf", "both"]:
                 print(f"[{current_step}/{total_steps}] Capturing BRDF...")
-                image_file = capture_image(picam2, "brdf", current_light_azimuthal, current_detector_azimuthal, output_folder)
+                image_file = capture_image(picam2, "brdf", light_azimuthal, detector_azimuthal, output_folder)
                 if image_file:
-                    process_single_image(image_file, "brdf", current_light_azimuthal, current_detector_azimuthal)
+                    process_single_image(image_file, "brdf", light_azimuthal, detector_azimuthal)
 
             if measurement_type in ["btdf", "both"]:
                 print(f"[{current_step}/{total_steps}] Capturing BTDF...")
-                image_file = capture_image(picam2, "btdf", current_light_azimuthal, current_detector_azimuthal, output_folder)
+                image_file = capture_image(picam2, "btdf", light_azimuthal, detector_azimuthal, output_folder)
                 if image_file:
-                    process_single_image(image_file, "btdf", current_light_azimuthal, current_detector_azimuthal)
+                    process_single_image(image_file, "btdf", light_azimuthal, detector_azimuthal)
 
             current_step += 1
 
-    print(f"Completed full scan with {light_num_steps} light positions and {detector_num_steps} detector positions each.")
+    print(f"Completed full scan with {light_steps} light positions and {detector_steps} detector positions.")
 
 def process_single_image(image_file, meas_type, light_angle, detector_angle):
     raw_image = process_image.process_raw_image(image_file)
