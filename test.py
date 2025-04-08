@@ -14,7 +14,7 @@ config = picam2.create_still_configuration(raw={"format": "SRGGB10", "size": (14
 picam2.configure(config)
 
 picam2.set_controls({
-  "ExposureTime": 5000,  # Set exposure time (in microseconds)
+  "ExposureTime": 600,  # Set exposure time (in microseconds)
   "AnalogueGain": 1.0,    # Set gain to 1.0 (no artificial brightness boost)
   "AeEnable": False,      # Disable auto-exposure
   "AwbEnable": False,     # Disable auto white balance
@@ -88,7 +88,7 @@ for angle in angles:
 
   # Grayscale image
   im = axs[0].imshow(raw_image, cmap='gray', aspect='auto')
-  axs[0].set_title(f"Grayscale View at {angle}°")
+  axs[0].set_title(f"Grayscale View")
   axs[0].set_xlabel("X Pixels")
   axs[0].set_ylabel("Y Pixels")
   fig.colorbar(im, ax=axs[0], fraction=0.046, pad=0.04, label="Pixel Intensity")
