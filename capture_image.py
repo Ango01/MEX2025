@@ -49,7 +49,7 @@ def capture_measurement(picam2, measurement_type, fixed_range,
         print(f"[Light] Position {i+1}/{light_steps} at Azimuthal {light_azimuthal}°, Radial {light_radial}°")
 
         # Move light source
-       # motors.move_light_azimuthal(light_azimuthal)
+        # motors.move_light_azimuthal(light_azimuthal)
         #motors.move_light_radial(light_radial)
         #time.sleep(0.5)
 
@@ -69,13 +69,13 @@ def capture_measurement(picam2, measurement_type, fixed_range,
                 print(f"[{current_step}/{total_steps}] Capturing BRDF...")
                 image_file = capture_image(picam2, "brdf", light_azimuthal, detector_azimuthal, output_folder)
                 if image_file:
-                    process_single_image(image_file, "brdf", light_azimuthal, detector_azimuthal)
+                    process_single_image(image_file)
 
             if measurement_type in ["btdf", "both"]:
                 print(f"[{current_step}/{total_steps}] Capturing BTDF...")
                 image_file = capture_image(picam2, "btdf", light_azimuthal, detector_azimuthal, output_folder)
                 if image_file:
-                    process_single_image(image_file, "btdf", light_azimuthal, detector_azimuthal)
+                    process_single_image(image_file)
 
             current_step += 1
 
