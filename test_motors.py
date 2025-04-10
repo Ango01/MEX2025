@@ -1,43 +1,60 @@
 import serial
 import time
 
-# Connect to Arduino (change port if needed)
-arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=1)
-time.sleep(2)  # Wait for Arduino to initialize
+# === Settings ===
+SERIAL_PORT = '/dev/ttyACM0'   # Change this to match your Arduino port
+BAUDRATE = 9600
+STEP_DELAY = 0.5  # seconds between movements
 
-def move_motor(command, degrees):
-    message = f"{command}:{degrees}\n"
-    arduino.write(message.encode())
-    print(f"Sent: {message.strip()}")
-    time.sleep(0.5)
+# === Initialize Serial ===
+arduino = serial.Serial(SERIAL_PORT, BAUDRATE, timeout=1)
+time.sleep(2)  # Give Arduino time to reset
 
-def test_motor_steps(start, stop, step, command):
-    print(f"\nTesting motor: {command}")
-    degrees = start
-    while degrees <= stop:
-        move_motor(command, degrees)
-        degrees += step
-        time.sleep(1)
+def send_motor_command(axis, steps):
+    """
+    Send a motor command to the Arduino.
+    axis: 'AZ' or 'RAD'
+    steps: positive (forward) or negative (backward) integer
+    """
+    command = f"DET:{axis}:{steps}\n"
+    arduino.write(command.encode())
+    print(f"Sent: {command.strip()}")
 
-    print(f"Reversing...")
-    degrees = stop
-    while degrees >= start:
-        move_motor(command, degrees)
-        degrees -= step
-        time.sleep(1)
+    # Wait for Arduino response
+    while True:
+        response = arduino.readline().decode().strip()
+        if response:
+            print(f"Arduino: {response}")
+            break
+
+def test_motor(axis, max_steps, step_size):
+    """
+    Move motor forward and backward to test precision.
+    """
+    print(f"\nTesting DETECTOR {axis} motor...")
+
+    # Forward movement
+    for steps in range(step_size, max_steps + 1, step_size):
+        send_motor_command(axis, steps)
+        time.sleep(STEP_DELAY)
+
+    # Backward movement
+    for steps in range(max_steps, 0, -step_size):
+        send_motor_command(axis, -steps)
+        time.sleep(STEP_DELAY)
+
+    print(f"{axis} test complete.\n")
 
 if __name__ == "__main__":
-    # Set the test parameters here
-    start_angle = 0
-    stop_angle = 5
-    test_step = 0.1  # Try 0.1°, 0.5°, 1°, etc.
+    try:
+        # Test azimuthal motor
+        test_motor(axis="AZ", max_steps=300, step_size=100)
 
-    # Test detector azimuthal and radial
-    test_motor_steps(start_angle, stop_angle, test_step, "DET_AZ")
-    test_motor_steps(start_angle, stop_angle, test_step, "DET_RAD")
+        # Test radial motor
+        test_motor(axis="RAD", max_steps=200, step_size=50)
 
-    # Uncomment to test light motors if implemented
-    # test_motor_steps(start_angle, stop_angle, test_step, "LIGHT_AZ")
-    # test_motor_steps(start_angle, stop_angle, test_step, "LIGHT_RAD")
-
-    print("Motor testing complete.")
+    except KeyboardInterrupt:
+        print("Test interrupted.")
+    finally:
+        arduino.close()
+        print("Serial connection closed.")
