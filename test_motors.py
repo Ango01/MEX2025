@@ -1,60 +1,60 @@
 import serial
 import time
 
-# === Settings ===
-SERIAL_PORT = '/dev/ttyACM0'   # Change this to match your Arduino port
+# === Configuration ===
+SERIAL_PORT = '/dev/ttyACM0'   # Adjust to your port
 BAUDRATE = 9600
-STEP_DELAY = 0.5  # seconds between movements
+STEPS_PER_DEGREE = 10.0        # Must match value in Arduino
+STEP_DELAY = 0.5               # Time between moves (seconds)
 
-# === Initialize Serial ===
+# === Connect to Arduino ===
 arduino = serial.Serial(SERIAL_PORT, BAUDRATE, timeout=1)
-time.sleep(2)  # Give Arduino time to reset
+time.sleep(2)  # Allow Arduino to reset
 
 def send_motor_command(axis, steps):
-    """
-    Send a motor command to the Arduino.
-    axis: 'AZ' or 'RAD'
-    steps: positive (forward) or negative (backward) integer
-    """
+    """Send command like DET:AZ:20 or DET:RAD:-15"""
     command = f"DET:{axis}:{steps}\n"
     arduino.write(command.encode())
     print(f"Sent: {command.strip()}")
 
-    # Wait for Arduino response
+    # Optional: read Arduino response
     while True:
         response = arduino.readline().decode().strip()
         if response:
             print(f"Arduino: {response}")
             break
 
-def test_motor(axis, max_steps, step_size):
-    """
-    Move motor forward and backward to test precision.
-    """
-    print(f"\nTesting DETECTOR {axis} motor...")
+def move_detector_by_angle(az_angle, rad_angle):
+    """Convert angles to steps and send commands to Arduino"""
+    az_steps = round(az_angle * STEPS_PER_DEGREE)
+    rad_steps = round(rad_angle * STEPS_PER_DEGREE)
 
-    # Forward movement
-    for steps in range(step_size, max_steps + 1, step_size):
-        send_motor_command(axis, steps)
-        time.sleep(STEP_DELAY)
+    print(f"\nMoving AZ by {az_angle}° → {az_steps} steps")
+    send_motor_command("AZ", az_steps)
+    time.sleep(STEP_DELAY)
 
-    # Backward movement
-    for steps in range(max_steps, 0, -step_size):
-        send_motor_command(axis, -steps)
-        time.sleep(STEP_DELAY)
+    print(f"Moving RAD by {rad_angle}° → {rad_steps} steps")
+    send_motor_command("RAD", rad_steps)
+    time.sleep(STEP_DELAY)
 
-    print(f"{axis} test complete.\n")
+def run_angle_test():
+    """Try different angle increments for both motors"""
+    test_angles_az = [0.5, 1.0, -1.5, 2.0]     # Customize your test set
+    test_angles_rad = [0.3, -0.6, 1.2, -2.0]   # Customize your test set
+
+    print("Starting angle test...")
+
+    for az_angle, rad_angle in zip(test_angles_az, test_angles_rad):
+        move_detector_by_angle(az_angle, rad_angle)
+
+    print("\nTest complete.")
 
 if __name__ == "__main__":
     try:
-        # Test azimuthal motor
-        test_motor(axis="AZ", max_steps=300, step_size=100)
-
-        # Test radial motor
-        test_motor(axis="RAD", max_steps=200, step_size=50)
-
+        run_angle_test()
     except KeyboardInterrupt:
-        print("Test interrupted.")
+        print("Interrupted.")
     finally:
         arduino.close()
         print("Serial connection closed.")
+
