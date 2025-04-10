@@ -2,10 +2,10 @@ import serial
 import time
 
 # === Configuration ===
-SERIAL_PORT = '/dev/ttyACM0'   # Adjust to your port
-BAUDRATE = 9600
-STEPS_PER_DEGREE = 10.0        # Must match value in Arduino
-STEP_DELAY = 0.5               # Time between moves (seconds)
+SERIAL_PORT = '/dev/ttyACM0'   # Port where Arduino is connected
+BAUDRATE = 9600                # Spped at which data is transmitted over serial connection
+STEPS_PER_DEGREE = 10.0        # (motor_steps_per_rev * microstepping * gear_ratio) / 360 = 200 * 16 * gear_ratio) / 360
+STEP_DELAY = 5                 # Time between moves (seconds)
 
 # === Connect to Arduino ===
 arduino = serial.Serial(SERIAL_PORT, BAUDRATE, timeout=1)
@@ -17,7 +17,7 @@ def send_motor_command(axis, steps):
     arduino.write(command.encode())
     print(f"Sent: {command.strip()}")
 
-    # Optional: read Arduino response
+    # Read and print Arduino response
     while True:
         response = arduino.readline().decode().strip()
         if response:
@@ -39,8 +39,8 @@ def move_detector_by_angle(az_angle, rad_angle):
 
 def run_angle_test():
     """Try different angle increments for both motors"""
-    test_angles_az = [0.5, 1.0, -1.5, 2.0]     # Customize your test set
-    test_angles_rad = [0.3, -0.6, 1.2, -2.0]   # Customize your test set
+    test_angles_az = [0.5, 1.0, -1.5, 2.0]    
+    test_angles_rad = [0.3, -0.6, 1.2, -2.0]   
 
     print("Starting angle test...")
 
