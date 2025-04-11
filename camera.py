@@ -16,7 +16,7 @@ def initialize_camera():
     }) 
 
     picam2.start()
-    time.sleep(2)  # Allow camera to stabilize
+    time.sleep(2)  # Allow camera to stabilize (should be removed and substituted with a thread that listens to camera commands)
 
     print("Camera initialized and ready.")
     return picam2  # Return the camera instance

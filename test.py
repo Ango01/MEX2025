@@ -14,11 +14,12 @@ config = picam2.create_still_configuration(raw={"format": "SRGGB10", "size": (14
 picam2.configure(config)
 
 picam2.set_controls({
-  "ExposureTime": 600,  # Set exposure time (in microseconds)
+  "ExposureTime": 1000,  # Set exposure time (in microseconds)
   "AnalogueGain": 1.0,    # Set gain to 1.0 (no artificial brightness boost)
   "AeEnable": False,      # Disable auto-exposure
   "AwbEnable": False,     # Disable auto white balance
 })
+
 
 angles = range(0, 10, 10)  # Capture images at every 10 degrees
 
@@ -33,6 +34,7 @@ for angle in angles:
   input(f"Press Enter to capture image at {angle} degrees...")
 
   image_file = os.path.join(output_folder, f"image_{angle}.dng")
+  picam2.set_controls({"ExposureTime" : 10})
   picam2.capture_file(image_file, name="raw")
   print(f"Captured image at {angle} degrees")
 
