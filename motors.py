@@ -43,13 +43,14 @@ class Motors:
     def move_detector_azimuthal(self, angle):
         steps = int(angle * self.DETECTOR_AZ_STEPS_PER_DEG)
         print(f"Rotating detector azimuthal to {angle}° -> {steps} steps")
-        command = f"DET_AZ:{steps}\n"
+        command = f"DET:AZ:{steps}\n"
         self.arduino.write(command.encode())
         time.sleep(0.1)
 
     def move_detector_radial(self, angle):
         steps = int(angle * self.DETECTOR_RAD_STEPS_PER_DEG)
         print(f"Rotating detector radial to {angle}° -> {steps} steps")
-        command = f"DET_RAD:{steps}\n"
+        command = f"DET:RAD:{steps}\n"
         self.arduino.write(command.encode())
         time.sleep(0.1)
+
