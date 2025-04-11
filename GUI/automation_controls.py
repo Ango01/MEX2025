@@ -30,11 +30,6 @@ class AutomationControlsWindow:
         
         self.export_button = ttk.Button(root, text="Export Dataset", command=self.export_dataset, state=tk.DISABLED)
         self.export_button.pack(pady=20)
-       
-        # If user selects "both", provide BSDF calculation option
-        if self.measurement_type == "both":
-            self.bsdf_button = ttk.Button(root, text="Get BSDF Dataset", command=self.compute_bsdf, state=tk.DISABLED)
-            self.bsdf_button.pack(pady=10)
 
         # Back button
         self.back_button = ttk.Button(root, text="Back", command=self.go_back)
@@ -98,11 +93,6 @@ class AutomationControlsWindow:
             df = pd.read_csv(dataset_file)
             df.to_csv(file_path, index=False)
             messagebox.showinfo("Export", f"{self.measurement_type.upper()} Dataset exported successfully!")
-    
-    def compute_bsdf(self):
-        """Compute the BSDF dataset by combining BRDF and BTDF data."""
-        process_image.compute_bsdf("scattering_data_brdf.csv", "scattering_data_btdf.csv", "scattering_data_bsdf.csv")
-        messagebox.showinfo("BSDF Computation", "BSDF dataset has been generated successfully!")
     
     def go_back(self):
         """Go back to the Measurement Parameters window."""

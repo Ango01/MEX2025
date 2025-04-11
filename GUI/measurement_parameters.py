@@ -17,7 +17,7 @@ class MeasurementParametersWindow:
         self.material_entry = ttk.Entry(root, textvariable=self.material_var)
         self.material_entry.pack()
 
-        # Define fixed range depending on measurement type
+        # Define fixed range depending on measurement type (detector from 8 to 90/170? and light source from 20)
         if self.measurement_type == "brdf":
             self.fixed_range = 180
             self.range_label_text = "Fixed Range: 0° to 180°"
