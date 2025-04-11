@@ -31,26 +31,26 @@ class Motors:
         print(f"Rotating light azimuthal to {angle}° -> {steps} steps")
         command = f"LIGHT_AZ:{steps}\n"
         self.arduino.write(command.encode())
-        time.sleep(0.1)
+        time.sleep(5)
 
     def move_light_radial(self, angle):
         steps = int(angle * self.LIGHT_RAD_STEPS_PER_DEG)
         print(f"Rotating light radial to {angle}° -> {steps} steps")
         command = f"LIGHT_RAD:{steps}\n"
         self.arduino.write(command.encode())
-        time.sleep(0.1)
+        time.sleep(5)
 
     def move_detector_azimuthal(self, angle):
         steps = int(angle * self.DETECTOR_AZ_STEPS_PER_DEG)
         print(f"Rotating detector azimuthal to {angle}° -> {steps} steps")
         command = f"DET:AZ:{steps}\n"
         self.arduino.write(command.encode())
-        time.sleep(0.1)
+        time.sleep(5)
 
     def move_detector_radial(self, angle):
         steps = int(angle * self.DETECTOR_RAD_STEPS_PER_DEG)
         print(f"Rotating detector radial to {angle}° -> {steps} steps")
         command = f"DET:RAD:{steps}\n"
         self.arduino.write(command.encode())
-        time.sleep(0.1)
+        time.sleep(5)
 
