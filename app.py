@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from Steps import step1_camera, step2_dark_frame, step3_measurement_type, step4_angle_steps
+from Steps import step1_camera, step2_dark_frame, step3_measurement_type, step4_angle_steps, step5_start_measurement
 
 class ScatteringApp(tk.Tk):
     def __init__(self):
@@ -71,5 +71,6 @@ class ScatteringApp(tk.Tk):
             step1_camera.create,
             step2_dark_frame.create,
             step3_measurement_type.create,
-            step4_angle_steps.create
+            step4_angle_steps.create,
+            step5_start_measurement.create
         ]
