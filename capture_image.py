@@ -6,10 +6,8 @@ from motors import Motors
 import process_image
 import numpy as np
 
-import numpy as np
-
 def capture_raw_image(picam2):
-    """Capture a raw Bayer image and save it as a 2D NumPy array using capture_array("raw")."""
+    """Capture a raw Bayer image and save it as a 2D array."""
     try:
         # Capture the raw Bayer array and view it as 16-bit values
         raw_array = picam2.capture_array("raw").view(np.uint16)

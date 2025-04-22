@@ -39,7 +39,7 @@ def capture_dark_frame(app):
             print(f"Min/Max: {dark_frame.min()} / {dark_frame.max()}")
             print(f"Mean intensity (dark_value): {app.dark_value:.2f}")
 
-            app.set_status("Dark frame captured", "success")
+            app.set_status(f"Dark frame captured - Mean value: {app.dark_value:.2f}", "success")
             app.next_step()
         else:
             app.set_status("Failed to capture dark frame", "error")
@@ -52,8 +52,7 @@ def set_nominal_dark_value(app, entry):
         app.dark_frame = None  # No actual frame, just a value
         app.dark_value = value
 
-        print(f"Nominal dark value set: {app.dark_value}")
-        app.set_status("Nominal dark value set", "info")
+        app.set_status(f"Nominal dark value set: {app.dark_value:.2f}", "success")
         app.next_step()
 
     except ValueError:
