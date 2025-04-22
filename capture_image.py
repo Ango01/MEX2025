@@ -53,11 +53,11 @@ def run_full_measurement(app, fixed_range=20, image_count=10, save_dir="Captured
 
     os.makedirs(save_dir, exist_ok=True)
 
-    # Get angle steps from app
-    ls_az_step = float(app.angle_inputs["ls_az"].get())
-    ls_rad_step = float(app.angle_inputs["ls_rad"].get())
-    det_az_step = float(app.angle_inputs["det_az"].get())
-    det_rad_step = float(app.angle_inputs["det_rad"].get())
+    ls_az_step = app.ls_az_step
+    ls_rad_step = app.ls_rad_step
+    det_az_step = app.det_az_step
+    det_rad_step = app.det_rad_step
+
 
     light_az_steps = int(fixed_range / max(ls_az_step, 1))
     light_rad_steps = int(fixed_range / max(ls_rad_step, 1))
