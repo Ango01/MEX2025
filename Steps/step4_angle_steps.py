@@ -31,6 +31,6 @@ def create(app, container):
     ttk.Button(
         frame,
         text="Next",
-        command=lambda: app.set_status("Measurement setup complete!", "success")
+        command=lambda: [app.set_status("Measurement setup complete!", "success"), app.next_step()]
     ).pack(pady=10)
 
