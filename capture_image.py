@@ -8,26 +8,12 @@ import numpy as np
 
 import numpy as np
 
-def capture_raw_image(picam2, filename="raw_frame.npy", shape=(1088, 1456)):
-    """
-    Capture a raw Bayer image and save it as a 2D NumPy array using capture_array("raw").
-
-    Args:
-        picam2: Initialized and started Picamera2 instance.
-        filename: Output .npy filename.
-        shape: (height, width) of the expected image.
-
-    Returns:
-        The saved filename, or None if it fails.
-    """
+def capture_raw_image(picam2):
+    """Capture a raw Bayer image and save it as a 2D NumPy array using capture_array("raw")."""
     try:
         # Capture the raw Bayer array and view it as 16-bit values
         raw_array = picam2.capture_array("raw").view(np.uint16)
-
-        # Save as .npy
-        np.save(filename, raw_array)
-        print(f"Raw image saved as 2D NumPy array: {filename}")
-        return filename
+        return raw_array
 
     except Exception as e:
         print(f"Failed to capture RAW image: {e}")

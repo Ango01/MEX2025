@@ -24,20 +24,20 @@ def create(app, container):
 
 def capture_dark_frame(app):
     if hasattr(app, "camera") and app.camera:
-        filename = "dark_frame.npy"
-        filepath = capture_raw_image(app.camera, filename=filename)
+        dark_frame = capture_raw_image(app.camera)
 
-        if filepath:
-            # Optional: load the dark frame for in-memory use
-            app.dark_frame = np.load(filepath)
+        if dark_frame is not None:
+            app.dark_frame = dark_frame
+            app.dark_value = dark_frame.mean()
 
-            print(f"Shape: {app.dark_frame.shape}")
-            print(f"Dtype: {app.dark_frame.dtype}")
-            print(f"Size (pixels): {app.dark_frame.size}")
-            print(f"Memory usage: {app.dark_frame.nbytes} bytes")
-            print(f"Min/Max: {app.dark_frame.min()} / {app.dark_frame.max()}")
+            print(f"Shape: {dark_frame.shape}")
+            print(f"Dtype: {dark_frame.dtype}")
+            print(f"Size (pixels): {dark_frame.size}")
+            print(f"Memory usage: {dark_frame.nbytes} bytes")
+            print(f"Min/Max: {dark_frame.min()} / {dark_frame.max()}")
+            print(f"Mean intensity (dark_value): {app.dark_value:.2f}")
 
-            app.set_status(f"Dark frame saved: {filepath}", "success")
+            app.set_status("Dark frame captured and analyzed", "success")
             app.next_step()
         else:
             app.set_status("Failed to capture dark frame", "error")
