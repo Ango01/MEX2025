@@ -27,10 +27,27 @@ def create(app, container):
         combobox.grid(row=i, column=1, padx=5, pady=2)
 
         app.angle_inputs[key] = combobox
+    
+    # Extract and store the values from comboboxes BEFORE destroying them
+    app.ls_az_step = float(app.angle_inputs["ls_az"].get())
+    app.ls_rad_step = float(app.angle_inputs["ls_rad"].get())
+    app.det_az_step = float(app.angle_inputs["det_az"].get())
+    app.det_rad_step = float(app.angle_inputs["det_rad"].get())
 
     ttk.Button(
         frame,
         text="Next",
-        command=lambda: [app.set_status("Measurement setup complete!", "success"), app.next_step()]
+        command=lambda: save_and_continue(app)
     ).pack(pady=10)
+
+def save_and_continue(app):
+    try:
+        app.ls_az_step = float(app.angle_inputs["ls_az"].get())
+        app.ls_rad_step = float(app.angle_inputs["ls_rad"].get())
+        app.det_az_step = float(app.angle_inputs["det_az"].get())
+        app.det_rad_step = float(app.angle_inputs["det_rad"].get())
+        app.set_status("Measurement setup complete!", "success")
+        app.next_step()
+    except Exception as e:
+        app.set_status(f"Invalid input: {e}", "error")
 

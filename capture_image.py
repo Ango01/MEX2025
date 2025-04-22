@@ -58,7 +58,6 @@ def run_full_measurement(app, fixed_range=20, image_count=10, save_dir="Captured
     det_az_step = app.det_az_step
     det_rad_step = app.det_rad_step
 
-
     light_az_steps = int(fixed_range / max(ls_az_step, 1))
     light_rad_steps = int(fixed_range / max(ls_rad_step, 1))
     det_az_steps = int(fixed_range / max(det_az_step, 1))
