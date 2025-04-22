@@ -22,6 +22,9 @@ class AutomationControlsWindow:
         self.prepare_button = ttk.Button(root, text="Prepare Camera", command=self.prepare_camera)
         self.prepare_button.pack(pady=10)
 
+        self.dark_frame_button = ttk.Button(root, text="Capture Dark Frame", command=self.capture_dark_frame, state=tk.DISABLED)
+        self.dark_frame_button.pack(pady=10)
+
         self.start_button = ttk.Button(root, text="Start Measurement", command=self.start_measurement, state=tk.DISABLED)
         self.start_button.pack(pady=10)
 
@@ -40,11 +43,20 @@ class AutomationControlsWindow:
         self.picam2 = camera.initialize_camera() ##--- UPDATE: automatic exposure
 
         if self.picam2:
-            self.start_button.config(state=tk.NORMAL)
+            self.dark_frame_button.config(state=tk.NORMAL)
             self.status_label.config(text="Status: Camera Ready", foreground="green")
         else:
             messagebox.showerror("Error", "Camera initialization failed. Please check your setup.")
     
+    def capture_dark_frame(self):
+        """Capture a dark frame image using the existing capture_image module."""
+        try:
+            capture_image.capture_image(self.picam2)
+            messagebox.showinfo("Dark Frame", "Dark frame captured successfully.")
+            self.status_label.config(text="Status: Dark Frame Captured", foreground="purple")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to capture dark frame:\n{e}")
+        
     def start_measurement(self):
         """Perform the measurement process and capture scattering data in a separate thread."""
         self.status_label.config(text="Status: Running...", foreground="blue")

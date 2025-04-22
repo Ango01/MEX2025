@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+from GUI.automation_controls import AutomationControlsWindow
+from GUI.measurement_type import MeasurementTypeWindow
 
 class MeasurementParametersWindow:
     """Class to create a window for entering measurement parameters."""
@@ -113,7 +115,6 @@ class MeasurementParametersWindow:
             messagebox.showwarning("Missing Input", "Please fill in all measurement parameters before continuing.")
             return
         
-        from GUI.automation_controls import AutomationControlsWindow  # Delayed import
         self.root.destroy()
         new_root = tk.Tk()
         AutomationControlsWindow(new_root, self.measurement_type, self.get_parameters())
@@ -121,7 +122,6 @@ class MeasurementParametersWindow:
 
     def go_back(self):
         """Go back to the Measurement Type window."""
-        from GUI.measurement_type import MeasurementTypeWindow  # Delayed import
         self.root.destroy()
         new_root = tk.Tk()
         MeasurementTypeWindow(new_root)
