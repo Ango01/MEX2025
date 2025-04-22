@@ -17,6 +17,49 @@ def capture_raw_image(picam2):
         print(f"Failed to capture RAW image: {e}")
         return None
 
+def check_and_adjust_exposure(picam2, image,
+                               target_mean=1000, tolerance=100,
+                               exposure_step=1000):
+    """
+    Check exposure based on a single image and adjust if needed.
+
+    Args:
+        picam2: Initialized Picamera2 instance
+        image: Raw 2D NumPy image from the sensor
+        dark_value: Mean intensity of dark frame
+        target_mean: Target mean intensity after dark subtraction
+        tolerance: Acceptable ± range
+        exposure_step: Amount to change exposure by if needed (µs)
+
+    Returns:
+        True if exposure is acceptable, False otherwise
+    """
+    if image is None or picam2 is None:
+        print("Invalid input to exposure check.")
+        return False
+
+    mean_val = image.mean()
+
+    print(f"Mean: {mean_val:.2f}")
+
+    # Check if within acceptable range
+    if target_mean - tolerance <= mean_val <= target_mean + tolerance:
+        print("Exposure is acceptable.")
+        return True
+
+    # Adjust exposure time
+    current_exp = picam2.capture_metadata().get("ExposureTime", 5000)
+    if mean_val < target_mean:
+        new_exp = current_exp + exposure_step
+    else:
+        new_exp = max(current_exp - exposure_step, 100)
+
+    print(f"Adjusting exposure: {current_exp} → {new_exp}")
+    picam2.set_controls({"ExposureTime": int(new_exp)})
+    time.sleep(0.5)  # let camera apply new exposure
+
+    return False
+
 def capture_measurement(picam2, measurement_type, fixed_range,
                         light_azimuthal_inc, light_radial_inc,
                         detector_azimuthal_inc, detector_radial_inc,
