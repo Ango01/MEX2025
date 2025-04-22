@@ -30,11 +30,10 @@ def start_measurement(app):
     app.set_status("Tuning exposure...", "info")
     picam2 = app.camera
     MAX_ATTEMPTS = 10
-    SHAPE = (1088, 1456)
 
     # Step 1: Exposure tuning loop
     for attempt in range(MAX_ATTEMPTS):
-        test_image = capture_raw_image(picam2, shape=SHAPE)
+        test_image = capture_raw_image(picam2)
         if test_image is None:
             app.set_status("Failed to capture test image.", "error")
             return
@@ -50,7 +49,7 @@ def start_measurement(app):
     images_with_exposure = []
 
     for i in range(10):
-        image = capture_raw_image(picam2, shape=SHAPE)
+        image = capture_raw_image(picam2)
         if image is not None:
             metadata = picam2.capture_metadata()
             exposure_time = metadata.get("ExposureTime", None)
