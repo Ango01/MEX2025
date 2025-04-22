@@ -1,9 +1,6 @@
 import os
-import json
 import time
-from datetime import datetime
 from motors import Motors  
-import process_image
 import numpy as np
 
 def capture_raw_image(picam2):
@@ -17,23 +14,8 @@ def capture_raw_image(picam2):
         print(f"Failed to capture RAW image: {e}")
         return None
 
-def check_and_adjust_exposure(picam2, image,
-                               target_mean=1000, tolerance=100,
-                               exposure_step=1000):
-    """
-    Check exposure based on a single image and adjust if needed.
-
-    Args:
-        picam2: Initialized Picamera2 instance
-        image: Raw 2D NumPy image from the sensor
-        dark_value: Mean intensity of dark frame
-        target_mean: Target mean intensity after dark subtraction
-        tolerance: Acceptable ± range
-        exposure_step: Amount to change exposure by if needed (µs)
-
-    Returns:
-        True if exposure is acceptable, False otherwise
-    """
+def check_and_adjust_exposure(picam2, image, target_mean=1000, tolerance=100, exposure_step=1000):
+    """Check exposure based on a single image and adjust if needed."""
     if image is None or picam2 is None:
         print("Invalid input to exposure check.")
         return False
@@ -48,7 +30,8 @@ def check_and_adjust_exposure(picam2, image,
         return True
 
     # Adjust exposure time
-    current_exp = picam2.capture_metadata().get("ExposureTime", 5000)
+    metadata = picam2.capture_metadata()
+    current_exp = metadata.get("ExposureTime")
     if mean_val < target_mean:
         new_exp = current_exp + exposure_step
     else:
@@ -56,90 +39,89 @@ def check_and_adjust_exposure(picam2, image,
 
     print(f"Adjusting exposure: {current_exp} → {new_exp}")
     picam2.set_controls({"ExposureTime": int(new_exp)})
-    time.sleep(0.5)  # let camera apply new exposure
+    time.sleep(1)  # let camera apply new exposure
 
     return False
 
-def capture_measurement(picam2, measurement_type, fixed_range,
-                        light_azimuthal_inc, light_radial_inc,
-                        detector_azimuthal_inc, detector_radial_inc,
-                        output_folder="Captured_Images"):
-    """
-    Capture BRDF, BTDF, or both with raw images and motor control.
+def run_full_measurement(app, fixed_range=20, image_count=10, save_dir="Captured_Data"):
+    picam2 = app.camera
+    dark_value = app.dark_value
 
-    Args:
-        picam2: initialized camera object.
-        measurement_type: "brdf", "btdf", or "both".
-        fixed_range: range in degrees.
-        *_inc: angle increments in degrees.
-    """
+    if picam2 is None or dark_value is None:
+        app.set_status("Camera or dark value not set.", "error")
+        return
+
+    os.makedirs(save_dir, exist_ok=True)
+
+    # Get angle steps from app
+    ls_az_step = float(app.angle_inputs["ls_az"].get())
+    ls_rad_step = float(app.angle_inputs["ls_rad"].get())
+    det_az_step = float(app.angle_inputs["det_az"].get())
+    det_rad_step = float(app.angle_inputs["det_rad"].get())
+
+    light_az_steps = int(fixed_range / max(ls_az_step, 1))
+    light_rad_steps = int(fixed_range / max(ls_rad_step, 1))
+    det_az_steps = int(fixed_range / max(det_az_step, 1))
+    det_rad_steps = int(fixed_range / max(det_rad_step, 1))
+
     motors = Motors()
-    
-    if picam2 is None:
-        raise ValueError("Camera is not initialized.")
-
-    os.makedirs(output_folder, exist_ok=True)
-
-    # Step counts
-    light_az_steps = int(fixed_range / max(light_azimuthal_inc, 1))
-    light_rad_steps = int(fixed_range / max(light_radial_inc, 1))
-    det_az_steps = int(fixed_range / max(detector_azimuthal_inc, 1))
-    det_rad_steps = int(fixed_range / max(detector_radial_inc, 1))
-    total_steps = light_az_steps * light_rad_steps * det_az_steps * det_rad_steps
-    current_step = 1
-
-    # Base angle settings
-    if measurement_type == "brdf":
-        light_base = detector_base = 0
-    elif measurement_type == "btdf":
-        light_base = detector_base = 180
-    else:  # both
-        light_base = detector_base = 0
-
-    print("Moving all motors to offset position...")
     motors.move_light_to_offset()
     motors.move_detector_to_offset()
-    time.sleep(1)
 
-    for az_i in range(light_az_steps):
-        light_azimuthal = light_base + az_i * light_azimuthal_inc
-        motors.move_light_azimuthal(light_azimuthal)
+    capture_index = 1
 
-        for rad_i in range(light_rad_steps):
-            light_radial = rad_i * light_radial_inc
-            motors.move_light_radial(light_radial)
+    for laz_i in range(light_az_steps):
+        light_az = laz_i * ls_az_step
+        motors.move_light_azimuthal(light_az)
 
-            for det_az_i in range(det_az_steps):
-                det_azimuthal = detector_base + det_az_i * detector_azimuthal_inc
+        for lrad_i in range(light_rad_steps):
+            light_rad = lrad_i * ls_rad_step
+            motors.move_light_radial(light_rad)
 
-                for det_rad_i in range(det_rad_steps):
-                    det_radial = det_rad_i * detector_radial_inc
+            for daz_i in range(det_az_steps):
+                det_az = daz_i * det_az_step
 
-                    motors.move_detector_azimuthal(det_azimuthal)
-                    motors.move_detector_radial(det_radial)
+                for drad_i in range(det_rad_steps):
+                    det_rad = drad_i * det_rad_step
+
+                    motors.move_detector_azimuthal(det_az)
+                    motors.move_detector_radial(det_rad)
                     time.sleep(0.5)
 
-                    def save_capture(label):
-                        filename = f"{label}_Laz{light_azimuthal}_Lrad{light_radial}_Daz{det_azimuthal}_Drad{det_radial}.npy"
-                        path = os.path.join(output_folder, filename)
-                        raw_array = capture_raw_image(picam2)
+                    # Exposure tuning loop
+                    for attempt in range(10):
+                        test_image = capture_raw_image(picam2)
+                        if test_image is None:
+                            continue
+                        if check_and_adjust_exposure(picam2, test_image, dark_value):
+                            break
+                    else:
+                        print("Exposure tuning failed, skipping this position.")
+                        continue
 
-                        if raw_array is not None:
-                            np.save(path, raw_array)
-                            print(f"[{current_step}/{total_steps}] Saved {label.upper()} to {path}")
-                        else:
-                            print(f"Failed to capture {label.upper()}")
+                    # Capture and save 10 corrected images
+                    for rep in range(image_count):
+                        img = capture_raw_image(picam2)
+                        if img is None:
+                            print(f"Image {rep+1} failed.")
+                            continue
 
-                    if measurement_type in ["brdf", "both"]:
-                        save_capture("brdf")
+                        corrected = np.clip(img.astype(np.float32) - dark_value, 0, None)
+                        exposure = picam2.capture_metadata().get("ExposureTime", None)
 
-                    if measurement_type in ["btdf", "both"]:
-                        save_capture("btdf")
+                        filename = (
+                            f"img_{capture_index:04d}_"
+                            f"Laz{light_az}_Lrad{light_rad}_"
+                            f"Daz{det_az}_Drad{det_rad}_"
+                            f"rep{rep+1}_exp{exposure}.npy"
+                        )
+                        np.save(os.path.join(save_dir, filename), corrected)
+                        print(f"Saved {filename}")
 
-                    current_step += 1
+                    capture_index += 1
 
-            print("Returning detector to offset...")
             motors.move_detector_to_offset()
             time.sleep(1)
 
-    print(f"Completed full scan: {current_step-1} measurements taken.")
+    app.set_status("Measurement completed!", "success")
+    print("Full measurement complete.")
