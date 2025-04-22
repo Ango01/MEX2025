@@ -1,21 +1,49 @@
 import os
 import json
 import time
+from datetime import datetime
 from motors import Motors  
 import process_image
 
-def capture_image(picam2, meas_type, light_angle, detector_angle, output_folder):
-    """Capture a RAW10 image using an initialized Picamera2 instance."""
-    if picam2 is None:
-        raise ValueError("Camera is not initialized. Call initialize_camera() first.")
+def capture_image(picam2, filename=None):
+    """
+    Captures a RAW image using an initialized Picamera2 instance.
 
-    filename = f"{meas_type}_L{light_angle:.1f}_D{detector_angle:.1f}.dng"
-    image_file = os.path.join(output_folder, filename)
+    Args:
+        picam2: An active and started Picamera2 instance.
+        filename: Optional filename to save the image. If None, uses timestamp.
 
-    picam2.capture_file(image_file, name="raw")
-    print(f"Captured image: {image_file}")
+    Returns:
+        path to the saved file or None if capture failed.
+    """
+    if not picam2:
+        print("Error: No camera instance provided.")
+        return None
 
-    return image_file
+    try:
+        if filename is None:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"capture_{timestamp}.jpg"  # You can change to .png or .tiff if needed
+
+        # Capture the image
+        image = picam2.capture_array()
+
+        print("Image shape:", image.shape)     # (height, width, channels) for RGB
+        print("Total number of pixels:", image.size)  # height × width × channels
+        print("Data type:", image.dtype)       # e.g., uint8 or uint16
+        print("Memory size (bytes):", image.nbytes)  # Total memory used by the array
+        
+        # Save the image
+        from PIL import Image
+        img = Image.fromarray(image)
+        img.save(filename)
+
+        print(f"Image saved to {filename}")
+        return filename
+
+    except Exception as e:
+        print(f"Failed to capture image: {e}")
+        return None
 
 def capture_measurement(picam2, measurement_type, fixed_range,
                         light_azimuthal_inc, light_radial_inc,

@@ -12,7 +12,7 @@ def start_camera(app):
     camera = initialize_camera()
     if camera:
         app.camera = camera  # Store the instance in the main app for future use
-        app.set_status("Camera initialized successfully!", "success")
+        app.set_status("Camera ready", "success")
         app.next_step()
     else:
-        app.set_status("Failed to initialize camera.", "error")
+        app.set_status("Failed to initialize camera", "error")
