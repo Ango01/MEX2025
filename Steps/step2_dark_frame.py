@@ -1,4 +1,5 @@
 from tkinter import ttk
+import numpy as np
 from capture_image import capture_raw_image
 
 def create(app, container):
@@ -23,22 +24,19 @@ def create(app, container):
 
 def capture_dark_frame(app):
     if hasattr(app, "camera") and app.camera:
-        filepath = capture_raw_image(app.camera, filename="dark_frame.bin")
-        import os
-        size_bytes = os.path.getsize("dark_frame.bin")
-        print(f"File size: {size_bytes} bytes")
-        import numpy as np
+        filename = "dark_frame.npy"
+        filepath = capture_raw_image(app.camera, filename=filename)
 
-        width, height = 1456, 1088
-
-        with open("dark_frame.bin", "rb") as f:
-            raw_data = np.frombuffer(f.read(), dtype=np.uint16)
-
-        # Check total number of values
-        print(f"Total pixels: {raw_data.size}")
-        print(f"Expected: {width * height}")
-        print(f"Dtype: {raw_data.dtype}")
         if filepath:
+            # Optional: load the dark frame for in-memory use
+            app.dark_frame = np.load(filepath)
+
+            print(f"Shape: {app.dark_frame.shape}")
+            print(f"Dtype: {app.dark_frame.dtype}")
+            print(f"Size (pixels): {app.dark_frame.size}")
+            print(f"Memory usage: {app.dark_frame.nbytes} bytes")
+            print(f"Min/Max: {app.dark_frame.min()} / {app.dark_frame.max()}")
+
             app.set_status(f"Dark frame saved: {filepath}", "success")
             app.next_step()
         else:

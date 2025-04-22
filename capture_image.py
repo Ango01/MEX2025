@@ -4,18 +4,32 @@ import time
 from datetime import datetime
 from motors import Motors  
 import process_image
+import numpy as np
 
-def capture_raw_image(picam2, filename="raw_frame.bin"):
+def capture_raw_image(picam2, filename="raw_frame.npy", shape=(1088, 1456), dtype=np.uint16):
+    """
+    Capture a raw Bayer image and save it as a NumPy array.
+
+    Args:
+        picam2: Initialized and started Picamera2 instance.
+        filename: Output .npy filename.
+        shape: (height, width) of the expected image.
+        dtype: NumPy data type (usually np.uint16 for SRGGB10 padded).
+
+    Returns:
+        The saved filename, or None if it fails.
+    """
     try:
-        # Capture raw Bayer buffer
-        raw_buf = picam2.capture_buffer("raw")  # returns a memoryview
-        data = raw_buf.tobytes()                # convert to bytes
+        # Get raw buffer and convert to bytes
+        raw_buf = picam2.capture_buffer("raw")
+        raw_bytes = raw_buf.tobytes()
 
-        # Save to file (binary)
-        with open(filename, "wb") as f:
-            f.write(data)
+        # Convert to NumPy array
+        array = np.frombuffer(raw_bytes, dtype=dtype)
 
-        print(f"RAW data saved to {filename}")
+        # Save to .npy
+        np.save(filename, array)
+        print(f"Raw image saved as NumPy array: {filename}")
         return filename
 
     except Exception as e:
