@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from Steps import step1_camera, step2_dark_frame, step3_measurement_type, step4_angle_steps
 
 class ScatteringApp(tk.Tk):
     def __init__(self):
@@ -40,7 +41,7 @@ class ScatteringApp(tk.Tk):
                                      font=("Helvetica Neue", 10, "bold"),
                                      bg="#e0e0e0", fg="#000000", anchor="w", padx=10)
         self.status_label.pack(fill="x")
-        self.set_status("Ready", "neutral")
+        self.set_status("Welcome!", "info")
 
     def set_status(self, message, status_type="neutral"):
         colors = {
@@ -59,7 +60,7 @@ class ScatteringApp(tk.Tk):
         for widget in self.step_container.winfo_children():
             widget.destroy()
         if 0 <= index < len(self.steps):
-            self.steps[index](self.step_container)
+            self.steps[index](self, self.step_container)
             self.current_step = index
 
     def next_step(self):
@@ -67,87 +68,8 @@ class ScatteringApp(tk.Tk):
 
     def create_steps(self):
         self.steps = [
-            self.step1_camera,
-            self.step2_dark_frame,
-            self.step3_measurement_type,
-            self.step4_angle_steps
+            step1_camera.create,
+            step2_dark_frame.create,
+            step3_measurement_type.create,
+            step4_angle_steps.create
         ]
-
-    # ----------- STEP 1 ------------
-    def step1_camera(self, container):
-        frame = ttk.Frame(container)
-        frame.pack(fill="both", expand=True)
-
-        ttk.Label(frame, text="Step 1: Initialize Camera").pack(anchor="w", pady=5)
-        ttk.Button(frame, text="Start Camera", command=lambda: [
-            self.set_status("Camera started!", "success"),
-            self.next_step()
-        ]).pack(pady=10)
-
-    # ----------- STEP 2 ------------
-    def step2_dark_frame(self, container):
-        frame = ttk.Frame(container)
-        frame.pack(fill="both", expand=True)
-
-        ttk.Label(frame, text="Step 2: Dark Frame Setup").pack(anchor="w", pady=5)
-
-        options = ttk.Frame(frame)
-        options.pack(pady=5)
-
-        ttk.Button(options, text="Capture Dark Frame", command=lambda: [
-            self.set_status("Dark frame captured", "success"),
-            self.next_step()
-        ]).grid(row=0, column=0, padx=5)
-
-        manual = ttk.Frame(options)
-        manual.grid(row=0, column=1, padx=5)
-
-        ttk.Label(manual, text="Or enter nominal value:").pack(anchor="w")
-        entry = ttk.Entry(manual, width=12)
-        entry.pack()
-
-    # ----------- STEP 3 ------------
-    def step3_measurement_type(self, container):
-        frame = ttk.Frame(container)
-        frame.pack(fill="both", expand=True)
-
-        ttk.Label(frame, text="Step 3: Select Measurement Type").pack(anchor="w", pady=5)
-
-        self.measurement_type = tk.StringVar()
-        options = ttk.Frame(frame)
-        options.pack(pady=5)
-
-        ttk.Radiobutton(options, text="BRDF", variable=self.measurement_type, value="BRDF").grid(row=0, column=0, padx=10)
-        ttk.Radiobutton(options, text="BTDF", variable=self.measurement_type, value="BTDF").grid(row=0, column=1, padx=10)
-        ttk.Radiobutton(options, text="Both", variable=self.measurement_type, value="Both").grid(row=0, column=2, padx=10)
-
-        ttk.Button(frame, text="Next", command=lambda: [
-            self.set_status(f"Measurement type selected: {self.measurement_type.get()}", "info"),
-            self.next_step()
-        ]).pack(pady=10)
-
-    # ----------- STEP 4 ------------
-    def step4_angle_steps(self, container):
-        frame = ttk.Frame(container)
-        frame.pack(fill="both", expand=True)
-
-        ttk.Label(frame, text="Step 4: Set Angle Step Increments").pack(anchor="w", pady=5)
-
-        grid = ttk.Frame(frame)
-        grid.pack()
-
-        self.angle_inputs = {}
-        labels = [
-            ("Light Source - Azimuthal Step (°):", "ls_az"),
-            ("Light Source - Radial Step (°):", "ls_rad"),
-            ("Detector - Azimuthal Step (°):", "det_az"),
-            ("Detector - Radial Step (°):", "det_rad")
-        ]
-
-        for i, (label, key) in enumerate(labels):
-            ttk.Label(grid, text=label).grid(row=i, column=0, sticky="w", padx=5, pady=2)
-            entry = ttk.Entry(grid, width=10)
-            entry.grid(row=i, column=1, padx=5, pady=2)
-            self.angle_inputs[key] = entry
-
-        ttk.Button(frame, text="Finish", command=lambda: self.set_status("Measurement setup complete!", "success")).pack(pady=10)
