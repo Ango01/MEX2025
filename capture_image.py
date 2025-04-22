@@ -5,44 +5,21 @@ from datetime import datetime
 from motors import Motors  
 import process_image
 
-def capture_image(picam2, filename=None):
-    """
-    Captures a RAW image using an initialized Picamera2 instance.
-
-    Args:
-        picam2: An active and started Picamera2 instance.
-        filename: Optional filename to save the image. If None, uses timestamp.
-
-    Returns:
-        path to the saved file or None if capture failed.
-    """
-    if not picam2:
-        print("Error: No camera instance provided.")
-        return None
-
+def capture_raw_image(picam2, filename="raw_frame.bin"):
     try:
-        if filename is None:
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"capture_{timestamp}.jpg"  # You can change to .png or .tiff if needed
+        # Capture raw Bayer buffer
+        raw_buf = picam2.capture_buffer("raw")  # returns a memoryview
+        data = raw_buf.tobytes()                # convert to bytes
 
-        # Capture the image
-        image = picam2.capture_array()
+        # Save to file (binary)
+        with open(filename, "wb") as f:
+            f.write(data)
 
-        print("Image shape:", image.shape)     # (height, width, channels) for RGB
-        print("Total number of pixels:", image.size)  # height × width × channels
-        print("Data type:", image.dtype)       # e.g., uint8 or uint16
-        print("Memory size (bytes):", image.nbytes)  # Total memory used by the array
-        
-        # Save the image
-        from PIL import Image
-        img = Image.fromarray(image)
-        img.save(filename)
-
-        print(f"Image saved to {filename}")
+        print(f"RAW data saved to {filename}")
         return filename
 
     except Exception as e:
-        print(f"Failed to capture image: {e}")
+        print(f"Failed to capture RAW image: {e}")
         return None
 
 def capture_measurement(picam2, measurement_type, fixed_range,
