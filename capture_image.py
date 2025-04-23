@@ -143,8 +143,13 @@ def run_full_measurement(app, fixed_range=20, image_count=10, save_dir="Captured
 
     print("Full measurement complete.")
 
+    # Re-enable Start button
+    if hasattr(app, "start_button"):
+        app.start_button.config(state="normal")
+
 def check_stop(app):
-    if getattr(app, "stop_requested", True):
+    if getattr(app, "stop_requested", False):
+        app.set_status("Measurement stopped by user.", "warning")
         return True
     return False
 

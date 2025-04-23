@@ -13,8 +13,12 @@ def create(app, container):
     button_frame = ttk.Frame(frame)
     button_frame.pack(pady=15)
 
-    ttk.Button(button_frame, text="Start", command=lambda: start_measurement(app)).pack(side="left", padx=5)
-    ttk.Button(button_frame, text="Stop", command=lambda: stop_measurement(app)).pack(side="left", padx=5)
+    # Save buttons as app attributes
+    app.start_button = ttk.Button(button_frame, text="Start", command=lambda: start_measurement(app))
+    app.start_button.pack(side="left", padx=5)
+
+    app.stop_button = ttk.Button(button_frame, text="Stop", command=lambda: stop_measurement(app))
+    app.stop_button.pack(side="left", padx=5)
 
 def start_measurement(app):
     if not hasattr(app, "camera") or app.camera is None:
@@ -24,7 +28,8 @@ def start_measurement(app):
     if not hasattr(app, "dark_value"):
         app.set_status("Dark value missing. Capture or enter it first.", "error")
         return
-    
+
+    app.set_status("Starting full measurement...", "info")
     app.stop_requested = False
 
     # Disable Start button
@@ -32,9 +37,7 @@ def start_measurement(app):
         app.start_button.config(state="disabled")
 
     try:
-        app.set_status("Starting full measurement...", "info")
         run_full_measurement(app)
-        app.set_status("Measurement completed!", "success")
     except Exception as e:
         print(f"Measurement error: {e}")
         app.set_status(f"Measurement failed: {e}", "error")
