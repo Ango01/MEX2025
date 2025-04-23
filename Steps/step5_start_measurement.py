@@ -1,4 +1,5 @@
 from tkinter import ttk
+import threading
 from capture_image import run_full_measurement
 
 def create(app, container):
@@ -29,28 +30,34 @@ def start_measurement(app):
         app.set_status("Dark value missing. Capture or enter it first.", "error")
         return
 
-    app.set_status("Starting full measurement...", "info")
     app.stop_requested = False
 
-    # Disable Start button
     if hasattr(app, "start_button"):
         app.start_button.config(state="disabled")
 
-    try:
-        run_full_measurement(app)
-    except Exception as e:
-        print(f"Measurement error: {e}")
-        app.set_status(f"Measurement failed: {e}", "error")
-        # Re-enable Start button on failure
-        if hasattr(app, "start_button"):
-            app.start_button.config(state="normal")
+    def run_measurement_thread():
+        try:
+            app.set_status("Starting full measurement...", "info")
+            run_full_measurement(app)
+            if not app.stop_requested:
+                app.set_status("Measurement completed!", "success")
+        except Exception as e:
+            print(f"Measurement error: {e}")
+            app.set_status(f"Measurement failed: {e}", "error")
+        finally:
+            # Re-enable Start button in all cases
+            if hasattr(app, "start_button"):
+                app.start_button.config(state="normal")
+
+    threading.Thread(target=run_measurement_thread, daemon=True).start()
+
 
 def stop_measurement(app):
     app.stop_requested = True
     app.set_status("Stop requested. Waiting for current step to finish...", "warning")
 
-    # Re-enable Start button after stop
     if hasattr(app, "start_button"):
         app.start_button.config(state="normal")
+
 
         
