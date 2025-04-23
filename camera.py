@@ -7,12 +7,12 @@ def initialize_camera():
   config = picam2.create_still_configuration(raw={"format": "SRGGB10", "size": (1456, 1088)})
   picam2.configure(config)
         
-  #picam2.set_controls({
-  #  "ExposureTime": 5000,  
-  #  "AnalogueGain": 1.0,
-  #  "AeEnable": False,
-  #  "AwbEnable": False,
-  #}) 
+  picam2.set_controls({
+    "ExposureTime": 50,  
+    "AnalogueGain": 1.0,
+    "AeEnable": False,
+    "AwbEnable": False,
+  }) 
 
   picam2.start()
   time.sleep(2)  # Allow camera to stabilize (should be removed and substituted with a thread that listens to camera commands)

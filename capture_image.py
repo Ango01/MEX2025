@@ -1,7 +1,7 @@
 import os
 import time
-from motors import Motors  
 import numpy as np
+from motors import Motors  
 
 def capture_raw_image(picam2):
     """Capture a raw Bayer image and save it as a 2D array."""

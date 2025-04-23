@@ -1,5 +1,4 @@
 from tkinter import ttk
-import numpy as np
 from capture_image import capture_raw_image
 
 def create(app, container):
@@ -7,6 +6,7 @@ def create(app, container):
     frame.pack(fill="both", expand=True)
 
     ttk.Label(frame, text="Step 2: Dark Frame").pack(anchor="w", pady=5)
+    ttk.Label(frame, text="Capture dark frame with light source off or enter nominal value.").pack(anchor="w", pady=5)
 
     options = ttk.Frame(frame)
     options.pack(pady=5)
@@ -18,7 +18,7 @@ def create(app, container):
     manual = ttk.Frame(options)
     manual.grid(row=0, column=1, padx=5)
 
-    ttk.Label(manual, text="Or enter nominal value:").pack(anchor="w")
+    ttk.Label(manual, text="Nominal Value: ").pack(anchor="w")
     entry = ttk.Entry(manual, width=12)
     entry.pack()
 

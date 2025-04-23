@@ -6,7 +6,7 @@ def create(app, container):
     frame.pack(fill="both", expand=True)
 
     ttk.Label(frame, text="Step 1: Initialize Camera").pack(anchor="w", pady=5)
-    ttk.Button(frame, text="Start Camera", command=lambda: start_camera(app)).pack(pady=10)
+    ttk.Button(frame, text="Start Camera", command=lambda:start_camera(app)).pack(pady=10)
 
 def start_camera(app):
     camera = initialize_camera()

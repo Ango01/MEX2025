@@ -28,17 +28,13 @@ def create(app, container):
 
         app.angle_inputs[key] = combobox
     
-    # Extract and store the values from comboboxes BEFORE destroying them
+    # Extract and store the values from comboboxes 
     app.ls_az_step = float(app.angle_inputs["ls_az"].get())
     app.ls_rad_step = float(app.angle_inputs["ls_rad"].get())
     app.det_az_step = float(app.angle_inputs["det_az"].get())
     app.det_rad_step = float(app.angle_inputs["det_rad"].get())
 
-    ttk.Button(
-        frame,
-        text="Next",
-        command=lambda: save_and_continue(app)
-    ).pack(pady=10)
+    ttk.Button(frame, text="Next", command=lambda: save_and_continue(app)).pack(pady=10)
 
 def save_and_continue(app):
     try:
