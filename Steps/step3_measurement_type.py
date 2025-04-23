@@ -2,12 +2,15 @@ from tkinter import ttk
 import tkinter as tk
 
 def create(app, container):
+    """Create function for Step 3: Select measurement type."""
     frame = ttk.Frame(container)
     frame.pack(fill="both", expand=True)
 
     ttk.Label(frame, text="Step 3: Select Measurement Type").pack(anchor="w", pady=5)
 
+    # Store the selected measurement type
     app.measurement_type = tk.StringVar()
+    
     options = ttk.Frame(frame)
     options.pack(pady=5)
 

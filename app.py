@@ -2,9 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 from Steps import step1_camera, step2_dark_frame, step3_measurement_type, step4_angle_steps, step5_start_measurement
 
+# Main application class
 class ScatteringApp(tk.Tk):
     def __init__(self):
         super().__init__()
+
+        # Set window properties
         self.title("Optical Scattering Measurement")
         self.geometry("600x300")
         self.configure(bg="#f0f2f5")
@@ -13,7 +16,7 @@ class ScatteringApp(tk.Tk):
         self.set_style()
 
         self.current_step = 0
-        self.steps = []
+        self.steps = [] 
 
         self.step_container = ttk.Frame(self)
         self.step_container.pack(fill="both", expand=True, padx=20, pady=10)
@@ -23,6 +26,7 @@ class ScatteringApp(tk.Tk):
         self.show_step(0)
 
     def set_style(self):
+        """Set up the application's visual style."""
         self.style.theme_use("clam")
         font = ("Helvetica Neue", 11)
 
@@ -33,6 +37,7 @@ class ScatteringApp(tk.Tk):
         self.style.configure("TRadiobutton", font=font)
 
     def create_status_bar(self):
+        """Create the bottom status bar to show messages."""
         self.status_frame = tk.Frame(self, height=30, bg="#e0e0e0")
         self.status_frame.pack(side="bottom", fill="x")
 
@@ -41,9 +46,12 @@ class ScatteringApp(tk.Tk):
                                      font=("Helvetica Neue", 10, "bold"),
                                      bg="#e0e0e0", fg="#000000", anchor="w", padx=10)
         self.status_label.pack(fill="x")
+
+        # Set initial status
         self.set_status("Welcome!", "info")
 
     def set_status(self, message, status_type="neutral"):
+        """Update the status message and style based on type."""
         colors = {
             "neutral": ("#e0e0e0", "#000000"),
             "info": ("#d9edf7", "#31708f"),
@@ -57,6 +65,7 @@ class ScatteringApp(tk.Tk):
         self.status_frame.config(bg=bg)
 
     def show_step(self, index):
+        """Display a step UI, replacing the current view."""
         for widget in self.step_container.winfo_children():
             widget.destroy()
         if 0 <= index < len(self.steps):
@@ -64,9 +73,11 @@ class ScatteringApp(tk.Tk):
             self.current_step = index
 
     def next_step(self):
+        """Go to the next step in the list."""
         self.show_step(self.current_step + 1)
 
     def create_steps(self):
+        """Define the sequence of steps."""
         self.steps = [
             step1_camera.create,
             step2_dark_frame.create,

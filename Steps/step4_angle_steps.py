@@ -1,6 +1,7 @@
 from tkinter import ttk
 
 def create(app, container):
+    """Create function for Step 4: Angle step size selection."""
     frame = ttk.Frame(container)
     frame.pack(fill="both", expand=True)
 
@@ -10,7 +11,7 @@ def create(app, container):
     grid.pack()
 
     app.angle_inputs = {}
-    options = ["2", "5", "10"]  # angular step options as strings
+    options = ["2", "5", "10"]  # Options for angular step size (in degrees)
 
     labels = [
         ("Light Source - Azimuthal Step (°):", "ls_az"),
@@ -27,21 +28,17 @@ def create(app, container):
         combobox.grid(row=i, column=1, padx=5, pady=2)
 
         app.angle_inputs[key] = combobox
-    
-    # Extract and store the values from comboboxes 
-    app.ls_az_step = float(app.angle_inputs["ls_az"].get())
-    app.ls_rad_step = float(app.angle_inputs["ls_rad"].get())
-    app.det_az_step = float(app.angle_inputs["det_az"].get())
-    app.det_rad_step = float(app.angle_inputs["det_rad"].get())
 
     ttk.Button(frame, text="Next", command=lambda: save_and_continue(app)).pack(pady=10)
 
 def save_and_continue(app):
+    """Function to store selected values."""
     try:
         app.ls_az_step = float(app.angle_inputs["ls_az"].get())
         app.ls_rad_step = float(app.angle_inputs["ls_rad"].get())
         app.det_az_step = float(app.angle_inputs["det_az"].get())
         app.det_rad_step = float(app.angle_inputs["det_rad"].get())
+
         app.set_status("Measurement setup complete!", "success")
         app.next_step()
     except Exception as e:
