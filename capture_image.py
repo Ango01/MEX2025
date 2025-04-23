@@ -85,25 +85,29 @@ def run_full_measurement(app, fixed_range=20, image_count=10, save_dir="Captured
     capture_index = 1
 
     for laz_i in range(light_az_steps):
+        if check_stop(app): return
         light_az = laz_i * ls_az_step
         motors.move_light_azimuthal(light_az)
 
         for lrad_i in range(light_rad_steps):
+            if check_stop(app): return
             light_rad = lrad_i * ls_rad_step
             motors.move_light_radial(light_rad)
 
             for daz_i in range(det_az_steps):
+                if check_stop(app): return
                 det_az = daz_i * det_az_step
 
                 for drad_i in range(det_rad_steps):
+                    if check_stop(app): return
                     det_rad = drad_i * det_rad_step
 
                     motors.move_detector_azimuthal(det_az)
                     motors.move_detector_radial(det_rad)
                     time.sleep(0.5)
 
-                    # Exposure tuning loop
                     for attempt in range(10):
+                        if check_stop(app): return
                         test_image = capture_raw_image(picam2)
                         if test_image is None:
                             continue
@@ -113,8 +117,8 @@ def run_full_measurement(app, fixed_range=20, image_count=10, save_dir="Captured
                         print("Exposure tuning failed, skipping this position.")
                         continue
 
-                    # Capture and save 10 corrected images
                     for rep in range(image_count):
+                        if check_stop(app): return
                         img = capture_raw_image(picam2)
                         if img is None:
                             print(f"Image {rep+1} failed.")
@@ -139,3 +143,10 @@ def run_full_measurement(app, fixed_range=20, image_count=10, save_dir="Captured
 
     app.set_status("Measurement completed!", "success")
     print("Full measurement complete.")
+
+def check_stop(app):
+    if getattr(app, "stop_requested", False):
+        app.set_status("Measurement stopped by user.", "warning")
+        return True
+    return False
+
