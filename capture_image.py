@@ -141,12 +141,10 @@ def run_full_measurement(app, fixed_range=20, image_count=10, save_dir="Captured
             motors.move_detector_to_offset()
             time.sleep(1)
 
-    app.set_status("Measurement completed!", "success")
     print("Full measurement complete.")
 
 def check_stop(app):
-    if getattr(app, "stop_requested", False):
-        app.set_status("Measurement stopped by user.", "warning")
+    if getattr(app, "stop_requested", True):
         return True
     return False
 

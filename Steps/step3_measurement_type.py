@@ -16,6 +16,6 @@ def create(app, container):
     ttk.Radiobutton(options, text="Both", variable=app.measurement_type, value="Both").grid(row=0, column=2, padx=10)
 
     ttk.Button(frame, text="Next", command=lambda: [
-        app.set_status(f"Measurement type selected: {app.measurement_type.get()}", "info"),
+        app.set_status(f"Measurement type selected: {app.measurement_type.get()}", "success"),
         app.next_step()
     ]).pack(pady=10)

@@ -27,14 +27,14 @@ def start_measurement(app):
     
     app.stop_requested = False
 
-    app.set_status("Starting full measurement...", "info")
-
     # Disable Start button
     if hasattr(app, "start_button"):
         app.start_button.config(state="disabled")
 
     try:
+        app.set_status("Starting full measurement...", "info")
         run_full_measurement(app)
+        app.set_status("Measurement completed!", "success")
     except Exception as e:
         print(f"Measurement error: {e}")
         app.set_status(f"Measurement failed: {e}", "error")
