@@ -3,7 +3,6 @@ import time
 
 class Motors:
     def __init__(self):
-
         # Connect to Arduino
         self.arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=1)  
         time.sleep(2)  # Allow time to initialize

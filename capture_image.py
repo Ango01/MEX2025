@@ -2,6 +2,7 @@ import os
 import time
 import numpy as np
 from motors import Motors  
+from process_image import extract_color_channels
 
 def capture_raw_image(picam2):
     """Capture a raw Bayer image and save it as a 2D array."""
@@ -14,32 +15,46 @@ def capture_raw_image(picam2):
         print(f"Failed to capture RAW image: {e}")
         return None
 
-def check_and_adjust_exposure(picam2, image, target_mean=1000, tolerance=100, exposure_step=1000):
-    """Check exposure based on a single image and adjust if needed."""
+def check_and_adjust_exposure(picam2, image, target_max=972, tolerance=10, exposure_step=50):
+    """
+    Adjust exposure time based on the brightest channel in a raw Bayer image.
+    Prioritizes the channel with the highest intensity to avoid clipping.
+    """
     if image is None or picam2 is None:
         print("Invalid input to exposure check.")
         return False
 
-    mean_val = image.mean()
+    # Extract RGB channels
+    R, G, B = extract_color_channels(image)
 
-    print(f"Mean: {mean_val:.2f}")
+    # Compute max values per channel
+    max_values = {'R': R.max(), 'G': G.max(), 'B': B.max()}
+    priority_channel = max(max_values, key=max_values.get)
+    priority_value = max_values[priority_channel]
+
+    print(f"Max R: {max_values['R']}, Max G: {max_values['G']}, Max B: {max_values['B']}")
+    print(f"Prioritizing channel: {priority_channel} (value: {priority_value})")
+
+    # Get current exposure time from metadata (fallback to 10000 µs)
+    metadata = picam2.capture_metadata()
+    current_exp = metadata.get("ExposureTime", 10000)
 
     # Check if within acceptable range
-    if target_mean - tolerance <= mean_val <= target_mean + tolerance:
+    if target_max - tolerance <= priority_value <= target_max + tolerance:
         print("Exposure is acceptable.")
         return True
 
-    # Adjust exposure time
-    metadata = picam2.capture_metadata()
-    current_exp = metadata.get("ExposureTime")
-    if mean_val < target_mean:
-        new_exp = current_exp + exposure_step
-    else:
+    # Adjust exposure time based on priority channel
+    if priority_value > target_max + tolerance:
         new_exp = max(current_exp - exposure_step, 100)
+        print("Too bright → Decreasing exposure")
+    else:
+        new_exp = current_exp + exposure_step
+        print("Too dark → Increasing exposure")
 
     print(f"Adjusting exposure: {current_exp} → {new_exp}")
     picam2.set_controls({"ExposureTime": int(new_exp)})
-    time.sleep(1)  # let camera apply new exposure
+    time.sleep(1)  # Give camera time to apply settings
 
     return False
 
