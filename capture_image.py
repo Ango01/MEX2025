@@ -3,6 +3,7 @@ import time
 import numpy as np
 from motors import Motors  
 from process_image import extract_color_channels
+from Steps.step4_angle_steps import RANGE_MAP
 
 def capture_raw_image(picam2):
     """Capture a raw Bayer image and return it as a 16-bit 2D array."""
@@ -57,7 +58,7 @@ def check_and_adjust_exposure(picam2, image, target_max=972, tolerance=10, expos
 
     return False
 
-def run_full_measurement(app, fixed_range=20, image_count=10, save_dir="Captured_Data"):
+def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
     """Main function to run the full measurement process."""
     picam2 = app.camera
     dark_value = app.dark_value
@@ -68,49 +69,55 @@ def run_full_measurement(app, fixed_range=20, image_count=10, save_dir="Captured
 
     os.makedirs(save_dir, exist_ok=True)
 
-    # Angle step sizes
-    ls_az_step = app.ls_az_step
-    ls_rad_step = app.ls_rad_step
-    det_az_step = app.det_az_step
-    det_rad_step = app.det_rad_step
+    # Get angular range based on measurement type
+    mtype = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
+    start_angle, end_angle = RANGE_MAP.get(mtype, (8, 175))
 
-    # Calculate number of steps in each direction
-    light_az_steps = int(fixed_range / max(ls_az_step, 1))
-    light_rad_steps = int(fixed_range / max(ls_rad_step, 1))
-    det_az_steps = int(fixed_range / max(det_az_step, 1))
-    det_rad_steps = int(fixed_range / max(det_rad_step, 1))
+    step_counts = app.step_counts
+    angle_inputs = app.angle_inputs
 
-    # Initialize and psoition motors in offset
+    # Get angle step sizes from combobox values
+    ls_az_step = float(angle_inputs["ls_az"].get())
+    ls_rad_step = float(angle_inputs["ls_rad"].get())
+    det_az_step = float(angle_inputs["det_az"].get())
+    det_rad_step = float(angle_inputs["det_rad"].get())
+
+    # Get number of steps from stored counts
+    ls_az_steps = step_counts["ls_az"]
+    ls_rad_steps = step_counts["ls_rad"]
+    det_az_steps = step_counts["det_az"]
+    det_rad_steps = step_counts["det_rad"]
+
+    # Initialize motors
     motors = Motors()
     motors.move_light_to_offset()
     motors.move_detector_to_offset()
 
-    capture_index = 1 # Counter for saved image files
+    capture_index = 1
 
-    # Loop through all angle combinations
-    for laz_i in range(light_az_steps):
+    for laz_i in range(ls_az_steps):
         if check_stop(app): return
-        light_az = laz_i * ls_az_step
+        light_az = start_angle + laz_i * ls_az_step
         motors.move_light_azimuthal(light_az)
 
-        for lrad_i in range(light_rad_steps):
+        for lrad_i in range(ls_rad_steps):
             if check_stop(app): return
-            light_rad = lrad_i * ls_rad_step
+            light_rad = start_angle + lrad_i * ls_rad_step
             motors.move_light_radial(light_rad)
 
             for daz_i in range(det_az_steps):
                 if check_stop(app): return
-                det_az = daz_i * det_az_step
+                det_az = start_angle + daz_i * det_az_step
+                motors.move_detector_azimuthal(det_az)
 
                 for drad_i in range(det_rad_steps):
                     if check_stop(app): return
-                    det_rad = drad_i * det_rad_step
+                    det_rad = start_angle + drad_i * det_rad_step
 
-                    motors.move_detector_azimuthal(det_az)
                     motors.move_detector_radial(det_rad)
-                    time.sleep(0.5)
+                    time.sleep(1)
 
-                    # Try up to 10 times to adjust exposure before capturing
+                    # Try up to 10 times to adjust exposure
                     for attempt in range(10):
                         if check_stop(app): return
                         test_image = capture_raw_image(picam2)
@@ -122,22 +129,21 @@ def run_full_measurement(app, fixed_range=20, image_count=10, save_dir="Captured
                         print("Exposure tuning failed, skipping this position.")
                         continue
                     
-                    # Capture and save multiple images at the current position
+                    # Capture and save images
                     for rep in range(image_count):
                         if check_stop(app): return
                         img = capture_raw_image(picam2)
                         if img is None:
                             print(f"Image {rep+1} failed.")
                             continue
-                        
-                        # Subtract dark frame and clip values below 0
+
                         corrected = np.clip(img.astype(np.float32) - dark_value, 0, None)
-                        exposure = picam2.capture_metadata().get("ExposureTime", None) 
+                        exposure = picam2.capture_metadata().get("ExposureTime", None)
 
                         filename = (
                             f"img_{capture_index:04d}_"
-                            f"Laz{light_az}_Lrad{light_rad}_"
-                            f"Daz{det_az}_Drad{det_rad}_"
+                            f"Laz{light_az:.1f}_Lrad{light_rad:.1f}_"
+                            f"Daz{det_az:.1f}_Drad{det_rad:.1f}_"
                             f"rep{rep+1}_exp{exposure}.npy"
                         )
                         np.save(os.path.join(save_dir, filename), corrected)
@@ -145,10 +151,11 @@ def run_full_measurement(app, fixed_range=20, image_count=10, save_dir="Captured
 
                     capture_index += 1
 
-            # Reset detector to its base position before starting new light angle
+            # Reset detector
             motors.move_detector_to_offset()
             time.sleep(1)
 
+    motors.move_light_to_offset()
     print("Full measurement complete.")
 
 def check_stop(app):
@@ -156,4 +163,3 @@ def check_stop(app):
     if getattr(app, "stop_requested", False):
         return True
     return False
-
