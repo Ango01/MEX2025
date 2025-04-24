@@ -32,5 +32,5 @@ def circular_roi_mean(image, diameter=20):
     std_val = np.std(roi_values)
     sigma = std_val / np.sqrt(N)
 
-    return mean_val, sigma
+    return mean_val
 
