@@ -56,11 +56,11 @@ def update_step_label(app, key, label):
         start, end = RANGE_MAP.get(mtype, (8, 175))
 
         count = int((end - start) / step_deg)
-        label.config(text=f"Steps: {count}")
+        label.config(text=f"Total Steps: {count}")
 
         # Store in app.step_counts
         app.step_counts[key] = count
 
     except Exception:
-        label.config(text="Steps: ?")
+        label.config(text="Total Steps: ?")
         app.step_counts[key] = None  # Optional: store None for errors

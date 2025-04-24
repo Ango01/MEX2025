@@ -10,19 +10,18 @@ def create(app, container):
     ttk.Label(frame, text="Step 5: Start Measurement").pack(anchor="w", pady=10)
     
     # Measurement Summary Header
-    ttk.Label(frame, text="Measurement Parameters: ").pack(anchor="w", pady=5)
+    ttk.Label(frame, text="Measurement Parameters Summary: ").pack(anchor="w", pady=5)
 
     # Compose the summary text
     mtype = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
-    step_sizes = {k: app.angle_inputs[k].get() for k in app.angle_inputs}
     step_counts = app.step_counts
 
     summary_text = (
         f"Measurement Type: {mtype}\n\n"
-        f"Light Source - Azimuthal Step: {step_sizes['ls_az']}° ({step_counts['ls_az']} steps)\n"
-        f"Light Source - Radial Step: {step_sizes['ls_rad']}° ({step_counts['ls_rad']} steps)\n"
-        f"Detector - Azimuthal Step: {step_sizes['det_az']}° ({step_counts['det_az']} steps)\n"
-        f"Detector - Radial Step: {step_sizes['det_rad']}° ({step_counts['det_rad']} steps)"
+        f"Light Source - Total Azimuthal Steps: {step_counts['ls_az']} steps\n"
+        f"Light Source - Total Radial Steps: {step_counts['ls_rad']} steps\n"
+        f"Detector - Total Azimuthal Steps: {step_counts['det_az']} steps\n"
+        f"Detector - Total Radial Steps: {step_counts['det_rad']} steps"
     )
 
     summary_label = ttk.Label(frame, text=summary_text, justify="left")
