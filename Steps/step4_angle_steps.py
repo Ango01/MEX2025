@@ -43,6 +43,7 @@ def create(app, container):
         combobox.bind("<<ComboboxSelected>>", lambda e, k=key: update_step_label(app, k, step_labels[k]))
 
     ttk.Button(frame, text="Next", command=lambda: [
+        save_step_settings(app),
         app.set_status("Measurement setup complete!", "success"),
         app.next_step()
     ]).pack(pady=10)
@@ -64,3 +65,12 @@ def update_step_label(app, key, label):
     except Exception:
         label.config(text="Total Steps: ?")
         app.step_counts[key] = None  # Optional: store None for errors
+
+def save_step_settings(app):
+    """Store selected angle step sizes (as float) in app.angle_step_sizes."""
+    app.angle_step_sizes = {}
+    for key, combobox in app.angle_inputs.items():
+        value = combobox.get()
+        if not value:
+            raise ValueError(f"Step size not selected for {key}")
+        app.angle_step_sizes[key] = float(value)

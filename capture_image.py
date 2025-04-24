@@ -74,13 +74,13 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
     start_angle, end_angle = RANGE_MAP.get(mtype, (8, 175))
 
     step_counts = app.step_counts
-    angle_inputs = app.angle_inputs
+    step_sizes = app.angle_step_sizes
 
     # Get angle step sizes from combobox values
-    ls_az_step = float(angle_inputs["ls_az"].get())
-    ls_rad_step = float(angle_inputs["ls_rad"].get())
-    det_az_step = float(angle_inputs["det_az"].get())
-    det_rad_step = float(angle_inputs["det_rad"].get())
+    ls_az_step = step_sizes["ls_az"]
+    ls_rad_step = step_sizes["ls_rad"]
+    det_az_step = step_sizes["det_az"]
+    det_rad_step = step_sizes["det_rad"]
 
     # Get number of steps from stored counts
     ls_az_steps = step_counts["ls_az"]
@@ -118,7 +118,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                     time.sleep(1)
 
                     corrected_images = []
-                    
+
                     # Try up to 10 times to adjust exposure
                     for attempt in range(10):
                         if check_stop(app): return
