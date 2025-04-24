@@ -2,7 +2,7 @@ import os
 import time
 import numpy as np
 from motors import Motors  
-from process_image import extract_color_channels
+from process_image import extract_color_channels, circular_roi_mean
 from Steps.step4_angle_steps import RANGE_MAP
 
 def capture_raw_image(picam2):
@@ -117,6 +117,8 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                     motors.move_detector_radial(det_rad)
                     time.sleep(1)
 
+                    corrected_images = []
+                    
                     # Try up to 10 times to adjust exposure
                     for attempt in range(10):
                         if check_stop(app): return
@@ -136,18 +138,26 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         if img is None:
                             print(f"Image {rep+1} failed.")
                             continue
+                        
+                        corrected = np.clip(img.astype(np.float32) - dark_value, 0, None) # Subtract dark value
+                        corrected_images.append(corrected)
 
-                        corrected = np.clip(img.astype(np.float32) - dark_value, 0, None)
                         exposure = picam2.capture_metadata().get("ExposureTime", None)
 
-                        filename = (
-                            f"img_{capture_index:04d}_"
-                            f"Laz{light_az:.1f}_Lrad{light_rad:.1f}_"
-                            f"Daz{det_az:.1f}_Drad{det_rad:.1f}_"
-                            f"rep{rep+1}_exp{exposure}.npy"
-                        )
-                        np.save(os.path.join(save_dir, filename), corrected)
-                        print(f"Saved {filename}")
+                        print(f"Final Exposure Time: ", exposure)
+
+                    if corrected_images:
+                        combined = np.mean(corrected_images, axis=0)
+
+                        # Extract channels
+                        R, G, B = extract_color_channels(combined)
+
+                        # Get ROI means
+                        r_mean = circular_roi_mean(R)
+                        g_mean = circular_roi_mean(G)
+                        b_mean = circular_roi_mean(B)
+
+                        print(f"ROI Mean Intensities - R: {r_mean:.2f}, G: {g_mean:.2f}, B: {b_mean:.2f}")
 
                     capture_index += 1
 
