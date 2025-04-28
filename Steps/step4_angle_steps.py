@@ -56,7 +56,7 @@ def update_step_label(app, key, label):
         mtype = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
         start, end = RANGE_MAP.get(mtype, (8, 175))
 
-        count = int((end - start) / step_deg)
+        count = int((end - start) / step_deg) + 1
         label.config(text=f"Steps: {count}")
 
         # Store in app.step_counts
@@ -91,7 +91,7 @@ def generate_angle_lists(app):
         app.incidence_angles.append(current)
         current += ls_rad_step
 
-    # Detector azimuth angles (full circle, 0-360)
+    # Detector azimuth angles 
     det_az_step = app.angle_step_sizes.get("det_az", 5)
     app.azimuth_angles = []
     current = start
@@ -99,7 +99,7 @@ def generate_angle_lists(app):
         app.azimuth_angles.append(current)
         current += det_az_step
 
-    # Detector radial angles (scattering angles, usually 0–90)
+    # Detector radial angles 
     det_rad_step = app.angle_step_sizes.get("det_rad", 5)
     app.radial_angles = []
     current = start
