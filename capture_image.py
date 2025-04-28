@@ -168,7 +168,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                             app.bsdf_measurements[key] = []
 
                         # Save r_mean, g_mean, b_mean at this radial position
-                        app.bsdf_measurements[key].append((det_rad, r_mean, g_mean, b_mean))
+                        app.bsdf_measurements[key][det_rad] = (r_mean, g_mean, b_mean)
 
                     capture_index += 1
 
