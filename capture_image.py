@@ -158,6 +158,18 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
                         print(f"ROI Mean Intensities - R: {r_mean:.2f}, G: {g_mean:.2f}, B: {b_mean:.2f}")
 
+                        if not hasattr(app, "bsdf_measurements"):
+                            app.bsdf_measurements = {}
+
+                        # Key: (light incidence angle, detector azimuth angle)
+                        key = (light_rad, det_az)
+
+                        if key not in app.bsdf_measurements:
+                            app.bsdf_measurements[key] = []
+
+                        # Save r_mean, g_mean, b_mean at this radial position
+                        app.bsdf_measurements[key].append((det_rad, r_mean, g_mean, b_mean))
+
                     capture_index += 1
 
             # Reset detector

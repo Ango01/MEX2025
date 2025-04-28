@@ -94,7 +94,6 @@ def stop_measurement(app):
 
 def save_bsdf(app):
     """Save BSDF file after measurement."""
-    # Ask user where to save
     filename = filedialog.asksaveasfilename(
         defaultextension=".bsdf",
         filetypes=[("Zemax BSDF files", "*.bsdf"), ("All files", "*.*")],
@@ -102,30 +101,35 @@ def save_bsdf(app):
     )
 
     if not filename:
-        return  # User cancelled
+        return
 
     try:
-        # Example data structure placeholders
         symmetry = "PlaneSymmetrical"
         spectral_content = "Monochrome"
         scatter_type = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
-        
-        sample_rotations = [0.0]  
-        incidence_angles = app.incidence_angles
-        azimuth_angles = app.azimuth_angles
-        radial_angles = app.radial_angles
-        tis_data = {
-            (8.0, 108.0): 0.05  # Example: (rotation, incidence) -> TIS value
-        }
+        sample_rotations = [0.0]
+        incidence_angles = sorted(set(k[0] for k in app.bsdf_measurements.keys()))
+        azimuth_angles = sorted(set(k[1] for k in app.bsdf_measurements.keys()))
+        radial_angles = sorted({rad for sublist in app.bsdf_measurements.values() for (rad, *_means) in sublist})
 
-        bsdf_data = {
-            (8.0, 108.0): [
-                [0.01, 0.02, 0.03],   # azimuth 0°: values over radial
-                [0.015, 0.025, 0.035], # azimuth 10°: values over radial
-                [0.02, 0.03, 0.04]    # azimuth 20°: values over radial
-    ]
-}
+        tis_data = {}
+        bsdf_data = {}
 
+        for (incidence_angle, azimuth_angle), radial_measurements in app.bsdf_measurements.items():
+            # radial_measurements = list of (radial_angle, r_mean, g_mean, b_mean)
+            radial_measurements = sorted(radial_measurements)  # Sort by radial angle
+
+            # Calculate TIS: sum of intensities over all radial angles
+            # Choose one channel (e.g., R) or average RGB (recommended for monochrome)
+            intensities = [sum(means) / 3 for _rad, *means in radial_measurements]
+            tis_value = sum(intensities)
+
+            tis_data[(incidence_angle, azimuth_angle)] = tis_value
+
+            # Now prepare BSDF data: one list per azimuth, listing intensities over radial
+            bsdf_data[(incidence_angle, azimuth_angle)] = intensities
+
+        # Now save the file
         generate_zemax_bsdf_file(
             filename=filename,
             symmetry=symmetry,
@@ -138,7 +142,7 @@ def save_bsdf(app):
             tis_data=tis_data,
             bsdf_data=bsdf_data,
         )
-        
+
         app.set_status("BSDF file saved successfully!", "success")
     except Exception as e:
         print(f"Error saving BSDF file: {e}")
