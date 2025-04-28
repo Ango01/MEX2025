@@ -108,28 +108,43 @@ def save_bsdf(app):
         spectral_content = "Monochrome"
         scatter_type = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
         sample_rotations = [0.0]
+
+        # Prepare angles
         incidence_angles = sorted(set(k[0] for k in app.bsdf_measurements.keys()))
         azimuth_angles = sorted(set(k[1] for k in app.bsdf_measurements.keys()))
         radial_angles = sorted({rad for sublist in app.bsdf_measurements.values() for (rad, *_means) in sublist})
 
+        # Group by (rotation, incidence)
         tis_data = {}
         bsdf_data = {}
 
-        for (incidence_angle, azimuth_angle), radial_measurements in app.bsdf_measurements.items():
-            # radial_measurements = list of (radial_angle, r_mean, g_mean, b_mean)
-            radial_measurements = sorted(radial_measurements)  # Sort by radial angle
+        for inc_angle in incidence_angles:
+            scatter_block = []  # Will be list of azimuth blocks (each is a list over radial)
+            tis_value = 0.0
 
-            # Calculate TIS: sum of intensities over all radial angles
-            # Choose one channel (e.g., R) or average RGB (recommended for monochrome)
-            intensities = [sum(means) / 3 for _rad, *means in radial_measurements]
-            tis_value = sum(intensities)
+            for az_angle in azimuth_angles:
+                key = (inc_angle, az_angle)
+                if key not in app.bsdf_measurements:
+                    print(f"Missing measurement for incidence={inc_angle}, azimuth={az_angle}, skipping...")
+                    continue
 
-            tis_data[(incidence_angle, azimuth_angle)] = tis_value
+                radial_measurements = sorted(app.bsdf_measurements[key])  # sorted by radial
+                radial_intensities = [sum(means) / 3 for rad, *means in radial_measurements]
 
-            # Now prepare BSDF data: one list per azimuth, listing intensities over radial
-            bsdf_data[(incidence_angle, azimuth_angle)] = intensities
+                scatter_block.append(radial_intensities)
 
-        # Now save the file
+                # TIS: sum of average intensity values
+                tis_value += sum(radial_intensities)
+
+            if not scatter_block:
+                print(f"No data for incidence={inc_angle}, skipping...")
+                continue
+
+            # Save
+            tis_data[(0.0, inc_angle)] = tis_value
+            bsdf_data[(0.0, inc_angle)] = scatter_block  # list of lists (azimuth blocks)
+
+        # Now generate the file
         generate_zemax_bsdf_file(
             filename=filename,
             symmetry=symmetry,

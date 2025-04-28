@@ -17,7 +17,7 @@ def create(app, container):
     grid.pack()
 
     app.angle_inputs = {}
-    options = ["2", "5", "10", "100"]  # Options for angular step size (in degrees) -> add different options for light source
+    options = ["2", "5", "10", "200"]  # Options for angular step size (in degrees) -> add different options for light source
     step_labels= {}
     app.step_counts = {} 
 
@@ -83,7 +83,7 @@ def generate_angle_lists(app):
     mtype = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
     start, end = RANGE_MAP.get(mtype, (8, 175))
 
-    # Light source - incidence angles
+    # Light source radial angles - incidence angles
     ls_rad_step = app.angle_step_sizes.get("ls_rad", 5)
     app.incidence_angles = []
     current = start
