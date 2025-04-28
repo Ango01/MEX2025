@@ -1,6 +1,7 @@
-from tkinter import ttk
+from tkinter import ttk, filedialog
 import threading
 from capture_image import run_full_measurement
+from process_image import generate_zemax_bsdf_file
 
 def create(app, container):
     """Create function for Step 5: Start the measurement process."""
@@ -37,6 +38,11 @@ def create(app, container):
     app.stop_button = ttk.Button(button_frame, text="Stop", command=lambda: stop_measurement(app))
     app.stop_button.pack(side="left", padx=5)
 
+    # Save BSDF button (initially disabled)
+    app.save_bsdf_button = ttk.Button(button_frame, text="Save BSDF", command=lambda: save_bsdf(app))
+    app.save_bsdf_button.pack(side="left", padx=5)
+    app.save_bsdf_button.config(state="disabled")  # Disable initially
+
 def start_measurement(app):
     """Function to start measurement process."""
     # Check if camera is initialized
@@ -62,6 +68,11 @@ def start_measurement(app):
             run_full_measurement(app)
             if not app.stop_requested:
                 app.set_status("Measurement completed!", "success")
+
+                # Enable Save BSDF button after successful measurement
+                if hasattr(app, "save_bsdf_button"):
+                    app.save_bsdf_button.config(state="normal")
+
         except Exception as e:
             print(f"Measurement error: {e}")
             app.set_status(f"Measurement failed: {e}", "error")
@@ -80,3 +91,46 @@ def stop_measurement(app):
     # Re-enable start button
     if hasattr(app, "start_button"):
         app.start_button.config(state="normal")
+
+def save_bsdf(app):
+    """Save BSDF file after measurement."""
+    # Ask user where to save
+    filename = filedialog.asksaveasfilename(
+        defaultextension=".bsdf",
+        filetypes=[("Zemax BSDF files", "*.bsdf"), ("All files", "*.*")],
+        title="Save BSDF File"
+    )
+
+    if not filename:
+        return  # User cancelled
+
+    try:
+        # Example data structure placeholders
+        symmetry = "PlaneSymmetrical"
+        spectral_content = "Monochrome"
+        scatter_type = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
+        
+        sample_rotations = [0.0]  
+        incidence_angles = app.incidence_angles
+        azimuth_angles = app.azimuth_angles
+        radial_angles = app.radial_angles
+        tis_data = [18.0]   
+        bsdf_data = [50]
+
+        generate_zemax_bsdf_file(
+            filename=filename,
+            symmetry=symmetry,
+            spectral_content=spectral_content,
+            scatter_type=scatter_type,
+            sample_rotations=sample_rotations,
+            incidence_angles=incidence_angles,
+            azimuth_angles=azimuth_angles,
+            radial_angles=radial_angles,
+            tis_data=tis_data,
+            bsdf_data=bsdf_data,
+        )
+        
+        app.set_status("BSDF file saved successfully!", "success")
+    except Exception as e:
+        print(f"Error saving BSDF file: {e}")
+        app.set_status(f"Error saving BSDF file: {e}", "error")

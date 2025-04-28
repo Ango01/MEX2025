@@ -2,6 +2,7 @@ import rawpy, os, csv
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 def extract_color_channels(image):
     """Extract Red, Green, and Blue color channels from a Bayer RAW image."""
@@ -33,4 +34,78 @@ def circular_roi_mean(image, diameter=20):
     sigma = std_val / np.sqrt(N)
 
     return mean_val
+
+def generate_zemax_bsdf_file(
+    filename: str,
+    symmetry: str,
+    spectral_content: str,
+    scatter_type: str,
+    sample_rotations: list[float],
+    incidence_angles: list[float],
+    azimuth_angles: list[float],
+    radial_angles: list[float],
+    tis_data: dict,
+    bsdf_data: dict,
+):
+    """
+    Generates a Zemax Tabular BSDF file.
+
+    Args:
+        filename (str): Path to save the .BSDF file.
+        symmetry (str): One of 'PlaneSymmetrical', 'Asymmetrical', 'Asymmetrical4D'.
+        spectral_content (str): 'Monochrome' or 'XYZ'.
+        scatter_type (str): 'BRDF' or 'BTDF'.
+        sample_rotations (list): List of sample rotation angles.
+        incidence_angles (list): List of angle of incidence values.
+        azimuth_angles (list): List of azimuth angles.
+        radial_angles (list): List of radial angles.
+        tis_data (dict): TIS values, format: { (rot, inc): TIS_value }
+        bsdf_data (dict): BSDF values, format: { (rot, inc): 2D array [azimuth][radial] }
+    """
+
+    def format_line(values):
+        return ' '.join(f"{v:.6f}" if isinstance(v, float) else str(v) for v in values)
+
+    with open(filename, 'w') as f:
+        f.write("# Zemax Tabular BSDF file generated via Python\n")
+        f.write(f"# Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write("Source Measured\n")
+        f.write(f"Symmetry {symmetry}\n")
+        f.write(f"SpectralContent {spectral_content}\n")
+        f.write(f"ScatterType {scatter_type}\n")
+
+        # Sample Rotations
+        f.write(f"SampleRotation {len(sample_rotations)}\n")
+        f.write(format_line(sample_rotations) + "\n")
+
+        # Angles of Incidence
+        f.write(f"AngleOfIncidence {len(incidence_angles)}\n")
+        f.write(format_line(incidence_angles) + "\n")
+
+        # Azimuth
+        f.write(f"ScatterAzimuth {len(azimuth_angles)}\n")
+        f.write(format_line(azimuth_angles) + "\n")
+
+        # Radial
+        f.write(f"ScatterRadial {len(radial_angles)}\n")
+        f.write(format_line(radial_angles) + "\n\n")
+
+        f.write(f"{spectral_content}\n")
+        f.write("DataBegin\n")
+
+        for rot in sample_rotations:
+            for inc in incidence_angles:
+                key = (rot, inc)
+                tis_value = tis_data.get(key, 0.0)
+                scatter_grid = bsdf_data.get(key)
+
+                if scatter_grid is None:
+                    raise ValueError(f"Missing BSDF data for rotation={rot}, incidence={inc}")
+
+                f.write(f"TIS {tis_value:.6f}\n")
+
+                for row in scatter_grid:
+                    f.write(format_line(row) + "\n")
+
+        f.write("DataEnd\n")
 

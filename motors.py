@@ -24,28 +24,28 @@ class Motors:
         self.move_detector_radial(self.detector_rad_offset)
 
     def move_light_azimuthal(self, angle):
-        """Move light source to an absolute azimuthal angle."""
+        """Move light source in the azimuthal direction."""
         print(f"Command: Go to light azimuthal {angle}°")
         command = f"LIGHT_AZ_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         time.sleep(2)
 
     def move_light_radial(self, angle):
-        """Rotate light source in the radial direction."""
+        """Move light source in the radial direction."""
         print(f"Go to light radial {angle}°")
         command = f"LIGHT_RAD_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         time.sleep(2)
 
     def move_detector_azimuthal(self, angle):
-        """Rotate detector in the azimuthal direction."""
+        """Move detector in the azimuthal direction."""
         print(f"Go to detector azimuthal {angle}°")
         command = f"DET_AZ_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         time.sleep(2)
 
     def move_detector_radial(self, angle):
-        """Rotate detector in the radial direction."""
+        """Move detector in the radial direction."""
         print(f"Go to detector radial {angle}°")
         command = f"DET_RAD_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
