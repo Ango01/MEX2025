@@ -112,8 +112,12 @@ def save_bsdf(app):
         # Prepare angles
         incidence_angles = sorted(set(k[0] for k in app.bsdf_measurements.keys()))
         azimuth_angles = sorted(set(k[1] for k in app.bsdf_measurements.keys()))
-        best_key = max(app.bsdf_measurements.keys(), key=lambda k: len(app.bsdf_measurements[k]))
-        radial_angles = sorted(set(r for (r, *_means) in app.bsdf_measurements[best_key]))
+        all_radials = set()
+        for measurements in app.bsdf_measurements.values():
+            for r, *_means in measurements:
+                all_radials.add(r)
+
+        radial_angles = sorted(all_radials)
 
         # Group by (rotation, incidence)
         tis_data = {}
