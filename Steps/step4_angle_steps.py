@@ -67,7 +67,7 @@ def update_step_label(app, key, label):
         app.step_counts[key] = None  # Optional: store None for errors
 
 def save_step_settings(app):
-    """Store selected angle step sizes (as float) in app.angle_step_sizes."""
+    """Store selected angle step sizes."""
     app.angle_step_sizes = {}
     for key, combobox in app.angle_inputs.items():
         value = combobox.get()

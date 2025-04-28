@@ -107,14 +107,13 @@ def save_bsdf(app):
         symmetry = "PlaneSymmetrical"
         spectral_content = "Monochrome"
         scatter_type = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
-        sample_rotations = [0.0]
+        sample_rotations = [0]
 
         # Prepare angles
         incidence_angles = sorted(set(k[0] for k in app.bsdf_measurements.keys()))
         azimuth_angles = sorted(set(k[1] for k in app.bsdf_measurements.keys()))
-        # Get radial angles safely
-        first_key = next(iter(app.bsdf_measurements.keys()))
-        radial_angles = sorted(set(r for (r, *_means) in app.bsdf_measurements[first_key]))
+        best_key = max(app.bsdf_measurements.keys(), key=lambda k: len(app.bsdf_measurements[k]))
+        radial_angles = sorted(set(r for (r, *_means) in app.bsdf_measurements[best_key]))
 
         # Group by (rotation, incidence)
         tis_data = {}
