@@ -81,28 +81,28 @@ def save_step_settings(app):
 def generate_angle_lists(app):
     """Generate incidence, azimuthal, and radial angles based on selected step sizes."""
     mtype = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
-    start_incidence, end_incidence = RANGE_MAP.get(mtype, (8, 175))
+    start, end = RANGE_MAP.get(mtype, (8, 175))
 
     # Light source - incidence angles
     ls_rad_step = app.angle_step_sizes.get("ls_rad", 5)
     app.incidence_angles = []
-    current = start_incidence
-    while current <= end_incidence:
+    current = start
+    while current <= end:
         app.incidence_angles.append(current)
         current += ls_rad_step
 
     # Detector azimuth angles (full circle, 0-360)
     det_az_step = app.angle_step_sizes.get("det_az", 5)
     app.azimuth_angles = []
-    current = 0
-    while current < 360:
+    current = start
+    while current <= end:
         app.azimuth_angles.append(current)
         current += det_az_step
 
     # Detector radial angles (scattering angles, usually 0–90)
     det_rad_step = app.angle_step_sizes.get("det_rad", 5)
     app.radial_angles = []
-    current = 0
-    while current <= 90:
+    current = start
+    while current <= end:
         app.radial_angles.append(current)
         current += det_rad_step
