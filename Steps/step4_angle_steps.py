@@ -17,7 +17,7 @@ def create(app, container):
     grid.pack()
 
     app.angle_inputs = {}
-    options = ["2", "5", "10"]  # Options for angular step size (in degrees) -> add different options for light source
+    options = ["2", "5", "10", "100"]  # Options for angular step size (in degrees) -> add different options for light source
     step_labels= {}
     app.step_counts = {} 
 
@@ -36,7 +36,7 @@ def create(app, container):
         app.angle_inputs[key] = combobox
 
         # Label to show number of steps
-        step_label = ttk.Label(grid, text="Steps: ?", width=15)
+        step_label = ttk.Label(grid, text="Total Steps: ?", width=15)
         step_label.grid(row=i, column=2, padx=5)
         step_labels[key] = step_label
 
