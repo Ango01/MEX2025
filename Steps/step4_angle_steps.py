@@ -36,7 +36,7 @@ def create(app, container):
         app.angle_inputs[key] = combobox
 
         # Label to show number of steps
-        step_label = ttk.Label(grid, text="Total Steps: ?", width=15)
+        step_label = ttk.Label(grid, text="Steps: ?", width=15)
         step_label.grid(row=i, column=2, padx=5)
         step_labels[key] = step_label
 
@@ -57,13 +57,13 @@ def update_step_label(app, key, label):
         start, end = RANGE_MAP.get(mtype, (8, 175))
 
         count = int((end - start) / step_deg)
-        label.config(text=f"Total Steps: {count}")
+        label.config(text=f"Steps: {count}")
 
         # Store in app.step_counts
         app.step_counts[key] = count
 
     except Exception:
-        label.config(text="Total Steps: ?")
+        label.config(text="Steps: ?")
         app.step_counts[key] = None  # Optional: store None for errors
 
 def save_step_settings(app):

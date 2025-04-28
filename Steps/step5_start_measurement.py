@@ -115,11 +115,11 @@ def save_bsdf(app):
         azimuth_angles = app.azimuth_angles
         radial_angles = app.radial_angles
         tis_data = {
-            (0.0, 18.0): 0.05  # Example: (rotation, incidence) -> TIS value
+            (0.0, 8.0): 0.05  # Example: (rotation, incidence) -> TIS value
         }
 
         bsdf_data = {
-            (0.0, 18.0): [
+            (0.0, 8.0): [
                 [0.01, 0.02, 0.03],   # azimuth 0°: values over radial
                 [0.015, 0.025, 0.035], # azimuth 10°: values over radial
                 [0.02, 0.03, 0.04]    # azimuth 20°: values over radial
