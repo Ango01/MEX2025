@@ -17,7 +17,7 @@ def create(app, container):
     grid.pack()
 
     app.angle_inputs = {}
-    options = ["2", "5", "10", "200"]  # Options for angular step size (in degrees) -> add different options for light source
+    options = ["2", "5", "10", "100"]  # Options for angular step size (in degrees) -> add different options for light source
     step_labels= {}
     app.step_counts = {} 
 
