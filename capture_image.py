@@ -115,7 +115,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                 for drad_i in range(det_rad_steps):
                     if check_stop(app): return
                     #det_rad = start_angle + drad_i * det_rad_step
-                    det_rad = app.radial_angles[det_rad]
+                    det_rad = app.radial_angles[drad_i]
                     motors.move_detector_radial(det_rad)
                     time.sleep(1)
 
