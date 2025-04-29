@@ -123,16 +123,15 @@ def save_bsdf(app):
         bsdf_data = {}
 
         for inc_angle in incidence_angles:
-            scatter_block = []  # Will be a list of azimuth rows, each row contains [R,G,B] triplets
+            scatter_block = []
             tis_value = 0.0
 
             for az_angle in azimuth_angles:
                 key = (inc_angle, az_angle)
                 if key not in app.bsdf_measurements:
-                    print(f"Missing measurement for incidence={inc_angle}, azimuth={az_angle}, skipping...")
                     continue
 
-                radial_measurements = app.bsdf_measurements[key]  # This is a list of [ [R,G,B], ... ]
+                radial_measurements = app.bsdf_measurements[key]
 
                 for row in radial_measurements:
                     for rgb in row:
@@ -141,11 +140,19 @@ def save_bsdf(app):
                         r, g, b = rgb
                         tis_value += r + g + b
 
-                scatter_block.append(radial_measurements)
+                # Proper flattening
+                flat_row = []
+                for row in radial_measurements:
+                    for point in row:
+                        if point is None:
+                            flat_row.append((0.0, 0.0, 0.0))
+                        else:
+                            flat_row.append(point)
 
-            # Save
+                scatter_block.append(flat_row)
+
             tis_data[(0.0, inc_angle)] = tis_value
-            bsdf_data[(0.0, inc_angle)] = scatter_block  # list of azimuth rows, each containing radial [R,G,B]
+            bsdf_data[(0.0, inc_angle)] = scatter_block
 
         # Now generate the file
         generate_zemax_bsdf_file(
