@@ -105,7 +105,12 @@ def generate_zemax_bsdf_file(
                 f.write(f"TIS {tis_value:.6f}\n")
 
                 for row in scatter_grid:
-                    f.write(format_line(row) + "\n")
-
+                    line = []
+                    for point in row:
+                        if len(point) != 3:
+                            raise ValueError(f"Each BSDF point must have 3 values (X,Y,Z), got {len(point)} values.")
+                        line.extend(point)  # Unpack X, Y, Z
+                    f.write(format_line(line) + "\n")
+                    
         f.write("DataEnd\n")
 

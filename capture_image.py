@@ -164,11 +164,14 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         # Key: (light incidence angle, detector azimuth angle)
                         key = (light_rad, det_az)
 
+                        # Initialize 2D grid [azimuth index][radial index] if first time
                         if key not in app.bsdf_measurements:
-                            app.bsdf_measurements[key] = []
+                            app.bsdf_measurements[key] = [
+                                [None for _ in range(det_rad_steps)] for _ in range(det_az_steps)
+                            ]
 
-                        # Save r_mean, g_mean, b_mean at this radial position
-                        app.bsdf_measurements[key][det_rad] = (r_mean, g_mean, b_mean)
+                        # Store the [R,G,B] mean intensity at the correct azimuth/radial position
+                        app.bsdf_measurements[key][daz_i][drad_i] = (r_mean, g_mean, b_mean)
 
                     capture_index += 1
 
