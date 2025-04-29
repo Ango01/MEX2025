@@ -134,16 +134,17 @@ def save_bsdf(app):
 
                 radial_measurements = app.bsdf_measurements[key]  # This is a list of [ [R,G,B], ... ]
 
-                for rgb in radial_measurements:
-                    if rgb is None:
-                        continue
-                    r, g, b = rgb
-                    tis_value += r + g + b
+                for row in radial_measurements:
+                    for rgb in row:
+                        if rgb is None:
+                            continue
+                        r, g, b = rgb
+                        tis_value += r + g + b
+                
+                scatter_block.append(radial_measurements)
 
-                scatter_block.append(radial_measurements)  # Each row: list of [R,G,B]
-
-            if not scatter_block:
-                print(f"No data for incidence={inc_angle}, skipping...")
+                if not scatter_block:
+                    print(f"No data for incidence={inc_angle}, skipping...")
                 continue
 
             # Save
