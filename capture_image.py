@@ -155,7 +155,8 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         r_mean = circular_roi_mean(R)
                         g_mean = circular_roi_mean(G)
                         b_mean = circular_roi_mean(B)
-
+                        print("Storing RGB:", r_mean, g_mean, b_mean)
+                        assert all(isinstance(x, (int, float)) for x in (r_mean, g_mean, b_mean)), "RGB values must be floats"
                         print(f"ROI Mean Intensities - R: {r_mean:.2f}, G: {g_mean:.2f}, B: {b_mean:.2f}")
 
                         if not hasattr(app, "bsdf_measurements"):
