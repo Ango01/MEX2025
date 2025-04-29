@@ -102,17 +102,20 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
         for lrad_i in range(ls_rad_steps):
             if check_stop(app): return
-            light_rad = start_angle + lrad_i * ls_rad_step
+            #light_rad = start_angle + lrad_i * ls_rad_step
+            light_rad = app.incidence_angles[lrad_i]
             motors.move_light_radial(light_rad)
 
             for daz_i in range(det_az_steps):
                 if check_stop(app): return
-                det_az = start_angle + daz_i * det_az_step
+                #det_az = start_angle + daz_i * det_az_step
+                det_az = app.azimuth_angles[daz_i]
                 motors.move_detector_azimuthal(det_az)
 
                 for drad_i in range(det_rad_steps):
                     if check_stop(app): return
-                    det_rad = start_angle + drad_i * det_rad_step
+                    #det_rad = start_angle + drad_i * det_rad_step
+                    det_rad = app.radial_angles[det_rad]
                     motors.move_detector_radial(det_rad)
                     time.sleep(1)
 

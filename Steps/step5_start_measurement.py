@@ -110,13 +110,9 @@ def save_bsdf(app):
         sample_rotations = [0]
 
         # Prepare angles
-        incidence_angles = sorted(set(k[0] for k in app.bsdf_measurements.keys()))
-        azimuth_angles = sorted(set(k[1] for k in app.bsdf_measurements.keys()))
-
-        # Assuming radial angles are evenly spaced
-        first_key = next(iter(app.bsdf_measurements))
-        az_grid = app.bsdf_measurements[first_key]
-        radial_angles = list(range(len(az_grid[0])))  # simple 0,1,2,3,... unless you store real radial angles
+        incidence_angles = app.incidence_angles
+        azimuth_angles = app.azimuth_angles
+        radial_angles = app.radial_angles
 
         # Group by (rotation, incidence)
         tis_data = {}
