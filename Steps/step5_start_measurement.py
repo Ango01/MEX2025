@@ -134,9 +134,11 @@ def save_bsdf(app):
 
                 radial_measurements = app.bsdf_measurements[key]  # This is a list of [ [R,G,B], ... ]
 
-                # Sum R, G, B for TIS calculation
-                tis_row_sum = sum(sum(rgb) for rgb in radial_measurements)
-                tis_value += tis_row_sum
+                for rgb in radial_measurements:
+                    if rgb is None:
+                        continue
+                    r, g, b = rgb
+                    tis_value += r + g + b
 
                 scatter_block.append(radial_measurements)  # Each row: list of [R,G,B]
 
