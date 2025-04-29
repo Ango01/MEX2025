@@ -155,6 +155,7 @@ def save_bsdf(app):
         generate_zemax_bsdf_file(
             filename=filename,
             symmetry=symmetry,
+            spectral_content=spectral_content,
             scatter_type=scatter_type,
             sample_rotations=sample_rotations,
             incidence_angles=incidence_angles,
