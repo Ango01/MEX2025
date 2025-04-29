@@ -151,20 +151,11 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         # Extract channels
                         R, G, B = extract_color_channels(combined)
 
-                        # Ensure all channels are valid arrays
-                        if R is None or G is None or B is None:
-                            print("One of the color channels is None, skipping...")
-                            continue
-
                         # Get ROI means
                         r_mean = circular_roi_mean(R)
                         g_mean = circular_roi_mean(G)
                         b_mean = circular_roi_mean(B)
-                        print("r_mean:", r_mean, type(r_mean))
-                        print("g_mean:", g_mean, type(g_mean))
-                        print("b_mean:", b_mean, type(b_mean))
-
-                        print("Storing RGB:", r_mean, g_mean, b_mean)
+                    
                         print(f"ROI Mean Intensities - R: {r_mean:.2f}, G: {g_mean:.2f}, B: {b_mean:.2f}")
 
                         if not hasattr(app, "bsdf_measurements"):

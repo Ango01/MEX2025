@@ -140,11 +140,7 @@ def save_bsdf(app):
                             continue
                         r, g, b = rgb
                         tis_value += r + g + b
-                
-                if any(len(rgb) != 3 or None in rgb for row in radial_measurements for rgb in row if rgb is not None):
-                    print(f"Incomplete RGB triplet at incidence={inc_angle}, azimuth={az_angle}, skipping...")
-                    continue
-                
+
                 scatter_block.append(radial_measurements)
 
             # Save

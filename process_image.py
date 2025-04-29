@@ -33,7 +33,7 @@ def circular_roi_mean(image, diameter=20):
     std_val = np.std(roi_values)
     sigma = std_val / np.sqrt(N)
 
-    return mean_val
+    return float(mean_val)
 
 def generate_zemax_bsdf_file(
     filename: str,
@@ -111,6 +111,6 @@ def generate_zemax_bsdf_file(
                             raise ValueError(f"Each BSDF point must have 3 values (X,Y,Z), got {len(point)} values.")
                         line.extend(point)  # Unpack X, Y, Z
                     f.write(format_line(line) + "\n")
-                    
+
         f.write("DataEnd\n")
 
