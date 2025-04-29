@@ -160,10 +160,9 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         r_mean = circular_roi_mean(R)
                         g_mean = circular_roi_mean(G)
                         b_mean = circular_roi_mean(B)
-                        # Check if means are valid numbers
-                        if not all(isinstance(x, (int, float)) and not np.isnan(x) for x in (r_mean, g_mean, b_mean)):
-                            print("Invalid ROI means:", r_mean, g_mean, b_mean, "Skipping...")
-                            continue
+                        print("r_mean:", r_mean, type(r_mean))
+                        print("g_mean:", g_mean, type(g_mean))
+                        print("b_mean:", b_mean, type(b_mean))
 
                         print("Storing RGB:", r_mean, g_mean, b_mean)
                         print(f"ROI Mean Intensities - R: {r_mean:.2f}, G: {g_mean:.2f}, B: {b_mean:.2f}")
