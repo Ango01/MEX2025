@@ -133,23 +133,23 @@ def save_bsdf(app):
 
                 radial_measurements = app.bsdf_measurements[key]
 
-                for row in radial_measurements:
-                    for rgb in row:
-                        if rgb is None:
-                            continue
-                        r, g, b = rgb
-                        tis_value += r + g + b
-
-                # Proper flattening
-                flat_row = []
+                azimuth_row = []
                 for row in radial_measurements:
                     for point in row:
                         if point is None:
-                            flat_row.append((0.0, 0.0, 0.0))
+                            azimuth_row.append((0.0, 0.0, 0.0))
                         else:
-                            flat_row.append(point)
+                            azimuth_row.append(point)
 
-                scatter_block.append(flat_row)
+                # Corrected: Append this azimuth line
+                scatter_block.append(azimuth_row)
+
+                # TIS calculation (sum all R, G, B)
+                for row in radial_measurements:
+                    for rgb in row:
+                        if rgb is not None:
+                            r, g, b = rgb
+                            tis_value += r + g + b
 
             tis_data[(0.0, inc_angle)] = tis_value
             bsdf_data[(0.0, inc_angle)] = scatter_block
