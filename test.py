@@ -163,7 +163,7 @@ def main():
 
         plot_color_histograms(R, G, B, angle)
         save_path = os.path.join(output_folder, f"heatmap_histogram_{angle}.png")
-        plot_heatmap_and_histogram(raw_array, f"{angle}°", save_path)
+        plot_heatmap_and_histogram(raw_array, save_path)
 
     
     #capture_exposure_curve(picam2, output_folder, start_us=30, step_us=1000, count=5)
