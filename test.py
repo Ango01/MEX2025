@@ -36,6 +36,30 @@ def plot_color_histograms(R, G, B, angle):
     plt.grid(True)
     plt.show()
 
+def plot_heatmap_and_histogram(raw_array, title_prefix, save_path):
+
+    fig, axs = plt.subplots(1, 2, figsize=(14, 6))
+
+    # Heatmap (left)
+    im = axs[0].imshow(raw_array, cmap='inferno', aspect='auto')
+    axs[0].set_title(f"{title_prefix} - Heatmap")
+    axs[0].set_xlabel("X Pixels")
+    axs[0].set_ylabel("Y Pixels")
+    fig.colorbar(im, ax=axs[0], fraction=0.046, pad=0.04, label="Pixel Intensity")
+
+    # Histogram (right)
+    axs[1].hist(raw_array.flatten(), bins=50, color='purple', alpha=0.7, edgecolor='black')
+    axs[1].set_title(f"{title_prefix} - Intensity Histogram")
+    axs[1].set_xlabel("Pixel Intensity (0-1023)")
+    axs[1].set_ylabel("Frequency")
+    axs[1].grid(True)
+
+    plt.tight_layout()
+    plt.savefig(save_path)
+    plt.show()
+    print(f"Saved heatmap + histogram plot to {save_path}")
+
+
 def save_grayscale_and_histogram(raw_array, angle, output_folder):
     fig, axs = plt.subplots(1, 2, figsize=(14, 6))
 
@@ -120,11 +144,6 @@ def main():
         raw_array = picam2.capture_array("raw").view(np.uint16)
         print(f"Captured image at {angle} degrees")
 
-        pixel_values = raw_array.flatten()
-
-        plot_pixel_histogram(pixel_values, angle)
-        plot_heatmap(raw_array, angle)
-
         # Extract Bayer channels
         B = raw_array[0::2, 0::2]
         G1 = raw_array[0::2, 1::2]
@@ -133,7 +152,9 @@ def main():
         G = (G1 + G2) / 2
 
         plot_color_histograms(R, G, B, angle)
-        save_grayscale_and_histogram(raw_array, angle, output_folder)
+        save_path = os.path.join(output_folder, f"heatmap_histogram_{angle}.png")
+        plot_heatmap_and_histogram(raw_array, f"{angle}°", save_path)
+
     
     #capture_exposure_curve(picam2, output_folder, start_us=30, step_us=1000, count=5)
 
