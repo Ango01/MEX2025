@@ -36,28 +36,38 @@ def plot_color_histograms(R, G, B, angle):
     plt.grid(True)
     plt.show()
 
-def plot_heatmap_and_histogram(raw_array, title_prefix, save_path):
+def plot_heatmap_and_histogram(raw_array, save_path):
 
     fig, axs = plt.subplots(1, 2, figsize=(14, 6))
 
-    # Heatmap (left)
+    # --- Heatmap (left) ---
     im = axs[0].imshow(raw_array, cmap='inferno', aspect='auto')
-    axs[0].set_title(f"{title_prefix} - Heatmap")
+    axs[0].set_title(f"Heatmap")
     axs[0].set_xlabel("X Pixels")
     axs[0].set_ylabel("Y Pixels")
     fig.colorbar(im, ax=axs[0], fraction=0.046, pad=0.04, label="Pixel Intensity")
 
-    # Histogram (right)
-    axs[1].hist(raw_array.flatten(), bins=50, color='purple', alpha=0.7, edgecolor='black')
-    axs[1].set_title(f"{title_prefix} - Intensity Histogram")
+    # --- Extract SBGGR10 Bayer Pattern Channels ---
+    B = raw_array[0::2, 0::2]     # Blue
+    G1 = raw_array[0::2, 1::2]    # Green 1
+    G2 = raw_array[1::2, 0::2]    # Green 2
+    R = raw_array[1::2, 1::2]     # Red
+    G = (G1 + G2) / 2             # Average Green
+
+    # --- Color Channel Histograms (right) ---
+    axs[1].hist(R.flatten(), bins=50, color='red', alpha=0.6, label="Red", edgecolor='black')
+    axs[1].hist(G.flatten(), bins=50, color='green', alpha=0.6, label="Green", edgecolor='black')
+    axs[1].hist(B.flatten(), bins=50, color='blue', alpha=0.6, label="Blue", edgecolor='black')
+    axs[1].set_title(f"Color Channel Histogram")
     axs[1].set_xlabel("Pixel Intensity (0-1023)")
     axs[1].set_ylabel("Frequency")
+    axs[1].legend()
     axs[1].grid(True)
 
     plt.tight_layout()
     plt.savefig(save_path)
     plt.show()
-    print(f"Saved heatmap + histogram plot to {save_path}")
+    print(f"Saved heatmap + color channel histogram to {save_path}")
 
 
 def save_grayscale_and_histogram(raw_array, angle, output_folder):
