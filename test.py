@@ -1,106 +1,146 @@
 from picamera2 import Picamera2
 import time
 import numpy as np
-import rawpy
-import cv2
-import matplotlib.pyplot as plt
 import os
+import matplotlib.pyplot as plt
 
-# Initialize camera
-picam2 = Picamera2()
+# ======== Plotting Functions ========
 
-# Configure RAW10 capture
-config = picam2.create_still_configuration(raw={"format": "SRGGB10", "size": (1456, 1088)})
-picam2.configure(config)
+def plot_pixel_histogram(pixel_values, angle):
+    plt.figure(figsize=(8, 6))
+    plt.hist(pixel_values, bins=50, color='blue', alpha=0.7, edgecolor='black')
+    plt.title(f"Pixel Intensity Histogram at {angle}°")
+    plt.xlabel("Pixel Intensity (0-1023)")
+    plt.ylabel("Frequency")
+    plt.grid(True)
+    plt.show()
 
-picam2.set_controls({
-  "ExposureTime": 50,     # Set exposure time (in microseconds)
-  "AnalogueGain": 1.0,    # Set gain to 1.0 (no artificial brightness boost)
-  "AeEnable": False,      # Disable auto-exposure
-  "AwbEnable": False,     # Disable auto white balance
-})
+def plot_heatmap(raw_array, angle):
+    plt.figure(figsize=(8, 6))
+    plt.imshow(raw_array, cmap='inferno', aspect='auto')
+    plt.colorbar(label="Pixel Intensity (0-1023)")
+    plt.title(f"Heatmap of RAW Image at {angle}°")
+    plt.xlabel("X Pixels")
+    plt.ylabel("Y Pixels")
+    plt.show()
 
-angles = range(0, 10, 10)  # Capture images at every 10 degrees
+def plot_color_histograms(R, G, B, angle):
+    plt.figure(figsize=(8, 6))
+    plt.hist(R.flatten(), bins=50, color='red', alpha=0.6, label="Red", edgecolor='black')
+    plt.hist(G.flatten(), bins=50, color='green', alpha=0.6, label="Green", edgecolor='black')
+    plt.hist(B.flatten(), bins=50, color='blue', alpha=0.6, label="Blue", edgecolor='black')
+    plt.title(f"Color Channel Histograms at {angle}°")
+    plt.xlabel("Pixel Intensity (0-1023)")
+    plt.ylabel("Frequency")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
-# Create a folder to store images
-output_folder = "Captured_Images"
-os.makedirs(output_folder, exist_ok=True)
+def save_grayscale_and_histogram(raw_array, angle, output_folder):
+    fig, axs = plt.subplots(1, 2, figsize=(14, 6))
 
-picam2.start()
-time.sleep(1)  # Allow camera to warm up
+    im = axs[0].imshow(raw_array, cmap='gray', aspect='auto')
+    axs[0].set_title("Grayscale View")
+    axs[0].set_xlabel("X Pixels")
+    axs[0].set_ylabel("Y Pixels")
+    fig.colorbar(im, ax=axs[0], fraction=0.046, pad=0.04, label="Pixel Intensity")
 
-for angle in angles:
-  input(f"Press Enter to capture image at {angle} degrees...")
+    axs[1].hist(raw_array.flatten(), bins=50, color='gray', edgecolor='black', alpha=0.7)
+    axs[1].set_title("Grayscale Pixel Intensity Histogram")
+    axs[1].set_xlabel("Pixel Intensity (0-1023)")
+    axs[1].set_ylabel("Frequency")
+    axs[1].grid(True)
 
-  raw_array = picam2.capture_array("raw").view(np.uint16)
-  print(f"Captured image at {angle} degrees")
-
-  # Flatten the image for histogram
-  pixel_values = raw_array.flatten()
-
-  # Plot histogram of RAW pixel intensities
-  plt.figure(figsize=(8, 6))
-  plt.hist(pixel_values, bins=50, color='blue', alpha=0.7, edgecolor='black')
-  plt.title(f"Pixel Intensity Histogram")
-  plt.xlabel("Pixel Intensity (0-1023)")
-  plt.ylabel("Frequency")
-  plt.grid(True)
-  plt.show()
-
-  # Plot Heatmap of RAW Image
-  plt.figure(figsize=(8,6))
-  plt.imshow(raw_array, cmap='inferno', aspect='auto')
-  plt.colorbar(label="Pixel Intensity (0-1023)")
-  plt.title(f"Heatmap of RAW Image at {angle} Degrees")
-  plt.xlabel("X Pixels")
-  plt.ylabel("Y Pixels")
-  plt.show()
-
-  ## ---- Extract Color Channels from SBGGR10 Bayer Pattern ---- ##
-  # Bayer pattern: SBGGR (Blue in top-left)
-  B = raw_array[0::2, 0::2]     # Blue pixels (every 2nd row, every 2nd column)
-  G1 = raw_array[0::2, 1::2]    # Green pixels (row 1, col 2)
-  G2 = raw_array[1::2, 0::2]    # Green pixels (row 2, col 1)
-  R = raw_array[1::2, 1::2]     # Red pixels (every 2nd row, every 2nd column)
-
-  # Merge both Green channels for better statistics
-  G = (G1 + G2) / 2
-
-  # Plot histograms for each color channel
-  plt.figure(figsize=(8, 6))
-  plt.hist(R.flatten(), bins=50, color='red', alpha=0.6, label="Red", edgecolor='black')
-  plt.hist(G.flatten(), bins=50, color='green', alpha=0.6, label="Green", edgecolor='black')
-  plt.hist(B.flatten(), bins=50, color='blue', alpha=0.6, label="Blue", edgecolor='black')
-  plt.title(f"Color Channel Histograms")
-  plt.xlabel("Pixel Intensity (0-1023)")
-  plt.ylabel("Frequency")
-  plt.legend()
-  plt.grid(True)
-  plt.show()
+    plt.tight_layout()
+    save_path = os.path.join(output_folder, f"grayscale_plot_{angle}.png")
+    plt.savefig(save_path)
+    plt.show()
+    print(f"Saved grayscale + histogram plot at {save_path}")
   
-  # Create side-by-side plot: Grayscale image + histogram
-  fig, axs = plt.subplots(1, 2, figsize=(14, 6))
+def capture_exposure_curve(picam2, output_folder, start_us, step_us, count):
+    exposure_times = []
+    mean_intensities = []
 
-  # Grayscale image
-  im = axs[0].imshow(raw_array, cmap='gray', aspect='auto')
-  axs[0].set_title(f"Grayscale View")
-  axs[0].set_xlabel("X Pixels")
-  axs[0].set_ylabel("Y Pixels")
-  fig.colorbar(im, ax=axs[0], fraction=0.046, pad=0.04, label="Pixel Intensity")
+    for i in range(count):
+        exp_time = start_us + i * step_us
+        print(f"\nSetting exposure time to {exp_time} µs...")
 
-  # Histogram of grayscale values
-  axs[1].hist(raw_array.flatten(), bins=50, color='gray', edgecolor='black', alpha=0.7)
-  axs[1].set_title("Grayscale Pixel Intensity Histogram")
-  axs[1].set_xlabel("Pixel Intensity (0-1023)")
-  axs[1].set_ylabel("Frequency")
-  axs[1].grid(True)
+        # Set exposure manually
+        picam2.set_controls({"ExposureTime": exp_time})
+        time.sleep(0.5)  # Allow time for settings to apply
 
-  # Save the figure to file
-  grayscale_plot_path = os.path.join(output_folder, f"grayscale_plot_{angle}.png")
-  plt.tight_layout()
-  plt.savefig(grayscale_plot_path)
-  plt.show()
-  print(f"Saved grayscale + histogram plot at {grayscale_plot_path}")
+        input(f"Press Enter to capture image at {exp_time} µs...")
 
-picam2.stop()
-print("Capture sequence completed.")
+        raw_array = picam2.capture_array("raw").view(np.uint16)
+        mean_intensity = np.mean(raw_array)
+        exposure_times.append(exp_time)
+        mean_intensities.append(mean_intensity)
+
+        print(f"Captured. Mean intensity: {mean_intensity:.2f}")
+
+    # Plot curve
+    plt.figure(figsize=(8, 6))
+    plt.plot(exposure_times, mean_intensities, marker='o')
+    plt.title("Exposure Time vs Mean Pixel Intensity")
+    plt.xlabel("Exposure Time (µs)")
+    plt.ylabel("Mean Pixel Intensity (0-1023)")
+    plt.grid(True)
+
+    plot_path = os.path.join(output_folder, "exposure_vs_intensity.png")
+    plt.savefig(plot_path)
+    plt.show()
+    print(f"Saved exposure curve to {plot_path}")
+
+
+# ======== Main Program ========
+
+def main():
+    picam2 = Picamera2()
+    config = picam2.create_still_configuration(raw={"format": "SRGGB10", "size": (1456, 1088)})
+    picam2.configure(config)
+
+    picam2.set_controls({
+        "ExposureTime": 50,
+        "AnalogueGain": 1.0,
+        "AeEnable": False,
+        "AwbEnable": False,
+    })
+
+    output_folder = "Captured_Images"
+    os.makedirs(output_folder, exist_ok=True)
+
+    picam2.start()
+    time.sleep(1)
+
+    angles = range(0, 3, 1)  # Change to 10 step if needed
+
+    for angle in angles:
+        input(f"Press Enter to capture image at {angle} degrees...")
+
+        raw_array = picam2.capture_array("raw").view(np.uint16)
+        print(f"Captured image at {angle} degrees")
+
+        pixel_values = raw_array.flatten()
+
+        plot_pixel_histogram(pixel_values, angle)
+        plot_heatmap(raw_array, angle)
+
+        # Extract Bayer channels
+        B = raw_array[0::2, 0::2]
+        G1 = raw_array[0::2, 1::2]
+        G2 = raw_array[1::2, 0::2]
+        R = raw_array[1::2, 1::2]
+        G = (G1 + G2) / 2
+
+        plot_color_histograms(R, G, B, angle)
+        save_grayscale_and_histogram(raw_array, angle, output_folder)
+    
+    #capture_exposure_curve(picam2, output_folder, start_us=30, step_us=1000, count=5)
+
+    picam2.stop()
+    print("Capture sequence completed.")
+
+# ======== Run Main ========
+if __name__ == "__main__":
+    main()
+
