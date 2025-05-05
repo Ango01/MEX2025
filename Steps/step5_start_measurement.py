@@ -110,8 +110,8 @@ def save_bsdf(app):
 
         # Prepare angles
         incidence_angles = app.incidence_angles
-        azimuth_angles = app.azimuth_angles
-        radial_angles = app.radial_angles
+        azimuth_angles = app.det_azimuth_angles
+        radial_angles = app.det_radial_angles
 
         # Group by (rotation, incidence)
         tis_data = {}
