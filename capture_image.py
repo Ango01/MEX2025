@@ -70,8 +70,8 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
     os.makedirs(save_dir, exist_ok=True)
 
     # Retrieve angles from app (Step 4)
-    light_radial_angles = app.incidence_angles          # SampleRotation
-    light_azimuth_angles = app.light_azimuth_angles     # AngleOfIncidence
+    light_radial_angles = app.light_radial_angles       # SampleRotation
+    light_azimuth_angles = app.incidence_angles         # AngleOfIncidence
     det_azimuth_angles = app.det_azimuth_angles         # ScatterAzimuth
     det_radial_angles = app.det_radial_angles           # ScatterRadial
 
