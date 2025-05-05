@@ -32,8 +32,7 @@ def capture_dark_frame(app):
         dark_frame = capture_raw_image(app.camera)
 
         if dark_frame is not None:
-            # Store both raw frame and its mean value
-            app.dark_frame = dark_frame
+            # Store dark mean value
             app.dark_value = dark_frame.mean()
 
             # Debug info in console
@@ -54,7 +53,6 @@ def set_nominal_dark_value(app, entry):
     """Function to manually set a nominal dark value."""
     try:
         value = float(entry.get())
-        app.dark_frame = None  # No actual frame, just a value
         app.dark_value = value
 
         app.set_status(f"Nominal dark value set: {app.dark_value:.2f}", "success")

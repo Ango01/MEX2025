@@ -15,14 +15,13 @@ def create(app, container):
 
     # Compose the summary text
     mtype = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
-    step_counts = app.step_counts
 
     summary_text = (
         f"Measurement Type: {mtype}\n\n"
-        f"Light Source - Total Azimuthal Steps: {step_counts['ls_az']} steps\n"
-        f"Light Source - Total Radial Steps: {step_counts['ls_rad']} steps\n"
-        f"Detector - Total Azimuthal Steps: {step_counts['det_az']} steps\n"
-        f"Detector - Total Radial Steps: {step_counts['det_rad']} steps"
+        f"Light Source - Azimuthal Step: {app.angle_step_sizes['ls_az']}° ({len(app.light_azimuth_angles)} positions)\n"
+        f"Light Source - Radial Step: {app.angle_step_sizes['ls_rad']}° ({len(app.incidence_angles)} positions)\n"
+        f"Detector - Azimuthal Step: {app.angle_step_sizes['det_az']}° ({len(app.det_azimuth_angles)} positions)\n"
+        f"Detector - Radial Step: {app.angle_step_sizes['det_rad']}° ({len(app.det_radial_angles)} positions)\n\n"
     )
 
     summary_label = ttk.Label(frame, text=summary_text, justify="left")

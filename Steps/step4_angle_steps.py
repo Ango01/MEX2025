@@ -1,5 +1,6 @@
 from tkinter import ttk
 
+# Angle ranges based on measurement type
 RANGE_MAP = {
     "BRDF": (8, 175),
     "BTDF": (188, 355),
@@ -16,10 +17,9 @@ def create(app, container):
     grid = ttk.Frame(frame)
     grid.pack()
 
-    app.angle_inputs = {}
-    options = ["2", "5", "10", "100"]  # Options for angular step size (in degrees) -> add different options for light source
-    step_labels= {}
-    app.step_counts = {} 
+    angle_inputs = {}
+    step_labels = {}
+    options = ["2", "5", "10", "100"]  # Light source + detector step size options
 
     labels = [
         ("Light Source - Azimuthal Step (°):", "ls_az"),
@@ -33,25 +33,27 @@ def create(app, container):
 
         combobox = ttk.Combobox(grid, values=options, width=8, state="readonly")
         combobox.grid(row=i, column=1, padx=5, pady=2)
-        app.angle_inputs[key] = combobox
+        angle_inputs[key] = combobox
 
         # Label to show number of steps
         step_label = ttk.Label(grid, text="Steps: ?", width=15)
         step_label.grid(row=i, column=2, padx=5)
         step_labels[key] = step_label
 
-        combobox.bind("<<ComboboxSelected>>", lambda e, k=key: update_step_label(app, k, step_labels[k]))
+        # Bind selection change
+        combobox.bind("<<ComboboxSelected>>", lambda e, k=key: update_step_label(app, angle_inputs, k, step_labels[k]))
 
+    # Next button
     ttk.Button(frame, text="Next", command=lambda: [
-        save_step_settings(app),
+        save_step_settings(app, angle_inputs),
         app.set_status("Measurement setup complete!", "success"),
         app.next_step()
     ]).pack(pady=10)
 
-def update_step_label(app, key, label):
+def update_step_label(app, angle_inputs, key, label):
     """Updates number of steps and stores them in app.step_counts."""
     try:
-        step_deg = float(app.angle_inputs[key].get())
+        step_deg = float(angle_inputs[key].get())
 
         mtype = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
         start, end = RANGE_MAP.get(mtype, (8, 175))
@@ -59,23 +61,18 @@ def update_step_label(app, key, label):
         count = int((end - start) / step_deg) + 1
         label.config(text=f"Steps: {count}")
 
-        # Store in app.step_counts
-        app.step_counts[key] = count
-
     except Exception:
         label.config(text="Steps: ?")
-        app.step_counts[key] = None  # Optional: store None for errors
 
-def save_step_settings(app):
-    """Store selected angle step sizes."""
+def save_step_settings(app, angle_inputs):
+    """Store selected angle step sizes and generate angle lists."""
     app.angle_step_sizes = {}
-    for key, combobox in app.angle_inputs.items():
+    for key, combobox in angle_inputs.items():
         value = combobox.get()
         if not value:
             raise ValueError(f"Step size not selected for {key}")
         app.angle_step_sizes[key] = float(value)
-    
-    # Also generate angles here
+
     generate_angle_lists(app)
 
 def generate_angle_lists(app):
@@ -83,26 +80,19 @@ def generate_angle_lists(app):
     mtype = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
     start, end = RANGE_MAP.get(mtype, (8, 175))
 
-    # Light source radial angles - incidence angles
+    # Light Source - Radial (Incidence)
     ls_rad_step = app.angle_step_sizes.get("ls_rad", 5)
-    app.incidence_angles = []
-    current = start
-    while current <= end:
-        app.incidence_angles.append(current)
-        current += ls_rad_step
+    app.incidence_angles = [angle for angle in range(start, end + 1, int(ls_rad_step))]
 
-    # Detector azimuth angles 
+    # Light Source - Azimuthal
+    ls_az_step = app.angle_step_sizes.get("ls_az", 5)
+    app.light_azimuth_angles = [angle for angle in range(start, end + 1, int(ls_az_step))]
+
+    # Detector - Azimuthal
     det_az_step = app.angle_step_sizes.get("det_az", 5)
-    app.azimuth_angles = []
-    current = start
-    while current <= end:
-        app.azimuth_angles.append(current)
-        current += det_az_step
+    app.det_azimuth_angles = [angle for angle in range(start, end + 1, int(det_az_step))]
 
-    # Detector radial angles 
+    # Detector - Radial
     det_rad_step = app.angle_step_sizes.get("det_rad", 5)
-    app.radial_angles = []
-    current = start
-    while current <= end:
-        app.radial_angles.append(current)
-        current += det_rad_step
+    app.det_radial_angles = [angle for angle in range(start, end + 1, int(det_rad_step))]
+

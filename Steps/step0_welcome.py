@@ -14,7 +14,6 @@ def create(app, container):
     ttk.Label(
         frame,
         text="Click 'Next' to begin the setup process.",
-        font=("Helvetica", 10)
     ).pack(pady=10)
 
     ttk.Button(

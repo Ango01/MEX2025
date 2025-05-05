@@ -69,55 +69,39 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
     os.makedirs(save_dir, exist_ok=True)
 
-    # Get angular range based on measurement type
-    mtype = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
-    start_angle, end_angle = RANGE_MAP.get(mtype, (8, 175))
+    # Retrieve angles from app (these were generated in Step 4)
+    light_azimuth_angles = app.light_azimuth_angles
+    light_radial_angles = app.incidence_angles
+    det_azimuth_angles = app.det_azimuth_angles
+    det_radial_angles = app.det_radial_angles
 
-    step_counts = app.step_counts
-    step_sizes = app.angle_step_sizes
-
-    # Get angle step sizes from combobox values
-    ls_az_step = step_sizes["ls_az"]
-    ls_rad_step = step_sizes["ls_rad"]
-    det_az_step = step_sizes["det_az"]
-    det_rad_step = step_sizes["det_rad"]
-
-    # Get number of steps from stored counts
-    ls_az_steps = step_counts["ls_az"]
-    ls_rad_steps = step_counts["ls_rad"]
-    det_az_steps = step_counts["det_az"]
-    det_rad_steps = step_counts["det_rad"]
-
-    # Initialize motors
     motors = Motors()
     motors.move_light_to_offset()
     motors.move_detector_to_offset()
 
     capture_index = 1
+    app.bsdf_measurements = {}  # Initialize measurement storage
 
-    for laz_i in range(ls_az_steps):
+    for laz_i, light_az in enumerate(light_azimuth_angles):
         if check_stop(app): return
-        light_az = start_angle + laz_i * ls_az_step
         motors.move_light_azimuthal(light_az)
 
-        for lrad_i in range(ls_rad_steps):
+        for lrad_i, light_rad in enumerate(light_radial_angles):
             if check_stop(app): return
-            #light_rad = start_angle + lrad_i * ls_rad_step
-            light_rad = app.incidence_angles[lrad_i]
             motors.move_light_radial(light_rad)
 
-            for daz_i in range(det_az_steps):
+            for daz_i, det_az in enumerate(det_azimuth_angles):
                 if check_stop(app): return
-                #det_az = start_angle + daz_i * det_az_step
-                det_az = app.azimuth_angles[daz_i]
                 motors.move_detector_azimuthal(det_az)
 
-                for drad_i in range(det_rad_steps):
+                for drad_i, det_rad in enumerate(det_radial_angles):
                     if check_stop(app): return
-                    #det_rad = start_angle + drad_i * det_rad_step
-                    det_rad = app.radial_angles[drad_i]
                     motors.move_detector_radial(det_rad)
                     time.sleep(1)
+
+                    app.set_status(
+                        f"Capturing at LS ({light_az}, {light_rad}) → DET ({det_az}, {det_rad})", "info"
+                    )
 
                     corrected_images = []
 
@@ -133,56 +117,38 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         print("Exposure tuning failed, skipping this position.")
                         continue
                     
-                    # Capture and save images
                     for rep in range(image_count):
                         if check_stop(app): return
                         img = capture_raw_image(picam2)
                         if img is None:
                             print(f"Image {rep+1} failed.")
                             continue
-                        
-                        corrected = np.clip(img.astype(np.float32) - dark_value, 0, None) # Subtract dark value
+
+                        corrected = np.clip(img.astype(np.float32) - dark_value, 0, None)
                         corrected_images.append(corrected)
-
-                        exposure = picam2.capture_metadata().get("ExposureTime", None)
-
-                        print(f"Final Exposure Time: ", exposure)
 
                     if corrected_images:
                         combined = np.mean(corrected_images, axis=0)
 
-                        # Extract channels
                         R, G, B = extract_color_channels(combined)
 
-                        # Get ROI means
                         r_mean = circular_roi_mean(R)
                         g_mean = circular_roi_mean(G)
                         b_mean = circular_roi_mean(B)
-                    
+
                         print(f"ROI Mean Intensities - R: {r_mean:.2f}, G: {g_mean:.2f}, B: {b_mean:.2f}")
 
-                        if not hasattr(app, "bsdf_measurements"):
-                            app.bsdf_measurements = {}
-
-                        # Key: (light incidence angle, detector azimuth angle)
-                        key = (light_rad, det_az)
-
-                        # Initialize 2D grid [azimuth index][radial index] if first time
-                        if key not in app.bsdf_measurements:
-                            app.bsdf_measurements[key] = [
-                                [None for _ in range(det_rad_steps)] for _ in range(det_az_steps)
-                            ]
-
-                        # Store the [R,G,B] mean intensity at the correct azimuth/radial position
-                        app.bsdf_measurements[key][daz_i][drad_i] = (r_mean, g_mean, b_mean)
+                        # Store using all 4 angles as the key
+                        key = (light_az, light_rad, det_az, det_rad)
+                        app.bsdf_measurements[key] = (r_mean, g_mean, b_mean)
 
                     capture_index += 1
 
-            # Reset detector
             motors.move_detector_to_offset()
             time.sleep(1)
 
     motors.move_light_to_offset()
+    app.set_status("Full measurement complete.", "success")
     print("Full measurement complete.")
 
 def check_stop(app):
