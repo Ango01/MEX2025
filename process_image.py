@@ -1,8 +1,6 @@
-import rawpy, os, csv
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from datetime import datetime
+import cv2
+from skimage.measure import shannon_entropy
 
 def extract_color_channels(image):
     """Extract Red, Green, and Blue color channels from a Bayer RAW image."""
@@ -35,4 +33,33 @@ def circular_roi_mean(image, diameter=20):
     relative_error = sigma/mean_val 
 
     return float(mean_val), float(relative_error)
+
+def entropy_noise_check(image, entropy_threshold=3):
+    gray = image.astype(np.float32) / 1023.0  # normalize to 0-1
+    entropy = shannon_entropy(gray)
+    print(f"Entropy Value: {entropy} \n")
+    return entropy > entropy_threshold
+
+def detect_static_noise(image):
+    try:
+        variance_check = local_variance_noise_check(image)
+        entropy_check = entropy_noise_check(image)
+        if variance_check or entropy_check:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        print(f"Error during noise detection: {e}")
+        return False
+
+def local_variance_noise_check(image, var_threshold=100):
+    image = cv2.resize(image, (256, 256))  # Normalize size
+
+    blur = cv2.GaussianBlur(image, (5, 5), 0)
+    diff = cv2.absdiff(image, blur)
+    variance = np.var(diff)
+    print(f"Variance Value: {variance}")
+
+    return variance > var_threshold
 

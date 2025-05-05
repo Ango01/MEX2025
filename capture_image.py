@@ -2,8 +2,7 @@ import os
 import time
 import numpy as np
 from motors import Motors  
-from process_image import extract_color_channels, circular_roi_mean
-from Steps.step4_angle_steps import RANGE_MAP
+from process_image import extract_color_channels, circular_roi_mean, detect_static_noise
 
 def capture_raw_image(picam2):
     """Capture a raw Bayer image and return it as a 16-bit 2D array."""
@@ -126,15 +125,26 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         print("Exposure tuning failed, skipping this position.")
                         continue
 
-                    for rep in range(image_count):
+                    valid_count = 0
+                    attempts = 0
+                    max_attempts = image_count * 3  # Retry limit
+
+                    while valid_count < image_count and attempts < max_attempts:
                         if check_stop(app): return
                         img = capture_raw_image(picam2)
+                        attempts += 1
+
                         if img is None:
-                            print(f"Image {rep+1} failed.")
+                            print(f"Attempt {attempts}: Image capture failed.")
+                            continue
+
+                        if detect_static_noise(img):
+                            print(f"Attempt {attempts}: Image rejected due to static noise.")
                             continue
 
                         corrected = np.clip(img.astype(np.float32) - dark_value, 0, None)
                         corrected_images.append(corrected)
+                        valid_count += 1
 
                     if corrected_images:
                         combined = np.mean(corrected_images, axis=0)
