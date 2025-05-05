@@ -28,7 +28,7 @@ def create(app, container):
     summary_label.pack(anchor="w", padx=10)
 
     button_frame = ttk.Frame(frame)
-    button_frame.pack(pady=15)
+    button_frame.pack(pady=10)
 
     # Save buttons as app attributes
     app.start_button = ttk.Button(button_frame, text="Start", command=lambda: start_measurement(app))
@@ -104,34 +104,36 @@ def save_bsdf(app):
 
     try:
         symmetry = "PlaneSymmetrical"
-        spectral_content = "XYZ"
+        spectral_content = "RGB"
         scatter_type = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
         sample_rotations = [0]
 
         # Prepare angles
-        incidence_angles = app.incidence_angles
-        azimuth_angles = app.det_azimuth_angles
-        radial_angles = app.det_radial_angles
+        sample_rotations = app.incidence_angles            # Light source radial
+        incidence_angles = app.light_azimuth_angles        # Light source azimuth
+        azimuth_angles = app.det_azimuth_angles            # Detector azimuth
+        radial_angles = app.det_radial_angles              # Detector radial
 
         # Group by (rotation, incidence)
         tis_data = {}
         bsdf_data = {}
 
-        for inc_angle in incidence_angles:
-            scatter_grid = []
-            tis_total = 0.0
+        for rot in sample_rotations:  # Light source radial
+            for inc in incidence_angles:  # Light source azimuth
+                scatter_grid = []
+                tis_total = 0.0
 
-            for az_angle in azimuth_angles:
-                row = []
-                for rad_angle in radial_angles:
-                    key = (app.light_azimuth_angles[0], inc_angle, az_angle, rad_angle)
-                    value = app.bsdf_measurements.get(key, (0.0, 0.0, 0.0))
-                    row.append(value)
-                    tis_total += sum(value)
+                for az in azimuth_angles:
+                    row = []
+                    for rad in radial_angles:
+                        key = (rot, inc, az, rad)
+                        value = app.bsdf_measurements.get(key, (0.0, 0.0, 0.0))
+                        row.append(value)
+                        tis_total += sum(value)
                     scatter_grid.append(row)
 
-            tis_data[(0, inc_angle)] = tis_total
-            bsdf_data[(0, inc_angle)] = scatter_grid
+                tis_data[(rot, inc)] = tis_total
+                bsdf_data[(rot, inc)] = scatter_grid
 
         # Generate Zemax BSDF file in the required format
         generate_zemax_bsdf_file(

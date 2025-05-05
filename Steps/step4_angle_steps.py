@@ -80,13 +80,13 @@ def generate_angle_lists(app):
     mtype = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
     start, end = RANGE_MAP.get(mtype, (8, 175))
 
-    # Light Source - Radial (Incidence)
-    ls_rad_step = app.angle_step_sizes.get("ls_rad", 5)
-    app.incidence_angles = [angle for angle in range(start, end + 1, int(ls_rad_step))]
-
-    # Light Source - Azimuthal
+    # Light Source - Azimuthal (Incidence)
     ls_az_step = app.angle_step_sizes.get("ls_az", 5)
-    app.light_azimuth_angles = [angle for angle in range(start, end + 1, int(ls_az_step))]
+    app.incidence_angles = [angle for angle in range(start, end + 1, int(ls_az_step))]
+
+    # Light Source - Radial (Sample Rotation)
+    ls_rad_step = app.angle_step_sizes.get("ls_rad", 5)
+    app.light_radial_angles = [angle for angle in range(start, end + 1, int(ls_rad_step))]
 
     # Detector - Azimuthal
     det_az_step = app.angle_step_sizes.get("det_az", 5)

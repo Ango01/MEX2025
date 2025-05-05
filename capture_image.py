@@ -69,24 +69,24 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
     os.makedirs(save_dir, exist_ok=True)
 
-    # Retrieve angles from app (these were generated in Step 4)
-    light_azimuth_angles = app.light_azimuth_angles
-    light_radial_angles = app.incidence_angles
-    det_azimuth_angles = app.det_azimuth_angles
-    det_radial_angles = app.det_radial_angles
+    # Retrieve angles from app (Step 4)
+    light_radial_angles = app.incidence_angles          # SampleRotation
+    light_azimuth_angles = app.light_azimuth_angles     # AngleOfIncidence
+    det_azimuth_angles = app.det_azimuth_angles         # ScatterAzimuth
+    det_radial_angles = app.det_radial_angles           # ScatterRadial
 
     motors = Motors()
+    app.bsdf_measurements = {}  # Reset previous data
 
     capture_index = 1
-    app.bsdf_measurements = {}  # Initialize measurement storage
 
-    for light_az in light_azimuth_angles:
+    for light_rad in light_radial_angles:  # Sample rotation
         if check_stop(app): return
-        motors.move_light_azimuthal(light_az)
+        motors.move_light_radial(light_rad)
 
-        for light_rad in light_radial_angles:
+        for light_az in light_azimuth_angles:  # Incidence
             if check_stop(app): return
-            motors.move_light_radial(light_rad)
+            motors.move_light_azimuthal(light_az)
 
             for det_az in det_azimuth_angles:
                 if check_stop(app): return
@@ -98,12 +98,12 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                     time.sleep(1)
 
                     app.set_status(
-                        f"Capturing at LS ({light_az}, {light_rad}) → DET ({det_az}, {det_rad})", "info"
+                        f"Capturing at LS ({light_rad}, {light_az}) → DET ({det_az}, {det_rad})", "info"
                     )
 
                     corrected_images = []
 
-                    # Try up to 10 times to adjust exposure
+                    # Auto exposure loop
                     for attempt in range(10):
                         if check_stop(app): return
                         test_image = capture_raw_image(picam2)
@@ -114,7 +114,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                     else:
                         print("Exposure tuning failed, skipping this position.")
                         continue
-                    
+
                     for rep in range(image_count):
                         if check_stop(app): return
                         img = capture_raw_image(picam2)
@@ -127,7 +127,6 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
                     if corrected_images:
                         combined = np.mean(corrected_images, axis=0)
-
                         R, G, B = extract_color_channels(combined)
 
                         r_mean = circular_roi_mean(R)
@@ -136,8 +135,8 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
                         print(f"ROI Mean Intensities - R: {r_mean:.2f}, G: {g_mean:.2f}, B: {b_mean:.2f}")
 
-                        # Store using all 4 angles as the key
-                        key = (light_az, light_rad, det_az, det_rad)
+                        # Use correct 4-angle key
+                        key = (light_rad, light_az, det_az, det_rad)
                         app.bsdf_measurements[key] = (r_mean, g_mean, b_mean)
 
                     capture_index += 1

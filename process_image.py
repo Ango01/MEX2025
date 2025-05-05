@@ -110,7 +110,7 @@ def generate_zemax_bsdf_file(
 
     with open(filename, 'w') as f:
         write_header(f)
-        write_data_block(f, component_index=0, label="TristimulusX")
-        write_data_block(f, component_index=1, label="TristimulusY")
-        write_data_block(f, component_index=2, label="TristimulusZ")
+        write_data_block(f, component_index=0, label="R")
+        write_data_block(f, component_index=1, label="G")
+        write_data_block(f, component_index=2, label="B")
 
