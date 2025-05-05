@@ -16,3 +16,9 @@ def create(app, container):
         text="Click 'Next' to begin the setup process.",
         font=("Helvetica", 10)
     ).pack(pady=10)
+
+    ttk.Button(
+        frame,
+        text="Next",
+        command=app.next_step
+    ).pack(pady=20)
