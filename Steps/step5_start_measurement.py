@@ -109,8 +109,8 @@ def save_bsdf(app):
         sample_rotations = [0]
 
         # Prepare angles
-        sample_rotations = app.incidence_angles            # Light source radial
-        incidence_angles = app.light_azimuth_angles        # Light source azimuth
+        sample_rotations = app.light_radial_angles         # Light source radial
+        incidence_angles = app.incidence_angles            # Light source azimuth
         azimuth_angles = app.det_azimuth_angles            # Detector azimuth
         radial_angles = app.det_radial_angles              # Detector radial
 
