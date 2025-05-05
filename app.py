@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from Steps import step1_camera, step2_dark_frame, step3_measurement_type, step4_angle_steps, step5_start_measurement
+from Steps import step0_welcome, step1_camera, step2_dark_frame, step3_measurement_type, step4_angle_steps, step5_start_measurement
 
 # Main application class
 class ScatteringApp(tk.Tk):
@@ -79,6 +79,7 @@ class ScatteringApp(tk.Tk):
     def create_steps(self):
         """Define the sequence of steps."""
         self.steps = [
+            step0_welcome.create,
             step1_camera.create,
             step2_dark_frame.create,
             step3_measurement_type.create,

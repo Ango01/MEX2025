@@ -134,7 +134,7 @@ def main():
     picam2.configure(config)
 
     picam2.set_controls({
-        "ExposureTime": 50,
+        "ExposureTime": 30,
         "AnalogueGain": 1.0,
         "AeEnable": False,
         "AwbEnable": False,
@@ -146,7 +146,7 @@ def main():
     picam2.start()
     time.sleep(1)
 
-    angles = range(0, 3, 1)  # Change to 10 step if needed
+    angles = range(0, 10, 1)  # Change to 10 step if needed
 
     for angle in angles:
         input(f"Press Enter to capture image at {angle} degrees...")
