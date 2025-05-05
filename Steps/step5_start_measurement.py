@@ -109,47 +109,31 @@ def save_bsdf(app):
         sample_rotations = [0]
 
         # Prepare angles
-        incidence_angles = int(app.incidence_angles)
-        azimuth_angles = int(app.azimuth_angles)
-        radial_angles = int(app.radial_angles)
+        incidence_angles = app.incidence_angles
+        azimuth_angles = app.azimuth_angles
+        radial_angles = app.radial_angles
 
         # Group by (rotation, incidence)
         tis_data = {}
         bsdf_data = {}
 
         for inc_angle in incidence_angles:
-            scatter_block = []
-            tis_value = 0.0
+            scatter_grid = []
+            tis_total = 0.0
 
             for az_angle in azimuth_angles:
-                key = (inc_angle, az_angle)
-                if key not in app.bsdf_measurements:
-                    continue
+                row = []
+                for rad_angle in radial_angles:
+                    key = (app.light_azimuth_angles[0], inc_angle, az_angle, rad_angle)
+                    value = app.bsdf_measurements.get(key, (0.0, 0.0, 0.0))
+                    row.append(value)
+                    tis_total += sum(value)
+                    scatter_grid.append(row)
 
-                radial_measurements = app.bsdf_measurements[key]
+            tis_data[(0, inc_angle)] = tis_total
+            bsdf_data[(0, inc_angle)] = scatter_grid
 
-                azimuth_row = []
-                for row in radial_measurements:
-                    for point in row:
-                        if point is None:
-                            azimuth_row.append((0.0, 0.0, 0.0))
-                        else:
-                            azimuth_row.append(point)
-
-                # Corrected: Append this azimuth line
-                scatter_block.append(azimuth_row)
-
-                # TIS calculation (sum all R, G, B)
-                for row in radial_measurements:
-                    for rgb in row:
-                        if rgb is not None:
-                            r, g, b = rgb
-                            tis_value += r + g + b
-
-            tis_data[(0.0, inc_angle)] = tis_value
-            bsdf_data[(0.0, inc_angle)] = scatter_block
-
-        # Now generate the file
+        # Generate Zemax BSDF file in the required format
         generate_zemax_bsdf_file(
             filename=filename,
             symmetry=symmetry,

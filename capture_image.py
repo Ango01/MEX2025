@@ -76,25 +76,23 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
     det_radial_angles = app.det_radial_angles
 
     motors = Motors()
-    motors.move_light_to_offset()
-    motors.move_detector_to_offset()
 
     capture_index = 1
     app.bsdf_measurements = {}  # Initialize measurement storage
 
-    for laz_i, light_az in enumerate(light_azimuth_angles):
+    for light_az in light_azimuth_angles:
         if check_stop(app): return
         motors.move_light_azimuthal(light_az)
 
-        for lrad_i, light_rad in enumerate(light_radial_angles):
+        for light_rad in light_radial_angles:
             if check_stop(app): return
             motors.move_light_radial(light_rad)
 
-            for daz_i, det_az in enumerate(det_azimuth_angles):
+            for det_az in det_azimuth_angles:
                 if check_stop(app): return
                 motors.move_detector_azimuthal(det_az)
 
-                for drad_i, det_rad in enumerate(det_radial_angles):
+                for det_rad in det_radial_angles:
                     if check_stop(app): return
                     motors.move_detector_radial(det_rad)
                     time.sleep(1)
