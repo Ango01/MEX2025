@@ -87,6 +87,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
     motors = Motors()
     app.bsdf_measurements = {}  # Reset previous data
+    app.relative_errors = {}
 
     capture_index = 1
 
@@ -139,9 +140,12 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         combined = np.mean(corrected_images, axis=0)
                         R, G, B = extract_color_channels(combined)
 
-                        r_mean = circular_roi_mean(R)
-                        g_mean = circular_roi_mean(G)
-                        b_mean = circular_roi_mean(B)
+                        r_mean, r_err = circular_roi_mean(R)
+                        g_mean, g_err = circular_roi_mean(G)
+                        b_mean, b_err = circular_roi_mean(B)
+
+                        app.relative_errors[(light_az, light_rad, det_az, det_rad)] = (r_err, g_err, b_err)
+                        print(f"Rel. Errors - R: {r_err:.4f}, G: {g_err:.4f}, B: {b_err:.4f}")
 
                         print(f"ROI Mean Intensities - R: {r_mean:.2f}, G: {g_mean:.2f}, B: {b_mean:.2f}")
 

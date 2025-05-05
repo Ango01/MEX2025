@@ -1,7 +1,7 @@
 from tkinter import ttk, filedialog
 import threading
 from capture_image import run_full_measurement
-from process_image import generate_zemax_bsdf_file
+from output_data import generate_zemax_bsdf_file
 
 def create(app, container):
     """Create function for Step 5: Start the measurement process."""
@@ -103,7 +103,7 @@ def save_bsdf(app):
         return
 
     try:
-        symmetry = "PlaneSymmetrical"
+        symmetry = "Asymmetrical4D"
         spectral_content = "RGB"
         scatter_type = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
         sample_rotations = [0]
