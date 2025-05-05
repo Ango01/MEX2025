@@ -18,8 +18,8 @@ def create(app, container):
 
     summary_text = (
         f"Measurement Type: {mtype}\n\n"
-        f"Light Source - Azimuthal Step: {app.angle_step_sizes['ls_az']}° ({len(app.light_azimuth_angles)} positions)\n"
-        f"Light Source - Radial Step: {app.angle_step_sizes['ls_rad']}° ({len(app.incidence_angles)} positions)\n"
+        f"Light Source - Azimuthal Step: {app.angle_step_sizes['ls_az']}° ({len(app.incidence_angles)} positions)\n"
+        f"Light Source - Radial Step: {app.angle_step_sizes['ls_rad']}° ({len(app.light_radial_angles)} positions)\n"
         f"Detector - Azimuthal Step: {app.angle_step_sizes['det_az']}° ({len(app.det_azimuth_angles)} positions)\n"
         f"Detector - Radial Step: {app.angle_step_sizes['det_rad']}° ({len(app.det_radial_angles)} positions)\n\n"
     )
