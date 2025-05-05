@@ -15,37 +15,47 @@ def capture_raw_image(picam2):
         print(f"Failed to capture RAW image: {e}")
         return None
 
-def check_and_adjust_exposure(picam2, image, target_max=972, tolerance=10, exposure_step=50):
+def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921, exposure_step=100):
     """
-    Adjust exposure to keep the brightest color channel within a target range.
-    Uses max value from the most intense channel (R, G, or B). 
+    Adjusts exposure to ensure the mean of the top 5% brightest pixels in the dominant color channel
+    falls within 80-90% of the 10-bit range (i.e., between 818 and 921).
     """
     if image is None or picam2 is None:
         print("Invalid input to exposure check.")
         return False
 
-    # Separate image into R, G, B channels
+    # Extract color channels
     R, G, B = extract_color_channels(image)
 
-    # Find maximum value in each color channel
-    max_values = {'R': R.max(), 'G': G.max(), 'B': B.max()}
-    priority_channel = max(max_values, key=max_values.get) # Channel with highest max
-    priority_value = max_values[priority_channel]
+    # Determine the dominant channel by max mean intensity
+    channel_means = {
+        'R': np.mean(R),
+        'G': np.mean(G),
+        'B': np.mean(B)
+    }
+    dominant = max(channel_means, key=channel_means.get)
+    channel_data = {'R': R, 'G': G, 'B': B}[dominant]
 
-    print(f"Max R: {max_values['R']}, Max G: {max_values['G']}, Max B: {max_values['B']}")
-    print(f"Prioritizing channel: {priority_channel} (value: {priority_value})")
+    print(f"Dominant channel: {dominant}")
 
-    # Get current exposure time from metadata
+    # Flatten the channel and get top 5% pixel values
+    flat = channel_data.flatten()
+    cutoff = int(len(flat) * 0.05)
+    top_pixels = np.sort(flat)[-cutoff:]
+    top_mean = np.mean(top_pixels)
+
+    print(f"Mean of top 5% pixels in {dominant}: {top_mean:.2f}")
+
+    # Get current exposure
     metadata = picam2.capture_metadata()
-    current_exp = metadata.get("ExposureTime", 10000) # Fallback to 10000 µs
+    current_exp = metadata.get("ExposureTime", 10000)
 
-    # Check if max value within acceptable range
-    if target_max - tolerance <= priority_value <= target_max + tolerance:
+    if target_min <= top_mean <= target_max:
         print("Exposure is acceptable.")
         return True
 
-    # Adjust exposure time up or down based on brightness
-    if priority_value > target_max + tolerance:
+    # Adjust exposure
+    if top_mean > target_max:
         new_exp = max(current_exp - exposure_step, 100)
         print("Too bright → Decreasing exposure")
     else:
@@ -54,7 +64,7 @@ def check_and_adjust_exposure(picam2, image, target_max=972, tolerance=10, expos
 
     print(f"Adjusting exposure: {current_exp} → {new_exp}")
     picam2.set_controls({"ExposureTime": int(new_exp)})
-    time.sleep(1)  # Give camera time to apply settings
+    time.sleep(1)  # Let settings apply
 
     return False
 
@@ -104,12 +114,12 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                     corrected_images = []
 
                     # Auto exposure loop
-                    for attempt in range(10):
+                    for attempt in range(image_count):
                         if check_stop(app): return
                         test_image = capture_raw_image(picam2)
                         if test_image is None:
                             continue
-                        if check_and_adjust_exposure(picam2, test_image, dark_value):
+                        if check_and_adjust_exposure(picam2, test_image):
                             break
                     else:
                         print("Exposure tuning failed, skipping this position.")
