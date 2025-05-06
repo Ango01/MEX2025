@@ -22,7 +22,8 @@ def create(app, container):
     nav_buttons.pack(pady=10)
 
     ttk.Button(nav_buttons, text="Back", command=lambda: app.show_step(2)).pack(side="left", padx=5)
-    ttk.Button(nav_buttons, text="Next", command=lambda: [
-        app.set_status(f"Measurement type selected: {app.measurement_type.get()}", "success"),
-        app.next_step()
-    ]).pack(side="left", padx=5)
+    ttk.Button(nav_buttons, text="Next", command=lambda: (
+    app.set_status("Please select a measurement type before continuing.", "error")
+    if not app.measurement_type.get()
+    else (app.set_status(f"Measurement type selected: {app.measurement_type.get()}", "success"), app.next_step())
+)).pack(side="left", padx=5)

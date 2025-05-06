@@ -47,11 +47,11 @@ def create(app, container):
     nav_buttons.pack(pady=10)
 
     ttk.Button(nav_buttons, text="Back", command=lambda: app.show_step(3)).pack(side="left", padx=5)
-    ttk.Button(nav_buttons, text="Next", command=lambda: [
-        save_step_settings(app, angle_inputs),
-        app.set_status("Measurement setup complete!", "success"),
-        app.next_step()
-    ]).pack(side="left", padx=5)
+    ttk.Button(nav_buttons, text="Next", command=lambda: (
+    app.set_status("Please select all angle step sizes before continuing.", "error")
+    if any(not cb.get() for cb in angle_inputs.values())
+    else (save_step_settings(app, angle_inputs), app.set_status("Measurement setup complete!", "success"), app.next_step())
+)).pack(side="left", padx=5)
 
 def update_step_label(app, angle_inputs, key, label):
     """Updates number of steps and stores them in app.step_counts."""

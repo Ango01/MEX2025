@@ -24,14 +24,16 @@ def create(app, container):
         f"Detector - Radial Step: {app.angle_step_sizes['det_rad']}° ({len(app.det_radial_angles)} positions)\n\n"
     )
 
-    summary_label = ttk.Label(frame, text=summary_text, justify="left")
-    summary_label.pack(anchor="w", padx=10)
+    summary_row = ttk.Frame(frame)
+    summary_row.pack(fill="x", padx=10, pady=5)
+
+    summary_label = ttk.Label(summary_row, text=summary_text, justify="left")
+    summary_label.grid(row=0, column=0, sticky="w")
+
+    ttk.Button(summary_row, text="Back", command=lambda: app.show_step(4)).grid(row=0, column=1, padx=10, sticky="e")
 
     button_frame = ttk.Frame(frame)
     button_frame.pack(pady=10)
-
-    # Back button
-    ttk.Button(button_frame, text="Back", command=lambda: app.show_step(4)).pack(side="left", padx=5)
 
     # Save buttons as app attributes
     app.start_button = ttk.Button(button_frame, text="Start", command=lambda: start_measurement(app))
