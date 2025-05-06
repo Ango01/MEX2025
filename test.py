@@ -110,7 +110,9 @@ def capture_exposure_curve(picam2, output_folder, start_us, step_us, count):
         exposure_times.append(exp_time)
         mean_intensities.append(mean_intensity)
 
+        actual_exp = picam2.capture_metadata().get("ExposureTime", "N/A")
         print(f"Captured. Mean intensity: {mean_intensity:.2f}")
+        print(f"Reported ExposureTime from metadata: {actual_exp} µs")
 
     # Plot curve
     plt.figure(figsize=(8, 6))
@@ -148,25 +150,25 @@ def main():
 
     angles = range(0, 10, 1)  # Change to 10 step if needed
 
-    for angle in angles:
-        input(f"Press Enter to capture image at {angle} degrees...")
+    #for angle in angles:
+    #    input(f"Press Enter to capture image at {angle} degrees...")
 
-        raw_array = picam2.capture_array("raw").view(np.uint16)
-        print(f"Captured image at {angle} degrees")
+    #    raw_array = picam2.capture_array("raw").view(np.uint16)
+    #    print(f"Captured image at {angle} degrees")
 
         # Extract Bayer channels
-        B = raw_array[0::2, 0::2]
-        G1 = raw_array[0::2, 1::2]
-        G2 = raw_array[1::2, 0::2]
-        R = raw_array[1::2, 1::2]
-        G = (G1 + G2) / 2
+    #    B = raw_array[0::2, 0::2]
+    #    G1 = raw_array[0::2, 1::2]
+    #    G2 = raw_array[1::2, 0::2]
+    #    R = raw_array[1::2, 1::2]
+    #    G = (G1 + G2) / 2
 
-        plot_color_histograms(R, G, B, angle)
-        save_path = os.path.join(output_folder, f"heatmap_histogram_{angle}.png")
-        plot_heatmap_and_histogram(raw_array, save_path)
+    #    plot_color_histograms(R, G, B, angle)
+    #    save_path = os.path.join(output_folder, f"heatmap_histogram_{angle}.png")
+    #    plot_heatmap_and_histogram(raw_array, save_path)
 
     
-    #capture_exposure_curve(picam2, output_folder, start_us=30, step_us=1000, count=5)
+    capture_exposure_curve(picam2, output_folder, start_us=30, step_us=1000, count=5)
 
     picam2.stop()
     print("Capture sequence completed.")
