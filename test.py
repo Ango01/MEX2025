@@ -35,61 +35,6 @@ def plot_color_histograms(R, G, B, angle):
     plt.legend()
     plt.grid(True)
     plt.show()
-
-def plot_heatmap_and_histogram(raw_array, save_path):
-
-    fig, axs = plt.subplots(1, 2, figsize=(14, 6))
-
-    # --- Heatmap (left) ---
-    im = axs[0].imshow(raw_array, cmap='inferno', aspect='auto')
-    axs[0].set_title(f"Heatmap")
-    axs[0].set_xlabel("X Pixels")
-    axs[0].set_ylabel("Y Pixels")
-    fig.colorbar(im, ax=axs[0], fraction=0.046, pad=0.04, label="Pixel Intensity")
-
-    # --- Extract SBGGR10 Bayer Pattern Channels ---
-    B = raw_array[0::2, 0::2]     # Blue
-    G1 = raw_array[0::2, 1::2]    # Green 1
-    G2 = raw_array[1::2, 0::2]    # Green 2
-    R = raw_array[1::2, 1::2]     # Red
-    G = (G1 + G2) / 2             # Average Green
-
-    # --- Color Channel Histograms (right) ---
-    axs[1].hist(R.flatten(), bins=50, color='red', alpha=0.6, label="Red", edgecolor='black')
-    axs[1].hist(G.flatten(), bins=50, color='green', alpha=0.6, label="Green", edgecolor='black')
-    axs[1].hist(B.flatten(), bins=50, color='blue', alpha=0.6, label="Blue", edgecolor='black')
-    axs[1].set_title(f"Color Channel Histogram")
-    axs[1].set_xlabel("Pixel Intensity (0-1023)")
-    axs[1].set_ylabel("Frequency")
-    axs[1].legend()
-    axs[1].grid(True)
-
-    plt.tight_layout()
-    plt.savefig(save_path)
-    plt.show()
-    print(f"Saved heatmap + color channel histogram to {save_path}")
-
-
-def save_grayscale_and_histogram(raw_array, angle, output_folder):
-    fig, axs = plt.subplots(1, 2, figsize=(14, 6))
-
-    im = axs[0].imshow(raw_array, cmap='gray', aspect='auto')
-    axs[0].set_title("Grayscale View")
-    axs[0].set_xlabel("X Pixels")
-    axs[0].set_ylabel("Y Pixels")
-    fig.colorbar(im, ax=axs[0], fraction=0.046, pad=0.04, label="Pixel Intensity")
-
-    axs[1].hist(raw_array.flatten(), bins=50, color='gray', edgecolor='black', alpha=0.7)
-    axs[1].set_title("Grayscale Pixel Intensity Histogram")
-    axs[1].set_xlabel("Pixel Intensity (0-1023)")
-    axs[1].set_ylabel("Frequency")
-    axs[1].grid(True)
-
-    plt.tight_layout()
-    save_path = os.path.join(output_folder, f"grayscale_plot_{angle}.png")
-    plt.savefig(save_path)
-    plt.show()
-    print(f"Saved grayscale + histogram plot at {save_path}")
   
 def capture_exposure_curve(picam2, output_folder, start_us, step_us, count):
     exposure_times = []
@@ -128,6 +73,39 @@ def capture_exposure_curve(picam2, output_folder, start_us, step_us, count):
     plt.show()
     print(f"Saved exposure curve to {plot_path}")
 
+def plot_heatmap_and_histogram(raw_array, save_path):
+
+    fig, axs = plt.subplots(1, 2, figsize=(14, 6))
+
+    # --- Heatmap (left) ---
+    im = axs[0].imshow(raw_array, cmap='inferno', aspect='auto')
+    axs[0].set_title(f"Heatmap")
+    axs[0].set_xlabel("X Pixels")
+    axs[0].set_ylabel("Y Pixels")
+    fig.colorbar(im, ax=axs[0], fraction=0.046, pad=0.04, label="Pixel Intensity")
+
+    # --- Extract SBGGR10 Bayer Pattern Channels ---
+    B = raw_array[0::2, 0::2]     # Blue
+    G1 = raw_array[0::2, 1::2]    # Green 1
+    G2 = raw_array[1::2, 0::2]    # Green 2
+    R = raw_array[1::2, 1::2]     # Red
+    G = (G1 + G2) / 2             # Average Green
+
+    # --- Color Channel Histograms (right) ---
+    axs[1].hist(R.flatten(), bins=50, color='red', alpha=0.6, label="Red", edgecolor='black')
+    axs[1].hist(G.flatten(), bins=50, color='green', alpha=0.6, label="Green", edgecolor='black')
+    axs[1].hist(B.flatten(), bins=50, color='blue', alpha=0.6, label="Blue", edgecolor='black')
+    axs[1].set_title(f"Color Channel Histogram")
+    axs[1].set_xlabel("Pixel Intensity (0-1023)")
+    axs[1].set_ylabel("Frequency")
+    axs[1].legend()
+    axs[1].grid(True)
+
+    plt.tight_layout()
+    plt.savefig(save_path)
+    plt.show()
+    print(f"Saved heatmap + color channel histogram to {save_path}")
+
 
 # ======== Main Program ========
 
@@ -136,6 +114,9 @@ def main():
     config = picam2.create_still_configuration(raw={"format": "SRGGB10", "size": (1456, 1088)})
     picam2.configure(config)
 
+    picam2.start()
+    time.sleep(1)
+
     picam2.set_controls({
         "ExposureTime": 1000,
         "AnalogueGain": 1.0,
@@ -143,11 +124,10 @@ def main():
         "AwbEnable": False,
     })
 
+    time.sleep(0.5)
+
     output_folder = "Captured_Images"
     os.makedirs(output_folder, exist_ok=True)
-
-    picam2.start()
-    time.sleep(1)
 
     angles = range(0, 1, 1)  # Change to 10 step if needed
 
