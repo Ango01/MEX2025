@@ -43,12 +43,15 @@ def create(app, container):
         # Bind selection change
         combobox.bind("<<ComboboxSelected>>", lambda e, k=key: update_step_label(app, angle_inputs, k, step_labels[k]))
 
-    # Next button
-    ttk.Button(frame, text="Next", command=lambda: [
+    nav_buttons = ttk.Frame(frame)
+    nav_buttons.pack(pady=10)
+
+    ttk.Button(nav_buttons, text="Back", command=lambda: app.show_step(3)).pack(side="left", padx=5)
+    ttk.Button(nav_buttons, text="Next", command=lambda: [
         save_step_settings(app, angle_inputs),
         app.set_status("Measurement setup complete!", "success"),
         app.next_step()
-    ]).pack(pady=10)
+    ]).pack(side="left", padx=5)
 
 def update_step_label(app, angle_inputs, key, label):
     """Updates number of steps and stores them in app.step_counts."""

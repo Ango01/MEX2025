@@ -48,6 +48,7 @@ def capture_dark_frame(app):
             app.set_status("Failed to capture dark frame", "error")
     else:
         app.set_status("Camera not initialized!", "error")
+        app.show_step(1)
 
 def set_nominal_dark_value(app, entry):
     """Function to manually set a nominal dark value."""

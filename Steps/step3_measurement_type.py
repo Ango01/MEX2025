@@ -18,7 +18,11 @@ def create(app, container):
     ttk.Radiobutton(options, text="BTDF", variable=app.measurement_type, value="BTDF").grid(row=0, column=1, padx=10)
     ttk.Radiobutton(options, text="Both", variable=app.measurement_type, value="Both").grid(row=0, column=2, padx=10)
 
-    ttk.Button(frame, text="Next", command=lambda: [
+    nav_buttons = ttk.Frame(frame)
+    nav_buttons.pack(pady=10)
+
+    ttk.Button(nav_buttons, text="Back", command=lambda: app.show_step(2)).pack(side="left", padx=5)
+    ttk.Button(nav_buttons, text="Next", command=lambda: [
         app.set_status(f"Measurement type selected: {app.measurement_type.get()}", "success"),
         app.next_step()
-    ]).pack(pady=10)
+    ]).pack(side="left", padx=5)

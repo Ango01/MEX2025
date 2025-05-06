@@ -9,7 +9,7 @@ class ScatteringApp(tk.Tk):
 
         # Set window properties
         self.title("Optical Scattering Measurement")
-        self.geometry("600x300")
+        self.geometry("600x350")
         self.configure(bg="#f0f2f5")
 
         self.style = ttk.Style(self)
@@ -38,13 +38,13 @@ class ScatteringApp(tk.Tk):
 
     def create_status_bar(self):
         """Create the bottom status bar to show messages."""
-        self.status_frame = tk.Frame(self, height=30, bg="#e0e0e0")
+        self.status_frame = tk.Frame(self, bg="#e0e0e0")
         self.status_frame.pack(side="bottom", fill="x")
 
         self.status_var = tk.StringVar()
         self.status_label = tk.Label(self.status_frame, textvariable=self.status_var,
-                                     font=("Helvetica Neue", 10, "bold"),
-                                     bg="#e0e0e0", fg="#000000", anchor="w", padx=10)
+                                     font=("Helvetica Neue", 11, "bold"),
+                                     bg="#e0e0e0", fg="#000000", anchor="w", padx=10, pady=10)
         self.status_label.pack(fill="x")
 
         # Set initial status

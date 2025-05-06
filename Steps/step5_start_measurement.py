@@ -30,6 +30,9 @@ def create(app, container):
     button_frame = ttk.Frame(frame)
     button_frame.pack(pady=10)
 
+    # Back button
+    ttk.Button(button_frame, text="Back", command=lambda: app.show_step(4)).pack(side="left", padx=5)
+
     # Save buttons as app attributes
     app.start_button = ttk.Button(button_frame, text="Start", command=lambda: start_measurement(app))
     app.start_button.pack(side="left", padx=5)
