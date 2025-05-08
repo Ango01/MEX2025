@@ -1,3 +1,4 @@
+import logging
 from tkinter import ttk
 from capture_image import capture_raw_image
 
@@ -45,6 +46,7 @@ def capture_dark_frame(app):
             print(f"Size (pixels): {dark_frame.size}")
             print(f"Min/Max: {dark_frame.min()} / {dark_frame.max()}")
             print(f"Mean intensity (dark_value): {app.dark_value:.2f}")
+            logging.info("Mean intensity (dark_value): {app.dark_value:.2f}")
 
             # Update status and proceed to next step
             app.set_status(f"Dark frame captured - Mean value: {app.dark_value:.2f}", "success")

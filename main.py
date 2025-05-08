@@ -19,8 +19,5 @@ if __name__ == "__main__":
         ]
     )
 
-    # Redirect print
-    print = logging.info  
-
     app = ScatteringApp()
     app.mainloop()

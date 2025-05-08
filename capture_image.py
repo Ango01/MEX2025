@@ -1,4 +1,4 @@
-import os, time
+import os, time, logging
 import numpy as np
 from motors import Motors  
 from process_image import extract_color_channels, circular_roi_mean, detect_static_noise
@@ -115,6 +115,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                     # Skip blocked positions
                     if abs(light_az - det_az) < 2.0 and abs(light_rad - det_rad) < 2.0:
                         print(f"Skipping blocked configuration at LS({light_az}, {light_rad}) ≈ DET({det_az}, {det_rad})")
+                        logging.warning("Skipping blocked configuration at LS({light_az}, {light_rad}) ≈ DET({det_az}, {det_rad})")
                         continue
                     
                     motors.move_detector_radial(det_rad)
