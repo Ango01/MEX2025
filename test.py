@@ -118,9 +118,8 @@ def main():
     time.sleep(1)
 
     picam2.set_controls({
-        "ExposureTime": 0,
+        "ExposureTime": 3000,
         "AnalogueGain": 1.0,
-        "AeEnable": False,
         "AwbEnable": False,
     })
 
@@ -145,10 +144,10 @@ def main():
         actual_exp = picam2.capture_metadata().get("ExposureTime", "N/A")
         print(f"Reported ExposureTime from metadata: {actual_exp} µs\n")
 
-        save_path = os.path.join(output_folder, f"heatmap_histogram_3000.png")
+        save_path = os.path.join(output_folder, f"heatmap_histogram_test.png")
         plot_heatmap_and_histogram(raw_array, save_path)
 
-    #capture_exposure_curve(picam2, output_folder, start_us=0, step_us=1000, count=20)
+    #capture_exposure_curve(picam2, output_folder, start_us=0, step_us=500, count=20)
 
     picam2.stop()
     print("Capture sequence completed.")
