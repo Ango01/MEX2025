@@ -1,5 +1,3 @@
-import logging, sys, os
-from datetime import datetime
 from tkinter import ttk
 
 def create(app, container):
@@ -26,22 +24,3 @@ def create(app, container):
         text="Next",
         command=app.next_step
     ).pack(pady=20)
-
-    # Create a "Logs" directory
-    os.makedirs("Logs", exist_ok=True)
-
-    # Generate timestamped filename
-    log_filename = datetime.now().strftime("Logs/measurement_%Y%m%d_%H%M%S.log")
-
-    # Set up logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(message)s",
-        handlers=[
-            logging.FileHandler(log_filename),
-            logging.StreamHandler(sys.stdout)
-        ]
-    )
-
-    # Replace all future print() calls with this:
-    print = logging.info  # Redirect print to logging
