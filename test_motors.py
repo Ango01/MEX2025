@@ -2,64 +2,54 @@ import serial
 import time
 
 # === Configuration ===
-SERIAL_PORT = '/dev/ttyACM0'   # Port where Arduino is connected
-BAUDRATE = 9600                # Speed at which data is transmitted over serial connection
-STEPS_PER_DEGREE = 10          # (motor_steps_per_rev * microstepping * gear_ratio) / 360 = (200 * 16 * gear_ratio) / 360
-STEP_DELAY = 5                 # Time between moves (seconds)
+SERIAL_PORT = '/dev/ttyACM0'   # Update if needed
+BAUDRATE = 9600
+WAIT_TIME = 2.0                # Wait after each move (seconds)
 
 # === Connect to Arduino ===
 arduino = serial.Serial(SERIAL_PORT, BAUDRATE, timeout=1)
-time.sleep(2)  # Allow Arduino to reset
+time.sleep(2)  # Allow Arduino time to reset
 
+# === Read initial startup lines from Arduino ===
 while arduino.in_waiting:
-    line = arduino.readline().decode().strip()
-    if line:
-        print(f"(Arduino startup): {line}")
+    print(arduino.readline().decode().strip())
 
-def send_motor_command(axis, steps):
-    """Send command like DET:AZ:20 or DET:RAD:-15"""
-    command = f"DET:{axis}:{steps}\n"
-    arduino.write(command.encode())
-    print(f"Sent: {command.strip()}")
-
-    # Read and print Arduino response
+def send_command(command):
+    """Send command and print Arduino response."""
+    arduino.write(f"{command}\n".encode())
+    print(f"Sent: {command}")
+    
     while True:
         response = arduino.readline().decode().strip()
         if response:
             print(f"Arduino: {response}")
             break
 
-def move_detector_by_angle(az_angle, rad_angle):
-    """Convert angles to steps and send commands to Arduino"""
-    az_steps = round(az_angle * STEPS_PER_DEGREE)
-    rad_steps = round(rad_angle * STEPS_PER_DEGREE)
+def test_motor(axis_name, command_prefix, start=0, stop=90, step=10):
+    """
+    Move a motor through a range of angles and record response.
+    Use this to estimate degrees per step by observing actual movement.
+    """
+    print(f"\n--- Testing {axis_name} Motor ---")
+    for angle in range(start, stop + 1, step):
+        cmd = f"{command_prefix}:{angle:.2f}"
+        send_command(cmd)
+        print(f"Moved to {angle:.2f}° — record actual angle manually.")
+        input("Press Enter to continue to next step...\n")
+        time.sleep(WAIT_TIME)
 
-    print(f"\nMoving AZ by {az_angle}° → {az_steps} steps")
-    send_motor_command("AZ", az_steps)
-    time.sleep(STEP_DELAY)
+    print(f"\n{axis_name} Test Complete.\n")
 
-    print(f"Moving RAD by {rad_angle}° → {rad_steps} steps")
-    send_motor_command("RAD", rad_steps)
-    time.sleep(STEP_DELAY)
-
-def run_angle_test():
-    """Try different angle increments for both motors"""
-    test_angles_az = [90, 90, 50, 90]    
-    test_angles_rad = [90, 90, 90, 50]   
-
-    print("Starting angle test...")
-
-    for az_angle, rad_angle in zip(test_angles_az, test_angles_rad):
-        move_detector_by_angle(az_angle, rad_angle)
-    
-    print("\nTest complete.")
-
+# === MAIN TEST SEQUENCE ===
 if __name__ == "__main__":
     try:
-        run_angle_test()
+        print("Starting detector motor test. Ensure system is safe.")
+        test_motor("Detector AZIMUTH", "DET_AZ_ABS")
+        test_motor("Detector RADIAL", "DET_RAD_ABS")
     except KeyboardInterrupt:
-        print("Interrupted.")
+        print("Test interrupted by user.")
     finally:
         arduino.close()
         print("Serial connection closed.")
+
 

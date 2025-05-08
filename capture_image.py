@@ -1,5 +1,4 @@
-import os
-import time
+import os, time
 import numpy as np
 from motors import Motors  
 from process_image import extract_color_channels, circular_roi_mean, detect_static_noise
@@ -16,28 +15,24 @@ def capture_raw_image(picam2):
 
 def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921, exposure_step=100):
     """
-    Adjusts exposure to ensure the mean of the top 5% brightest pixels in the dominant color channel
-    falls within 80-90% of the 10-bit range (i.e., between 818 and 921).
+    Adjust exposure so that the mean of the top 5% brightest pixels in the dominant color channel
+    falls within 80-90% of the 10-bit range (between 818 and 921).
     """
     if image is None or picam2 is None:
         print("Invalid input to exposure check.")
         return False
 
-    # Extract color channels
+    # Extract RGB channels from image
     R, G, B = extract_color_channels(image)
 
-    # Determine the dominant channel by max mean intensity
-    channel_means = {
-        'R': np.mean(R),
-        'G': np.mean(G),
-        'B': np.mean(B)
-    }
+    # Identify dominant channel based on mean intensity
+    channel_means = {'R': np.mean(R), 'G': np.mean(G), 'B': np.mean(B)}
     dominant = max(channel_means, key=channel_means.get)
     channel_data = {'R': R, 'G': G, 'B': B}[dominant]
 
     print(f"Dominant channel: {dominant}")
 
-    # Flatten the channel and get top 5% pixel values
+    # Evaluate top 5% brightest pixels
     flat = channel_data.flatten()
     cutoff = int(len(flat) * 0.05)
     top_pixels = np.sort(flat)[-cutoff:]
@@ -45,10 +40,11 @@ def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921, exp
 
     print(f"Mean of top 5% pixels in {dominant}: {top_mean:.2f}")
 
-    # Get current exposure
+    # Get current exposure from metadata
     metadata = picam2.capture_metadata()
     current_exp = metadata.get("ExposureTime", 10000)
-
+    
+    # Exposure acceptable
     if target_min <= top_mean <= target_max:
         print("Exposure is acceptable.")
         return True
@@ -72,29 +68,31 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
     picam2 = app.camera
     dark_value = app.dark_value
 
+    # Basic checks
     if picam2 is None or dark_value is None:
         app.set_status("Camera or dark value not set.", "error")
         return
 
     os.makedirs(save_dir, exist_ok=True)
 
-    # Retrieve angles from app (Step 4)
-    light_radial_angles = app.light_radial_angles       # SampleRotation
-    light_azimuth_angles = app.incidence_angles         # AngleOfIncidence
-    det_azimuth_angles = app.det_azimuth_angles         # ScatterAzimuth
-    det_radial_angles = app.det_radial_angles           # ScatterRadial
+    # Load angle configurationd from the app
+    light_radial_angles = app.light_radial_angles       
+    light_azimuth_angles = app.incidence_angles         
+    det_azimuth_angles = app.det_azimuth_angles         
+    det_radial_angles = app.det_radial_angles           
 
     motors = Motors()
-    app.bsdf_measurements = {}  # Reset previous data
+    app.bsdf_measurements = {}  
     app.relative_errors = {}
 
-    capture_index = 1
+    capture_index = 1 # Counter for process
 
-    for light_rad in light_radial_angles:  # Sample rotation
+    # Scan through all angle combinations
+    for light_rad in light_radial_angles:  
         if check_stop(app): return
         motors.move_light_radial(light_rad)
 
-        for light_az in light_azimuth_angles:  # Incidence
+        for light_az in light_azimuth_angles:  
             if check_stop(app): return
             motors.move_light_azimuthal(light_az)
 
@@ -107,13 +105,12 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                     motors.move_detector_radial(det_rad)
                     time.sleep(1)
 
-                    app.set_status(
-                        f"Capturing at LS ({light_rad}, {light_az}) → DET ({det_az}, {det_rad})", "info"
-                    )
+                    # Show current measurement status
+                    app.set_status(f"Capturing at LS ({light_rad}, {light_az}) → DET ({det_az}, {det_rad})", "info")
 
                     corrected_images = []
 
-                    # Auto exposure loop
+                    # Exposure adjustment
                     for attempt in range(image_count):
                         if check_stop(app): return
                         test_image = capture_raw_image(picam2)
@@ -124,10 +121,11 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                     else:
                         print("Exposure tuning failed, skipping this position.")
                         continue
-
+                    
+                    # Capture valid images
                     valid_count = 0
                     attempts = 0
-                    max_attempts = image_count * 3  # Retry limit
+                    max_attempts = image_count * 3  
 
                     while valid_count < image_count and attempts < max_attempts:
                         if check_stop(app): return
@@ -141,11 +139,13 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         if detect_static_noise(img):
                             print(f"Attempt {attempts}: Image rejected due to static noise.")
                             continue
-
+                        
+                        # Subtract dark value and clip negatives
                         corrected = np.clip(img.astype(np.float32) - dark_value, 0, None)
                         corrected_images.append(corrected)
                         valid_count += 1
 
+                    # Process and store result 
                     if corrected_images:
                         combined = np.mean(corrected_images, axis=0)
                         R, G, B = extract_color_channels(combined)
@@ -154,12 +154,12 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         g_mean, g_err = circular_roi_mean(G)
                         b_mean, b_err = circular_roi_mean(B)
 
+                        # Store error estimates
                         app.relative_errors[(light_az, light_rad, det_az, det_rad)] = (r_err, g_err, b_err)
                         print(f"Rel. Errors - R: {r_err:.4f}, G: {g_err:.4f}, B: {b_err:.4f}")
 
+                        # Store final mean values for BSDF
                         print(f"ROI Mean Intensities - R: {r_mean:.2f}, G: {g_mean:.2f}, B: {b_mean:.2f}")
-
-                        # Use correct 4-angle key
                         key = (light_rad, light_az, det_az, det_rad)
                         app.bsdf_measurements[key] = (r_mean, g_mean, b_mean)
 
@@ -173,7 +173,5 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
     print("Full measurement complete.")
 
 def check_stop(app):
-    """Check if a stop request has been triggered (for interrupting measurement)."""
-    if getattr(app, "stop_requested", False):
-        return True
-    return False
+    """Return True if the user has requested the measurement to stop."""
+    return getattr(app, "stop_requested", False)

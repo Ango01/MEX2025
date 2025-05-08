@@ -2,34 +2,39 @@ import tkinter as tk
 from tkinter import ttk
 from Steps import step0_welcome, step1_camera, step2_dark_frame, step3_measurement_type, step4_angle_steps, step5_start_measurement
 
-# Main application class
+# Main application class for the GUI
 class ScatteringApp(tk.Tk):
     def __init__(self):
         super().__init__()
 
-        # Set window properties
+        # Set up window properties
         self.title("Optical Scattering Measurement")
         self.geometry("600x350")
         self.configure(bg="#f0f2f5")
 
+        # Apply a visual style
         self.style = ttk.Style(self)
         self.set_style()
 
+        # Initialize step control variables
         self.current_step = 0
         self.steps = [] 
 
+        # Container to hold step-specific UI content
         self.step_container = ttk.Frame(self)
         self.step_container.pack(fill="both", expand=True, padx=20, pady=10)
 
+        # Create status bar and step views
         self.create_status_bar()
         self.create_steps()
-        self.show_step(0)
+        self.show_step(0) # Show the first step
 
     def set_style(self):
         """Set up the application's visual style."""
         self.style.theme_use("clam")
         font = ("Helvetica Neue", 11)
 
+        # Style for widgets
         self.style.configure("TButton", font=font, padding=6, foreground="#ffffff", background="#0059b3")
         self.style.map("TButton", background=[("active", "#004080")])
         self.style.configure("TLabel", font=font, padding=2)
@@ -37,7 +42,7 @@ class ScatteringApp(tk.Tk):
         self.style.configure("TRadiobutton", font=font)
 
     def create_status_bar(self):
-        """Create the bottom status bar to show messages."""
+        """Create status bar at the bottom to show messages."""
         self.status_frame = tk.Frame(self, bg="#e0e0e0")
         self.status_frame.pack(side="bottom", fill="x")
 
@@ -47,11 +52,11 @@ class ScatteringApp(tk.Tk):
                                      bg="#e0e0e0", fg="#000000", anchor="w", padx=10, pady=10)
         self.status_label.pack(fill="x")
 
-        # Set initial status
+        # Show initial status message 
         self.set_status("Welcome!", "info")
 
     def set_status(self, message, status_type="neutral"):
-        """Update the status message and style based on type."""
+        """Update the status message and style based on status type."""
         colors = {
             "neutral": ("#e0e0e0", "#000000"),
             "info": ("#d9edf7", "#31708f"),
@@ -66,8 +71,11 @@ class ScatteringApp(tk.Tk):
 
     def show_step(self, index):
         """Display a step UI, replacing the current view."""
+        # Clear existing widgets
         for widget in self.step_container.winfo_children():
             widget.destroy()
+        
+        # Show next step
         if 0 <= index < len(self.steps):
             self.steps[index](self, self.step_container)
             self.current_step = index

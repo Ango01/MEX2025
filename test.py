@@ -37,32 +37,32 @@ def plot_color_histograms(R, G, B, angle):
     plt.show()
   
 def capture_exposure_curve(picam2, output_folder, start_us, step_us, count):
-    exposure_times = []
+    actual_exposures = []
     mean_intensities = []
 
     for i in range(count):
-        exp_time = start_us + i * step_us
-        print(f"\nSetting exposure time to {exp_time} µs...")
+        intended_exp = start_us + i * step_us
+        print(f"\nSetting exposure time to {intended_exp} µs...")
 
         # Set exposure manually
-        picam2.set_controls({"ExposureTime": exp_time})
+        picam2.set_controls({"ExposureTime": intended_exp})
         time.sleep(5)  # Allow time for settings to apply
 
-        input(f"Press Enter to capture image at {exp_time} µs...")
+        input(f"Press Enter to capture image at {intended_exp} µs...")
 
         raw_array = picam2.capture_array("raw").view(np.uint16)
         mean_intensity = np.mean(raw_array)
-        exposure_times.append(exp_time)
         mean_intensities.append(mean_intensity)
 
-        actual_exp = picam2.capture_metadata().get("ExposureTime", "N/A")
+        actual_exp = picam2.capture_metadata().get("ExposureTime", intended_exp)
+        actual_exposures.append(actual_exp)
+
         print(f"Captured. Mean intensity: {mean_intensity:.2f}")
-        print(f"Max intensity: {raw_array.max}")
-        print(f"Reported ExposureTime from metadata: {actual_exp} µs")
+        print(f"Actual ExposureTime from metadata: {actual_exp} µs")
 
     # Plot curve
     plt.figure(figsize=(8, 6))
-    plt.plot(exposure_times, mean_intensities, marker='o')
+    plt.plot(actual_exposures, mean_intensities, marker='o', color='blue')
     plt.title("Exposure Time vs Mean Pixel Intensity")
     plt.xlabel("Exposure Time (µs)")
     plt.ylabel("Mean Pixel Intensity (0-1023)")
@@ -118,7 +118,7 @@ def main():
     time.sleep(1)
 
     picam2.set_controls({
-        "ExposureTime": 1000,
+        "ExposureTime": 0,
         "AnalogueGain": 1.0,
         "AeEnable": False,
         "AwbEnable": False,
@@ -129,7 +129,7 @@ def main():
     output_folder = "Captured_Images"
     os.makedirs(output_folder, exist_ok=True)
 
-    angles = range(0, 1, 1)  # Change to 10 step if needed
+    angles = range(0, 1, 1)  
 
     for angle in angles:
         input(f"Press Enter to capture image at {angle} degrees...")
@@ -143,12 +143,12 @@ def main():
         print(f"Captured image at {angle} degrees")
 
         actual_exp = picam2.capture_metadata().get("ExposureTime", "N/A")
-        print(f"Reported ExposureTime from metadata: {actual_exp} µs")
+        print(f"Reported ExposureTime from metadata: {actual_exp} µs\n")
 
         save_path = os.path.join(output_folder, f"heatmap_histogram_3000.png")
         plot_heatmap_and_histogram(raw_array, save_path)
 
-    #capture_exposure_curve(picam2, output_folder, start_us=30, step_us=1000, count=20)
+    #capture_exposure_curve(picam2, output_folder, start_us=0, step_us=1000, count=20)
 
     picam2.stop()
     print("Capture sequence completed.")

@@ -8,18 +8,19 @@ class Motors:
         self.arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=1)  
         time.sleep(2)  # Allow time to initialize
 
+        # Default offset positions in degress
         self.light_az_offset = 8
         self.light_rad_offset = 8
         self.detector_az_offset = 8
         self.detector_rad_offset = 8
 
     def move_light_to_offset(self):
-        """Move light source back to its offset position."""
+        """Move light source axes (azimuthal and radial) to offset position."""
         self.move_light_azimuthal(self.light_az_offset)
         self.move_light_radial(self.light_rad_offset)
 
     def move_detector_to_offset(self):
-        """Move detector back to its offset position."""
+        """Move detector axes (azimuthal and radial) to offset position."""
         self.move_detector_azimuthal(self.detector_az_offset)
         self.move_detector_radial(self.detector_rad_offset)
 
