@@ -13,7 +13,7 @@ def capture_raw_image(picam2):
         print(f"Failed to capture RAW image: {e}")
         return None
 
-def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921, exposure_step=100):
+def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921):
     """
     Adjust exposure so that the mean of the top 5% brightest pixels in the dominant color channel
     falls within 80-90% of the 10-bit range (between 818 and 921).
@@ -37,25 +37,31 @@ def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921, exp
     cutoff = int(len(flat) * 0.05)
     top_pixels = np.sort(flat)[-cutoff:]
     top_mean = np.mean(top_pixels)
-
-    print(f"Mean of top 5% pixels in {dominant}: {top_mean:.2f}")
+    top_median = np.median(top_pixels)
+    print(f"Top 5% mean: {top_mean:.2f}, median: {top_median:.2f}")
 
     # Get current exposure from metadata
     metadata = picam2.capture_metadata()
     current_exp = metadata.get("ExposureTime", 10000)
-    
-    # Exposure acceptable
+
+    # Stop if already within target range
     if target_min <= top_mean <= target_max:
         print("Exposure is acceptable.")
         return True
+    
+    # Calculate difference between top_mean and target midpoint
+    target_mid = (target_min + target_max) / 2
+    diff_ratio = (top_mean - target_mid) / target_mid  # How far off the image is from target
+    scaling_factor = 0.1  # 10% change per unit deviation
+    base_step = max(100, int(current_exp * scaling_factor * abs(diff_ratio)))
 
-    # Adjust exposure
+    # Adjust exposure adaptively
     if top_mean > target_max:
-        new_exp = max(current_exp - exposure_step, 100)
-        print("Too bright → Decreasing exposure")
+        new_exp = max(current_exp - base_step, 100)
+        print(f"Too bright → Decreasing exposure by {base_step} µs")
     else:
-        new_exp = current_exp + exposure_step
-        print("Too dark → Increasing exposure")
+        new_exp = current_exp + base_step
+        print(f"Too dark → Increasing exposure by {base_step} µs")
 
     print(f"Adjusting exposure: {current_exp} → {new_exp}")
     picam2.set_controls({"ExposureTime": int(new_exp)})
@@ -82,6 +88,9 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
     det_radial_angles = app.det_radial_angles           
 
     motors = Motors()
+    # motors.home_detector_axes() # Homing by mechanical stop and then setting offset
+    motors.reset_position()
+
     app.bsdf_measurements = {}  
     app.relative_errors = {}
 
@@ -102,6 +111,12 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
                 for det_rad in det_radial_angles:
                     if check_stop(app): return
+
+                    # Skip blocked positions
+                    if abs(light_az - det_az) < 2.0 and abs(light_rad - det_rad) < 2.0:
+                        print(f"Skipping blocked configuration at LS({light_az}, {light_rad}) ≈ DET({det_az}, {det_rad})")
+                        continue
+                    
                     motors.move_detector_radial(det_rad)
                     time.sleep(1)
 
@@ -123,10 +138,11 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         continue
                     
                     # Capture valid images
-                    valid_count = 0
+                    valid_count = 0 # How many good images are collected
                     attempts = 0
-                    max_attempts = image_count * 3  
+                    max_attempts = image_count * 3 # Limit to prevent infinite loops
 
+                    # Loop continues until desired number of valid images are captured/reached attempt limit
                     while valid_count < image_count and attempts < max_attempts:
                         if check_stop(app): return
                         img = capture_raw_image(picam2)
@@ -144,6 +160,9 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         corrected = np.clip(img.astype(np.float32) - dark_value, 0, None)
                         corrected_images.append(corrected)
                         valid_count += 1
+                    
+                    if len(corrected_images) < image_count:
+                        print(f"Warning: Only {len(corrected_images)} valid images collected (out of {image_count} required)")
 
                     # Process and store result 
                     if corrected_images:

@@ -1,7 +1,7 @@
-import threading
+import threading, os
 from tkinter import ttk, filedialog
 from capture_image import run_full_measurement
-from output_data import generate_zemax_bsdf_file
+from output_data import generate_zemax_bsdf_file, save_relative_errors
 
 def create(app, container):
     """Create function for Step 5: Start the measurement process."""
@@ -149,7 +149,15 @@ def save_bsdf(app):
             bsdf_data=bsdf_data,
         )
 
-        app.set_status("BSDF file saved successfully!", "success")
+        app.set_status("BSDF file and relative errors saved successfully!", "success")
+
+        # Save relative errors alongside BSDF
+        try:
+            result_dir = os.path.dirname(filename)
+            error_filename = os.path.splitext(os.path.basename(filename))[0] + "_relative_errors.csv"
+            save_relative_errors(app, output_folder=result_dir, filename=error_filename)
+        except Exception as e:
+            print(f"Warning: Could not save relative errors: {e}")
 
     except Exception as e:
         print(f"Error saving BSDF file: {e}")
