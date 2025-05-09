@@ -1,7 +1,6 @@
-matplotlib==3.10.0
-numpy==2.2.2
+matplotlib==3.3.4
+numpy==1.19.5
 opencv_python==4.11.0.86
-picamera2==0.3.27
 pyserial==3.5
 rawpy==0.24.0
 scikit-image==0.25.2
