@@ -10,7 +10,7 @@ def capture_raw_image(picam2):
         return raw_array
 
     except Exception as e:
-        print(f"Failed to capture RAW image: {e}")
+        logging.error(f"Failed to capture RAW image: {e}")
         return None
 
 def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921):
@@ -19,7 +19,7 @@ def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921):
     falls within 80-90% of the 10-bit range (between 818 and 921).
     """
     if image is None or picam2 is None:
-        print("Invalid input to exposure check.")
+        logging.error("Invalid input to exposure check.")
         return False
 
     # Extract RGB channels from image
@@ -30,7 +30,7 @@ def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921):
     dominant = max(channel_means, key=channel_means.get)
     channel_data = {'R': R, 'G': G, 'B': B}[dominant]
 
-    print(f"Dominant channel: {dominant}")
+    logging.info(f"Dominant channel: {dominant}")
 
     # Evaluate top 5% brightest pixels
     flat = channel_data.flatten()
@@ -38,7 +38,7 @@ def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921):
     top_pixels = np.sort(flat)[-cutoff:]
     top_mean = np.mean(top_pixels)
     top_median = np.median(top_pixels)
-    print(f"Top 5% mean: {top_mean:.2f}, median: {top_median:.2f}")
+    logging.info(f"Top 5% mean: {top_mean:.2f}, median: {top_median:.2f}")
 
     # Get current exposure from metadata
     metadata = picam2.capture_metadata()
@@ -46,7 +46,7 @@ def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921):
 
     # Stop if already within target range
     if target_min <= top_mean <= target_max:
-        print("Exposure is acceptable.")
+        logging.info("Exposure is acceptable.")
         return True
     
     # Calculate difference between top_mean and target midpoint
@@ -58,12 +58,12 @@ def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921):
     # Adjust exposure adaptively
     if top_mean > target_max:
         new_exp = max(current_exp - base_step, 100)
-        print(f"Too bright → Decreasing exposure by {base_step} µs")
+        logging.info(f"Too bright → Decreasing exposure by {base_step} µs")
     else:
         new_exp = current_exp + base_step
-        print(f"Too dark → Increasing exposure by {base_step} µs")
+        logging.info(f"Too dark → Increasing exposure by {base_step} µs")
 
-    print(f"Adjusting exposure: {current_exp} → {new_exp}")
+    logging.info(f"Adjusting exposure: {current_exp} → {new_exp}")
     picam2.set_controls({"ExposureTime": int(new_exp)})
     time.sleep(1)  # Let settings apply
 
@@ -114,7 +114,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
                     # Skip blocked positions
                     if abs(light_az - det_az) < 2.0 and abs(light_rad - det_rad) < 2.0:
-                        print(f"Skipping blocked configuration at LS({light_az}, {light_rad}) ≈ DET({det_az}, {det_rad})")
+                        logging.info(f"Skipping blocked configuration at LS({light_az}, {light_rad}) ≈ DET({det_az}, {det_rad})")
                         logging.warning("Skipping blocked configuration at LS({light_az}, {light_rad}) ≈ DET({det_az}, {det_rad})")
                         continue
                     
@@ -135,7 +135,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         if check_and_adjust_exposure(picam2, test_image):
                             break
                     else:
-                        print("Exposure tuning failed, skipping this position.")
+                        logging.warning("Exposure tuning failed, skipping this position.")
                         continue
                     
                     # Capture valid images
@@ -150,11 +150,11 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         attempts += 1
 
                         if img is None:
-                            print(f"Attempt {attempts}: Image capture failed.")
+                            logging.error(f"Attempt {attempts}: Image capture failed.")
                             continue
 
                         if detect_static_noise(img):
-                            print(f"Attempt {attempts}: Image rejected due to static noise.")
+                            logging.info(f"Attempt {attempts}: Image rejected due to static noise.")
                             continue
                         
                         # Subtract dark value and clip negatives
@@ -163,7 +163,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         valid_count += 1
                     
                     if len(corrected_images) < image_count:
-                        print(f"Warning: Only {len(corrected_images)} valid images collected (out of {image_count} required)")
+                        logging.warning(f"Warning: Only {len(corrected_images)} valid images collected (out of {image_count} required)")
 
                     # Process and store result 
                     if corrected_images:
@@ -176,10 +176,10 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
                         # Store error estimates
                         app.relative_errors[(light_az, light_rad, det_az, det_rad)] = (r_err, g_err, b_err)
-                        print(f"Rel. Errors - R: {r_err:.4f}, G: {g_err:.4f}, B: {b_err:.4f}")
+                        logging.info(f"Rel. Errors - R: {r_err:.4f}, G: {g_err:.4f}, B: {b_err:.4f}")
 
                         # Store final mean values for BSDF
-                        print(f"ROI Mean Intensities - R: {r_mean:.2f}, G: {g_mean:.2f}, B: {b_mean:.2f}")
+                        logging.info(f"ROI Mean Intensities - R: {r_mean:.2f}, G: {g_mean:.2f}, B: {b_mean:.2f}")
                         key = (light_rad, light_az, det_az, det_rad)
                         app.bsdf_measurements[key] = (r_mean, g_mean, b_mean)
 
@@ -190,7 +190,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
     motors.move_light_to_offset()
     app.set_status("Full measurement complete.", "success")
-    print("Full measurement complete.")
+    logging.info("Full measurement complete.")
 
 def check_stop(app):
     """Return True if the user has requested the measurement to stop."""

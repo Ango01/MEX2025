@@ -1,4 +1,4 @@
-import csv, os
+import csv, os, logging
 from datetime import datetime
 
 def generate_zemax_bsdf_file(
@@ -82,7 +82,7 @@ def save_relative_errors(app, output_folder, filename):
             for (light_az, light_rad, det_az, det_rad), (r_err, g_err, b_err) in app.relative_errors.items():
                 writer.writerow([light_az, light_rad, det_az, det_rad, r_err, g_err, b_err])
 
-        print(f"Relative errors saved to {filepath}")
+        logging.info(f"Relative errors saved to {filepath}")
 
     except Exception as e:
-        print(f"Error saving relative errors: {e}")
+        logging.error(f"Error saving relative errors: {e}")

@@ -1,5 +1,6 @@
 import serial
 import time
+import logging
 
 # Control stepper motors via Arduino over serial connection
 class Motors:
@@ -18,11 +19,11 @@ class Motors:
         """Assume that the position where the motors are at the moment is the starting point."""
         self.arduino.write(b"RESET_POS\n")
         response = self.arduino.readline().decode().strip()
-        print("Arduino response:", response)
+        logging.info("Arduino response:", response)
 
     def home_detector_axes(self):
         """Rough homing by moving detector axes slowly toward a mechanical stop."""
-        print("Homing detector axes...")
+        logging.info("Homing detector axes...")
 
         # Move far in negative direction to hit mechanical stop (assumes safe)
         for _ in range(100):  # Enough steps to reach stop
@@ -32,7 +33,7 @@ class Motors:
             self.arduino.write(b"DET_RAD_ABS:0\n")
             time.sleep(0.2)
 
-        print("Homing move complete. Setting current position to 8° offset.")
+        logging.info("Homing move complete. Setting current position to 8° offset.")
         self.reset_position()
 
     def move_light_to_offset(self):
@@ -47,37 +48,37 @@ class Motors:
 
     def move_light_azimuthal(self, angle):
         """Move light source in the azimuthal direction."""
-        print(f"Command: Go to light azimuthal {angle}°")
+        logging.info(f"Command: Go to light azimuthal {angle}°")
         command = f"LIGHT_AZ_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         response = self.arduino.readline().decode().strip()
-        print("Arduino response:", response)
+        logging.info("Arduino response:", response)
         time.sleep(2)
 
     def move_light_radial(self, angle):
         """Move light source in the radial direction."""
-        print(f"Go to light radial {angle}°")
+        logging.info(f"Go to light radial {angle}°")
         command = f"LIGHT_RAD_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         response = self.arduino.readline().decode().strip()
-        print("Arduino response:", response)
+        logging.info("Arduino response:", response)
         time.sleep(2)
 
     def move_detector_azimuthal(self, angle):
         """Move detector in the azimuthal direction."""
-        print(f"Go to detector azimuthal {angle}°")
+        logging.info(f"Go to detector azimuthal {angle}°")
         command = f"DET_AZ_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         response = self.arduino.readline().decode().strip()
-        print("Arduino response:", response)
+        logging.info("Arduino response:", response)
         time.sleep(2)
 
     def move_detector_radial(self, angle):
         """Move detector in the radial direction."""
-        print(f"Go to detector radial {angle}°")
+        logging.info(f"Go to detector radial {angle}°")
         command = f"DET_RAD_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         response = self.arduino.readline().decode().strip()
-        print("Arduino response:", response)
+        logging.info("Arduino response:", response)
         time.sleep(2)
 

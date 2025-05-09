@@ -1,4 +1,4 @@
-import threading, os
+import threading, os, logging
 from tkinter import ttk, filedialog
 from capture_image import run_full_measurement
 from output_data import generate_zemax_bsdf_file, save_relative_errors
@@ -18,6 +18,13 @@ def create(app, container):
 
     summary_text = (
         f"Measurement Type: {mtype}\n\n"
+        f"Light Source - Azimuthal Step: {app.angle_step_sizes['ls_az']}° ({len(app.incidence_angles)} positions)\n"
+        f"Light Source - Radial Step: {app.angle_step_sizes['ls_rad']}° ({len(app.light_radial_angles)} positions)\n"
+        f"Detector - Azimuthal Step: {app.angle_step_sizes['det_az']}° ({len(app.det_azimuth_angles)} positions)\n"
+        f"Detector - Radial Step: {app.angle_step_sizes['det_rad']}° ({len(app.det_radial_angles)} positions)\n\n"
+    )
+
+    logging.info(f"Measurement Type: {mtype}\n\n"
         f"Light Source - Azimuthal Step: {app.angle_step_sizes['ls_az']}° ({len(app.incidence_angles)} positions)\n"
         f"Light Source - Radial Step: {app.angle_step_sizes['ls_rad']}° ({len(app.light_radial_angles)} positions)\n"
         f"Detector - Azimuthal Step: {app.angle_step_sizes['det_az']}° ({len(app.det_azimuth_angles)} positions)\n"
@@ -77,7 +84,7 @@ def start_measurement(app):
                 app.save_bsdf_button.config(state="normal") # Enable BSDF save
 
         except Exception as e:
-            print(f"Measurement error: {e}")
+            logging.error(f"Measurement error: {e}")
             app.set_status(f"Measurement failed", "error")
         finally:
             app.start_button.config(state="normal") # Re-enable start button
@@ -157,8 +164,8 @@ def save_bsdf(app):
             error_filename = os.path.splitext(os.path.basename(filename))[0] + "_relative_errors.csv"
             save_relative_errors(app, output_folder=result_dir, filename=error_filename)
         except Exception as e:
-            print(f"Warning: Could not save relative errors: {e}")
+            logging.warning(f"Warning: Could not save relative errors: {e}")
 
     except Exception as e:
-        print(f"Error saving BSDF file: {e}")
+        logging.error(f"Error saving BSDF file: {e}")
         app.set_status(f"Error saving BSDF file", "error")

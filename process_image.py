@@ -1,4 +1,4 @@
-import cv2
+import cv2, logging
 import numpy as np
 from skimage.measure import shannon_entropy
 
@@ -38,7 +38,7 @@ def entropy_noise_check(image, entropy_threshold=3):
     """Use Shannon entropy to detect noise. Low entropy reflects static noise."""
     gray = image.astype(np.float32) / 1023.0  # Normalize to [0, 1]
     entropy = shannon_entropy(gray)
-    print(f"Entropy Value: {entropy} \n")
+    logging.info(f"Entropy Value: {entropy} \n")
 
     # Return True if entropy suggests noise
     return entropy > entropy_threshold
@@ -50,7 +50,7 @@ def local_variance_noise_check(image, var_threshold=100):
     diff = cv2.absdiff(image, blur) # Highlight fine noise
     variance = np.var(diff)
 
-    print(f"Variance Value: {variance}")
+    logging.info(f"Variance Value: {variance}")
 
     # Return True if variance exceed threshold (image has structure)
     return variance > var_threshold
@@ -65,5 +65,5 @@ def detect_static_noise(image):
         return variance_check or entropy_check
 
     except Exception as e:
-        print(f"Error during noise detection: {e}")
+        logging.error(f"Error during noise detection: {e}")
         return False

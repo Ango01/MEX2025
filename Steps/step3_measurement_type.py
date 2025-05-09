@@ -34,5 +34,7 @@ def create(app, container):
         app.set_status("Please select a measurement type before continuing.", "error")
         if not app.measurement_type.get()
         # If selected, continue
-        else (app.set_status(f"Measurement type selected: {app.measurement_type.get()}", "success"), app.next_step())
+        else ( 
+            app.set_status(f"Measurement type selected: {app.measurement_type.get()}", "success"), 
+            app.next_step())
     )).pack(side="left", padx=5)

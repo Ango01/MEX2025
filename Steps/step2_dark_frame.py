@@ -45,8 +45,7 @@ def capture_dark_frame(app):
             print(f"Dtype: {dark_frame.dtype}")
             print(f"Size (pixels): {dark_frame.size}")
             print(f"Min/Max: {dark_frame.min()} / {dark_frame.max()}")
-            print(f"Mean intensity (dark_value): {app.dark_value:.2f}")
-            logging.info("Mean intensity (dark_value): {app.dark_value:.2f}")
+            logging.info(f"Mean intensity (dark_value): {app.dark_value}")
 
             # Update status and proceed to next step
             app.set_status(f"Dark frame captured - Mean value: {app.dark_value:.2f}", "success")
@@ -63,6 +62,7 @@ def set_nominal_dark_value(app, entry):
         value = float(entry.get()) # Convert input text to float
         app.dark_value = value
 
+        logging.info(f"Mean intensity (dark_value): {app.dark_value}")
         app.set_status(f"Nominal dark value set: {app.dark_value:.2f}", "success")
         app.next_step()
 
