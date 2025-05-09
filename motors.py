@@ -19,7 +19,7 @@ class Motors:
         """Assume that the position where the motors are at the moment is the starting point."""
         self.arduino.write(b"RESET_POS\n")
         response = self.arduino.readline().decode().strip()
-        logging.info("Arduino response:", response)
+        logging.info(f"Arduino response:", response)
 
     def home_detector_axes(self):
         """Rough homing by moving detector axes slowly toward a mechanical stop."""

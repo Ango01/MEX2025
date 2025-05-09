@@ -115,7 +115,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                     # Skip blocked positions
                     if abs(light_az - det_az) < 2.0 and abs(light_rad - det_rad) < 2.0:
                         logging.info(f"Skipping blocked configuration at LS({light_az}, {light_rad}) ≈ DET({det_az}, {det_rad})")
-                        logging.warning("Skipping blocked configuration at LS({light_az}, {light_rad}) ≈ DET({det_az}, {det_rad})")
+                        logging.warning(f"Skipping blocked configuration at LS({light_az}, {light_rad}) ≈ DET({det_az}, {det_rad})")
                         continue
                     
                     motors.move_detector_radial(det_rad)
