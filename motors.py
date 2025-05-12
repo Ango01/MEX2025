@@ -57,7 +57,7 @@ class Motors:
 
     def move_light_radial(self, angle):
         """Move light source in the radial direction."""
-        logging.info(f"Go to light radial {angle}°")
+        logging.info(f"Command: Go to light radial {angle}°")
         command = f"LIGHT_RAD_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         response = self.arduino.readline().decode().strip()
@@ -66,7 +66,7 @@ class Motors:
 
     def move_detector_azimuthal(self, angle):
         """Move detector in the azimuthal direction."""
-        logging.info(f"Go to detector azimuthal {angle}°")
+        logging.info(f"Command: Go to detector azimuthal {angle}°")
         command = f"DET_AZ_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         response = self.arduino.readline().decode().strip()
@@ -75,7 +75,7 @@ class Motors:
 
     def move_detector_radial(self, angle):
         """Move detector in the radial direction."""
-        logging.info(f"Go to detector radial {angle}°")
+        logging.info(f"Command: Go to detector radial {angle}°")
         command = f"DET_RAD_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         response = self.arduino.readline().decode().strip()

@@ -28,7 +28,7 @@ def create(app, container):
         f"Light Source - Azimuthal Step: {app.angle_step_sizes['ls_az']}° ({len(app.incidence_angles)} positions)\n"
         f"Light Source - Radial Step: {app.angle_step_sizes['ls_rad']}° ({len(app.light_radial_angles)} positions)\n"
         f"Detector - Azimuthal Step: {app.angle_step_sizes['det_az']}° ({len(app.det_azimuth_angles)} positions)\n"
-        f"Detector - Radial Step: {app.angle_step_sizes['det_rad']}° ({len(app.det_radial_angles)} positions)\n\n"
+        f"Detector - Radial Step: {app.angle_step_sizes['det_rad']}° ({len(app.det_radial_angles)} positions)\n"
     )
 
     # Layout for summary and navigation
