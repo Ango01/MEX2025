@@ -114,7 +114,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
                     # Skip blocked positions
                     if abs(light_az - det_az) < 2.0 and abs(light_rad - det_rad) < 2.0:
-                        logging.warning(f"\nSkipping blocked configuration at LS({light_az}, {light_rad}) ≈ DET({det_az}, {det_rad})\n")
+                        logging.warning(f"Skipping blocked configuration at LS({light_az}, {light_rad}) ≈ DET({det_az}, {det_rad})\n")
                         continue
                     
                     motors.move_detector_radial(det_rad)
@@ -134,7 +134,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         if check_and_adjust_exposure(picam2, test_image):
                             break
                     else:
-                        logging.warning("\nExposure tuning failed, skipping this position.\n")
+                        logging.warning("Exposure tuning failed, skipping this position.\n")
                         continue
                     
                     # Capture valid images
@@ -189,7 +189,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
 
     motors.move_light_to_offset()
     app.set_status("Full measurement complete.", "success")
-    logging.info("\nFull measurement complete.\n")
+    logging.info("Full measurement complete.\n")
 
 def check_stop(app):
     """Return True if the user has requested the measurement to stop."""

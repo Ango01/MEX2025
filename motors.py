@@ -52,7 +52,7 @@ class Motors:
         command = f"LIGHT_AZ_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         response = self.arduino.readline().decode().strip()
-        logging.info("Arduino response: {response}")
+        logging.info(f"Arduino response: {response}")
         time.sleep(2)
 
     def move_light_radial(self, angle):
@@ -61,7 +61,7 @@ class Motors:
         command = f"LIGHT_RAD_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         response = self.arduino.readline().decode().strip()
-        logging.info("Arduino response: {response}")
+        logging.info(f"Arduino response: {response}")
         time.sleep(2)
 
     def move_detector_azimuthal(self, angle):
@@ -70,7 +70,7 @@ class Motors:
         command = f"DET_AZ_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         response = self.arduino.readline().decode().strip()
-        logging.info("Arduino response: {response}")
+        logging.info(f"Arduino response: {response}")
         time.sleep(2)
 
     def move_detector_radial(self, angle):
@@ -79,6 +79,6 @@ class Motors:
         command = f"DET_RAD_ABS:{angle:.2f}\n"
         self.arduino.write(command.encode())
         response = self.arduino.readline().decode().strip()
-        logging.info("Arduino response: {response}")
+        logging.info(f"Arduino response: {response}")
         time.sleep(2)
 
