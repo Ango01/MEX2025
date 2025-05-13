@@ -1,4 +1,4 @@
-import os, time, logging
+import os, time, logging, cv2
 import numpy as np
 from motors import Motors  
 from process_image import extract_color_channels, circular_roi_mean, detect_static_noise
@@ -160,6 +160,19 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         corrected = np.clip(img.astype(np.float32) - dark_value, 0, None)
                         corrected_images.append(corrected)
                         valid_count += 1
+
+                        # Save corrected image as JPG
+                        filename =  f"LS({light_rad}_{light_az})_DET({det_az}_{det_rad}).jpg"
+                        save_path = os.path.join(save_dir, filename)
+
+                        # Normalize to 8-bit for visualization
+                        normalized = cv2.normalize(corrected, None, 0, 255, cv2.NORM_MINMAX)
+                        normalized = normalized.astype(np.uint8)
+
+                        # Convert to 3-channel grayscale for consistent JPG
+                        three_channel = cv2.merge([normalized]*3)
+
+                        cv2.imwrite(save_path, three_channel)
                     
                     if len(corrected_images) < image_count:
                         logging.warning(f"Warning: Only {len(corrected_images)} valid images collected (out of {image_count} required)")

@@ -1,4 +1,5 @@
 import csv, os, logging
+import numpy as np
 from datetime import datetime
 
 def generate_zemax_bsdf_file(
@@ -68,6 +69,8 @@ def generate_zemax_bsdf_file(
         write_data_block(f, component_index=0, label="R")
         write_data_block(f, component_index=1, label="G")
         write_data_block(f, component_index=2, label="B")
+    
+    logging.info(f"BSDF data file saved to {filename}")
 
 def save_relative_errors(app, output_folder, filename):
     """Save the relative errors to a CSV file."""
@@ -79,8 +82,21 @@ def save_relative_errors(app, output_folder, filename):
             writer = csv.writer(f)
             writer.writerow(["light_az", "light_rad", "det_az", "det_rad", "r_err", "g_err", "b_err"])
 
+            r_list, g_list, b_list = [], [], []
+
             for (light_az, light_rad, det_az, det_rad), (r_err, g_err, b_err) in app.relative_errors.items():
                 writer.writerow([light_az, light_rad, det_az, det_rad, r_err, g_err, b_err])
+                r_list.append(r_err)
+                g_list.append(g_err)
+                b_list.append(b_err)
+
+            # Compute and write mean values
+            mean_r = np.mean(r_list) if r_list else 0
+            mean_g = np.mean(g_list) if g_list else 0
+            mean_b = np.mean(b_list) if b_list else 0
+
+            writer.writerow([])
+            writer.writerow(["Mean", "", "", "", mean_r, mean_g, mean_b])
 
         logging.info(f"Relative errors saved to {filepath}")
 
