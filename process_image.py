@@ -38,7 +38,7 @@ def entropy_noise_check(image, entropy_threshold=3):
     """Use Shannon entropy to detect noise. Low entropy reflects static noise."""
     gray = image.astype(np.float32) / 1023.0  # Normalize to [0, 1]
     entropy = shannon_entropy(gray)
-    logging.info(f"Entropy Value: {entropy} \n")
+    logging.info(f"Entropy Value: {entropy}")
 
     # Return True if entropy suggests noise
     return entropy > entropy_threshold

@@ -46,7 +46,7 @@ def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921):
 
     # Stop if already within target range
     if target_min <= top_mean <= target_max:
-        logging.info("\nExposure is acceptable.\n")
+        logging.info("Exposure is acceptable.\n")
         return True
     
     # Calculate difference between top_mean and target midpoint
@@ -153,7 +153,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                             continue
 
                         if detect_static_noise(img):
-                            logging.info(f"Attempt {attempts}: Image rejected due to static noise.")
+                            logging.info(f"Attempt {attempts}: Image rejected due to static noise.\n")
                             continue
                         
                         # Subtract dark value and clip negatives
@@ -175,7 +175,7 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                         cv2.imwrite(save_path, three_channel)
                     
                     if len(corrected_images) < image_count:
-                        logging.warning(f"Warning: Only {len(corrected_images)} valid images collected (out of {image_count} required)")
+                        logging.warning(f"Warning: Only {len(corrected_images)} valid images collected (out of {image_count} required)\n")
 
                     # Process and store result 
                     if corrected_images:
