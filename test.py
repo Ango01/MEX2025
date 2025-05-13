@@ -50,7 +50,17 @@ def capture_exposure_curve(picam2, output_folder, start_us, step_us, count):
 
         input(f"Press Enter to capture image at {intended_exp} µs...")
 
+        raw = picam2.capture_array("raw")
+        print(raw.dtype, raw.shape)
+
         raw_array = picam2.capture_array("raw").view(np.uint16)
+        print(raw_array.dtype, raw_array.shape)
+        print(f"Min: {np.min(raw_array)}, Max: {np.max(raw_array)}")
+
+        image_filename = f"heatmap_histogram_{intended_exp}us.png"
+        save_path = os.path.join(output_folder, image_filename)
+        plot_heatmap_and_histogram(raw_array, save_path)
+
         mean_intensity = np.mean(raw_array)
         mean_intensities.append(mean_intensity)
 
@@ -68,7 +78,7 @@ def capture_exposure_curve(picam2, output_folder, start_us, step_us, count):
     plt.ylabel("Mean Pixel Intensity (0-1023)")
     plt.grid(True)
 
-    plot_path = os.path.join(output_folder, "exposure_vs_intensity_4.png")
+    plot_path = os.path.join(output_folder, "exposure_vs_intensity_test.png")
     plt.savefig(plot_path)
     plt.show()
     print(f"Saved exposure curve to {plot_path}")
@@ -118,36 +128,36 @@ def main():
     time.sleep(1)
 
     picam2.set_controls({
-        "ExposureTime": 3000,
-        "AnalogueGain": 1.0,
-        "AwbEnable": False,
-    })
+    "AeEnable": False,
+    "AnalogueGain": 1.0,
+    "AwbEnable": False
+})
 
-    time.sleep(0.5)
+    time.sleep(1)
 
     output_folder = "Captured_Images"
     os.makedirs(output_folder, exist_ok=True)
 
-    angles = range(0, 1, 1)  
+    #angles = range(0, 1, 1)  
 
-    for angle in angles:
-        input(f"Press Enter to capture image at {angle} degrees...")
+    #for angle in angles:
+    #    input(f"Press Enter to capture image at {angle} degrees...")
 
-        raw_array = picam2.capture_array("raw").view(np.uint16)
+    #    raw_array = picam2.capture_array("raw").view(np.uint16)
 
-        print(f"Shape: {raw_array.shape}")
-        print(f"Dtype: {raw_array.dtype}")
-        print(f"Min/Max: {raw_array.min()} / {raw_array.max()}")
+    #    print(f"Shape: {raw_array.shape}")
+    #    print(f"Dtype: {raw_array.dtype}")
+    #    print(f"Min/Max: {raw_array.min()} / {raw_array.max()}")
         
-        print(f"Captured image at {angle} degrees")
+    #    print(f"Captured image at {angle} degrees")
 
-        actual_exp = picam2.capture_metadata().get("ExposureTime", "N/A")
-        print(f"Reported ExposureTime from metadata: {actual_exp} µs\n")
+    #    actual_exp = picam2.capture_metadata().get("ExposureTime", "N/A")
+    #    print(f"Reported ExposureTime from metadata: {actual_exp} µs\n")
 
-        save_path = os.path.join(output_folder, f"heatmap_histogram_test.png")
-        plot_heatmap_and_histogram(raw_array, save_path)
+    #    save_path = os.path.join(output_folder, f"heatmap_histogram_test.png")
+    #    plot_heatmap_and_histogram(raw_array, save_path)
 
-    #capture_exposure_curve(picam2, output_folder, start_us=0, step_us=500, count=20)
+    capture_exposure_curve(picam2, output_folder, start_us=0, step_us=500, count=20)
 
     picam2.stop()
     print("Capture sequence completed.")
