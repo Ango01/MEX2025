@@ -78,7 +78,7 @@ def capture_exposure_curve(picam2, output_folder, start_us, step_us, count):
     plt.ylabel("Mean Pixel Intensity (0-1023)")
     plt.grid(True)
 
-    plot_path = os.path.join(output_folder, "exposure_vs_intensity_test.png")
+    plot_path = os.path.join(output_folder, "exposure_vs_intensity_higher_power_2.png")
     plt.savefig(plot_path)
     plt.show()
     print(f"Saved exposure curve to {plot_path}")
@@ -157,7 +157,7 @@ def main():
     #    save_path = os.path.join(output_folder, f"heatmap_histogram_test.png")
     #    plot_heatmap_and_histogram(raw_array, save_path)
 
-    capture_exposure_curve(picam2, output_folder, start_us=0, step_us=500, count=20)
+    capture_exposure_curve(picam2, output_folder, start_us=30, step_us=1000, count=20)
 
     picam2.stop()
     print("Capture sequence completed.")

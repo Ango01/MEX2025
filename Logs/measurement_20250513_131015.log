@@ -1,0 +1,14 @@
+2025-05-13 13:10:20,436 - Initialization successful.
+2025-05-13 13:10:20,438 - Camera now open.
+2025-05-13 13:10:20,444 - Camera configuration has been adjusted!
+2025-05-13 13:10:20,448 - Configuration successful!
+2025-05-13 13:10:21,102 - Camera started
+2025-05-13 13:10:25,381 - Mean intensity (dark_value): 60.211530255130896
+2025-05-13 13:10:46,200 - Measurement Type: BRDF
+
+Light Source - Azimuthal Step: 100.0° (2 positions)
+Light Source - Radial Step: 100.0° (2 positions)
+Detector - Azimuthal Step: 100.0° (2 positions)
+Detector - Radial Step: 100.0° (2 positions)
+
+2025-05-13 13:10:48,950 - Measurement error: [Errno 2] could not open port /dev/ttyACM0: [Errno 2] No such file or directory: '/dev/ttyACM0'
