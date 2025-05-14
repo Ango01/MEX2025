@@ -15,12 +15,23 @@ def extract_color_channels(image):
     print(f"B: {B.shape}, R: {R.shape}, G: {G.shape}")
     return R, G, B
 
-def plot_color_histogram(R, G, B, angle, stage="before"):
-    """Save a plot of R, G, B channel intensities."""
+def plot_color_histogram(R, G, B, angle, stage="before", dominant_channel=None):
+    """Save a plot of R, G, B channel intensities and mark top 5% of the dominant channel."""
     plt.figure()
+
+    # Plot histograms
     plt.hist(R.flatten(), bins=256, alpha=0.5, label="R", color="red")
     plt.hist(G.flatten(), bins=256, alpha=0.5, label="G", color="green")
     plt.hist(B.flatten(), bins=256, alpha=0.5, label="B", color="blue")
+
+    # Highlight top 5% of dominant channel if provided
+    if dominant_channel:
+        channel_data = {'R': R, 'G': G, 'B': B}[dominant_channel].flatten()
+        cutoff_value = np.percentile(channel_data, 95)
+        plt.axvline(cutoff_value, color="black", linestyle="--", linewidth=1.5, label=f"95th %ile ({dominant_channel})")
+        plt.axvspan(cutoff_value, channel_data.max(), color='gray', alpha=0.3)
+
+    # Labels and save
     plt.title(f"Color Histogram ({stage} exposure adj) - Angle {angle}°")
     plt.xlabel("Intensity")
     plt.ylabel("Pixel Count")
@@ -35,7 +46,7 @@ def check_and_adjust_exposure(picam2, image, angle, target_min=818, target_max=9
     falls within 80-90% of the 10-bit range (between 818 and 921).
     """
     R, G, B = extract_color_channels(image)
-    plot_color_histogram(R, G, B, angle, stage="before")
+    plot_color_histogram(R, G, B, angle, stage="before", dominant_channel=dominant)
 
     channel_means = {'R': np.mean(R), 'G': np.mean(G), 'B': np.mean(B)}
     dominant = max(channel_means, key=channel_means.get)
@@ -76,7 +87,7 @@ def check_and_adjust_exposure(picam2, image, angle, target_min=818, target_max=9
     # Capture new image to visualize updated exposure
     new_image = picam2.capture_array("raw").view(np.uint16)
     R_new, G_new, B_new = extract_color_channels(new_image)
-    plot_color_histogram(R_new, G_new, B_new, angle, stage="after")
+    plot_color_histogram(R_new, G_new, B_new, angle, stage="after", dominant_channel=dominant)
 
 def capture_raw_image(picam2):
     raw = picam2.capture_array("raw").view(np.uint16)
