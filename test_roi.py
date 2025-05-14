@@ -46,14 +46,18 @@ def check_and_adjust_exposure(picam2, image, angle, target_min=818, target_max=9
     falls within 80-90% of the 10-bit range (between 818 and 921).
     """
     R, G, B = extract_color_channels(image)
-    plot_color_histogram(R, G, B, angle, stage="before", dominant_channel=dominant)
 
+    # Determine dominant channel first
     channel_means = {'R': np.mean(R), 'G': np.mean(G), 'B': np.mean(B)}
     dominant = max(channel_means, key=channel_means.get)
     channel_data = {'R': R, 'G': G, 'B': B}[dominant]
 
+    # Now it's safe to plot
+    plot_color_histogram(R, G, B, angle, stage="before", dominant_channel=dominant)
+
     print(f"Dominant channel: {dominant}")
 
+    # Evaluate top 5% brightest pixels
     flat = channel_data.flatten()
     cutoff = int(len(flat) * 0.05)
     top_pixels = np.sort(flat)[-cutoff:]
@@ -65,9 +69,10 @@ def check_and_adjust_exposure(picam2, image, angle, target_min=818, target_max=9
     current_exp = metadata.get("ExposureTime", 10000)
 
     if target_min <= top_mean <= target_max:
-       print("Exposure is acceptable.\n")
-       return
+        print("Exposure is acceptable.\n")
+        return
 
+    # Calculate exposure adjustment
     target_mid = (target_min + target_max) / 2
     diff_ratio = (top_mean - target_mid) / target_mid
     scaling_factor = 0.1
