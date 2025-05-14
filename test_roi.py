@@ -12,7 +12,7 @@ def extract_color_channels(image):
     G2 = image[1::2, 0::2]
     R = image[1::2, 1::2]
     G = (G1 + G2) / 2
-    print("B:", B.shape, "G:", G.shape, "R:", R.shape)
+    print(f"B: {B.shape}, R: {R.shape}, G: {G.shape}")
     return R, G, B
 
 def plot_color_histogram(R, G, B, angle, stage="before"):
@@ -74,14 +74,16 @@ def check_and_adjust_exposure(picam2, image, angle, target_min=818, target_max=9
     time.sleep(1)
 
     # Capture new image to visualize updated exposure
-    new_image = picam2.capture_array("raw")
+    new_image = picam2.capture_array("raw").view(np.uint16)
     R_new, G_new, B_new = extract_color_channels(new_image)
     plot_color_histogram(R_new, G_new, B_new, angle, stage="after")
 
 def capture_raw_image(picam2):
-    raw = picam2.capture_array("raw")
+    raw = picam2.capture_array("raw").view(np.uint16)
     actual_exp = picam2.capture_metadata().get("ExposureTime")
     print(f"Actual ExposureTime from metadata: {actual_exp} µs")
+    print(f"Datatype: {raw.dtype}")
+    print(f"Size: {raw.shape}")
     return raw
 
 def circular_roi_mean(image, diameter=20):
