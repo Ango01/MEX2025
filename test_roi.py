@@ -15,7 +15,7 @@ def extract_color_channels(image):
     print(f"B: {B.shape}, R: {R.shape}, G: {G.shape}")
     return R, G, B
 
-def plot_color_histogram(R, G, B, angle, stage="before", dominant_channel=None):
+def plot_color_histogram(R, G, B, angle, stage="before", dominant_channel=None, top5_threshold=None):
     """Save a plot of R, G, B channel intensities and mark top 5% of the dominant channel."""
     plt.figure()
 
@@ -25,7 +25,7 @@ def plot_color_histogram(R, G, B, angle, stage="before", dominant_channel=None):
     plt.hist(B.flatten(), bins=256, alpha=0.5, label="B", color="blue")
 
     # Highlight top 5% of dominant channel if provided
-    if dominant_channel:
+    if dominant_channel and top5_threshold is not None:
         channel_data = {'R': R, 'G': G, 'B': B}[dominant_channel].flatten()
         cutoff_value = np.percentile(channel_data, 95)
         plt.axvline(cutoff_value, color="black", linestyle="--", linewidth=1.5, label=f"95th %ile ({dominant_channel})")
@@ -40,59 +40,62 @@ def plot_color_histogram(R, G, B, angle, stage="before", dominant_channel=None):
     plt.savefig(f"Exposure_Histograms/angle_{angle}_{stage}.png")
     plt.close()
 
-def check_and_adjust_exposure(picam2, image, angle, target_min=818, target_max=921):
+def check_and_adjust_exposure(picam2, image, angle, target_min=818, target_max=921, max_attempts=5):
     """
-    Adjust exposure so that the mean of the top 5% brightest pixels in the dominant color channel
-    falls within 80-90% of the 10-bit range (between 818 and 921).
+    Iteratively adjust exposure until the mean of the top 5% brightest pixels
+    in the dominant channel is within target range.
     """
-    R, G, B = extract_color_channels(image)
+    attempt = 0
+    while attempt < max_attempts:
+        R, G, B = extract_color_channels(image)
 
-    # Determine dominant channel first
-    channel_means = {'R': np.mean(R), 'G': np.mean(G), 'B': np.mean(B)}
-    dominant = max(channel_means, key=channel_means.get)
-    channel_data = {'R': R, 'G': G, 'B': B}[dominant]
+        # Determine dominant channel
+        channel_means = {'R': np.mean(R), 'G': np.mean(G), 'B': np.mean(B)}
+        dominant = max(channel_means, key=channel_means.get)
+        channel_data = {'R': R, 'G': G, 'B': B}[dominant]
 
-    # Now it's safe to plot
-    plot_color_histogram(R, G, B, angle, stage="before", dominant_channel=dominant)
+        # Compute top 5% threshold and stats
+        flat = channel_data.flatten()
+        cutoff = int(len(flat) * 0.05)
+        top_pixels = np.sort(flat)[-cutoff:]
+        top_mean = np.mean(top_pixels)
+        top_median = np.median(top_pixels)
+        threshold_value = np.sort(flat)[-cutoff]
 
-    print(f"Dominant channel: {dominant}")
+        print(f"\n[Attempt {attempt + 1}] Dominant: {dominant}, Top 5% mean: {top_mean:.2f}, Threshold: {threshold_value:.2f}")
+        plot_color_histogram(R, G, B, angle, stage=f"attempt_{attempt+1}", 
+                             dominant_channel=dominant, top5_threshold=threshold_value)
 
-    # Evaluate top 5% brightest pixels
-    flat = channel_data.flatten()
-    cutoff = int(len(flat) * 0.05)
-    top_pixels = np.sort(flat)[-cutoff:]
-    top_mean = np.mean(top_pixels)
-    top_median = np.median(top_pixels)
-    print(f"Top 5% mean: {top_mean:.2f}, median: {top_median:.2f}")
+        if target_min <= top_mean <= target_max:
+            print("Exposure is acceptable.\n")
+            return image # Done
 
-    metadata = picam2.capture_metadata()
-    current_exp = metadata.get("ExposureTime", 10000)
+        # Adjust exposure
+        metadata = picam2.capture_metadata()
+        current_exp = metadata.get("ExposureTime", 10000)
+        target_mid = (target_min + target_max) / 2
+        diff_ratio = (top_mean - target_mid) / target_mid
+        scaling_factor = 0.15  # Increase if convergence is too slow
+        base_step = max(100, int(current_exp * scaling_factor * abs(diff_ratio)))
 
-    if target_min <= top_mean <= target_max:
-        print("Exposure is acceptable.\n")
-        return
+        if top_mean > target_max:
+            new_exp = max(current_exp - base_step, 100)
+            print(f"Too bright → Decreasing exposure by {base_step} µs")
+        else:
+            new_exp = current_exp + base_step
+            print(f"Too dark → Increasing exposure by {base_step} µs")
 
-    # Calculate exposure adjustment
-    target_mid = (target_min + target_max) / 2
-    diff_ratio = (top_mean - target_mid) / target_mid
-    scaling_factor = 0.1
-    base_step = max(100, int(current_exp * scaling_factor * abs(diff_ratio)))
+        print(f"Adjusting exposure: {current_exp} → {new_exp}\n")
+        picam2.set_controls({"ExposureTime": int(new_exp)})
+        time.sleep(1)
 
-    if top_mean > target_max:
-        new_exp = max(current_exp - base_step, 100)
-        print(f"Too bright → Decreasing exposure by {base_step} µs")
-    else:
-        new_exp = current_exp + base_step
-        print(f"Too dark → Increasing exposure by {base_step} µs")
+        # Capture new image for next check
+        image = picam2.capture_array("raw").view(np.uint16)
+        attempt += 1
 
-    print(f"Adjusting exposure: {current_exp} → {new_exp}")
-    picam2.set_controls({"ExposureTime": int(new_exp)})
-    time.sleep(1)
+    print("Max attempts reached. Exposure may still be out of range.")
+    return image
 
-    # Capture new image to visualize updated exposure
-    new_image = picam2.capture_array("raw").view(np.uint16)
-    R_new, G_new, B_new = extract_color_channels(new_image)
-    plot_color_histogram(R_new, G_new, B_new, angle, stage="after", dominant_channel=dominant)
 
 def capture_raw_image(picam2):
     raw = picam2.capture_array("raw").view(np.uint16)
@@ -162,7 +165,7 @@ def main():
         raw_image = capture_raw_image(picam2)
 
         # Check and adjust exposure
-        check_and_adjust_exposure(picam2, raw_image, angle)
+        raw_image = check_and_adjust_exposure(picam2, raw_image, angle)
 
         # Save raw image
         raw_filename = f"angle_{angle}_raw.png"
