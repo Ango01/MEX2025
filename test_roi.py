@@ -5,40 +5,13 @@ import time
 import matplotlib.pyplot as plt
 from picamera2 import Picamera2
 
-def extract_color_channels(image):
-    """Extract Red, Green, and Blue color channels from a Bayer RAW image (BGGR)."""
-    B = image[0::2, 0::2]
-    G1 = image[0::2, 1::2]
-    G2 = image[1::2, 0::2]
-    R = image[1::2, 1::2]
-    G = (G1 + G2) / 2
-    print(f"B: {B.shape}, R: {R.shape}, G: {G.shape}")
-    return R, G, B
-
-def plot_color_histogram(R, G, B, angle, stage="before", dominant_channel=None, top5_threshold=None):
-    """Save a plot of R, G, B channel intensities and mark top 5% of the dominant channel."""
-    plt.figure()
-
-    # Plot histograms
-    plt.hist(R.flatten(), bins=256, alpha=0.5, label="R", color="red")
-    plt.hist(G.flatten(), bins=256, alpha=0.5, label="G", color="green")
-    plt.hist(B.flatten(), bins=256, alpha=0.5, label="B", color="blue")
-
-    # Highlight top 5% of dominant channel if provided
-    if dominant_channel and top5_threshold is not None:
-        channel_data = {'R': R, 'G': G, 'B': B}[dominant_channel].flatten()
-        cutoff_value = np.percentile(channel_data, 95)
-        plt.axvline(cutoff_value, color="black", linestyle="--", linewidth=1.5, label=f"95th %ile ({dominant_channel})")
-        plt.axvspan(cutoff_value, channel_data.max(), color='gray', alpha=0.3)
-
-    # Labels and save
-    plt.title(f"Color Histogram ({stage} exposure adj) - Angle {angle}°")
-    plt.xlabel("Intensity")
-    plt.ylabel("Pixel Count")
-    plt.legend()
-    os.makedirs("Exposure_Histograms", exist_ok=True)
-    plt.savefig(f"Exposure_Histograms/angle_{angle}_{stage}.png")
-    plt.close()
+def capture_raw_image(picam2):
+    raw = picam2.capture_array("raw").view(np.uint16)
+    actual_exp = picam2.capture_metadata().get("ExposureTime")
+    print(f"Actual ExposureTime from metadata: {actual_exp} µs")
+    #print(f"Datatype: {raw.dtype}")
+    #print(f"Size: {raw.shape}")
+    return raw
 
 def check_and_adjust_exposure(picam2, image, angle, target_min=818, target_max=921, max_attempts=5):
     """
@@ -96,14 +69,41 @@ def check_and_adjust_exposure(picam2, image, angle, target_min=818, target_max=9
     print("Max attempts reached. Exposure may still be out of range.")
     return image
 
+def extract_color_channels(image):
+    """Extract Red, Green, and Blue color channels from a Bayer RAW image (BGGR)."""
+    B = image[0::2, 0::2]
+    G1 = image[0::2, 1::2]
+    G2 = image[1::2, 0::2]
+    R = image[1::2, 1::2]
+    G = (G1 + G2) / 2
+    #print(f"B: {B.shape}, R: {R.shape}, G: {G.shape}")
+    return R, G, B
 
-def capture_raw_image(picam2):
-    raw = picam2.capture_array("raw").view(np.uint16)
-    actual_exp = picam2.capture_metadata().get("ExposureTime")
-    print(f"Actual ExposureTime from metadata: {actual_exp} µs")
-    print(f"Datatype: {raw.dtype}")
-    print(f"Size: {raw.shape}")
-    return raw
+def plot_color_histogram(R, G, B, angle, stage="before", dominant_channel=None, top5_threshold=None):
+    """Save a plot of R, G, B channel intensities and mark top 5% of the dominant channel."""
+    plt.figure()
+
+    # Plot histograms
+    plt.hist(R.flatten(), bins=256, alpha=0.5, label="R", color="red")
+    plt.hist(G.flatten(), bins=256, alpha=0.5, label="G", color="green")
+    plt.hist(B.flatten(), bins=256, alpha=0.5, label="B", color="blue")
+
+    # Highlight top 5% of dominant channel if provided
+    if dominant_channel and top5_threshold is not None:
+        channel_data = {'R': R, 'G': G, 'B': B}[dominant_channel].flatten()
+        cutoff_value = np.percentile(channel_data, 95)
+        plt.axvline(cutoff_value, color="black", linestyle="--", linewidth=1.5, label=f"95th %ile ({dominant_channel})")
+        plt.axvspan(cutoff_value, channel_data.max(), color='gray', alpha=0.3)
+
+    # Labels and save
+    plt.title(f"Color Histogram ({stage} exposure adj) - Angle {angle}°")
+    plt.xlabel("Intensity")
+    plt.ylabel("Pixel Count")
+    plt.legend()
+    os.makedirs("Exposure_Histograms", exist_ok=True)
+    plt.savefig(f"Exposure_Histograms/angle_{angle}_{stage}.png")
+    plt.close()
+
 
 def circular_roi_mean(image, diameter=20):
     """Compute mean intensity and relative 1-sigma error in the ROI for each color channel."""
@@ -166,6 +166,8 @@ def main():
 
         # Check and adjust exposure
         raw_image = check_and_adjust_exposure(picam2, raw_image, angle)
+        actual_exp = picam2.capture_metadata().get("ExposureTime")
+        print(f"Actual ExposureTime from metadata: {actual_exp} µs")
 
         # Save raw image
         raw_filename = f"angle_{angle}_raw.png"
