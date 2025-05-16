@@ -156,7 +156,7 @@ def main():
     })
     time.sleep(2)
 
-    angle = 0
+    angle = 10
     while True:
         user_input = input(f"Press Enter to capture image at angle {angle}° (or type 'q' to quit): ")
         if user_input.lower() == 'q':
@@ -186,7 +186,7 @@ def main():
         vis_filename = f"angle_{angle}_roi.jpg"
         visualize_roi(raw_image, diameter=20, filename=vis_filename)
 
-        angle += 1
+        angle += 10
 
 if __name__ == "__main__":
     main()
