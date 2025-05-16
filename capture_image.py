@@ -66,7 +66,7 @@ def check_and_adjust_exposure(picam2, image, target_min=818, target_max=921):
     logging.info(f"Adjusting exposure: {current_exp} → {new_exp}")
     picam2.set_controls({"ExposureTime": int(new_exp)})
     time.sleep(1)  # Let settings apply
-    logging.info(f"Actual exposure time from metadata: {current_exp}")
+    logging.info(f"Actual exposure time from metadata: {metadata.get("ExposureTime", 10000)}")
 
     return False
 
