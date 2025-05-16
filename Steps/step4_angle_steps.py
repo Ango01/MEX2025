@@ -63,13 +63,18 @@ def create(app, container):
 def update_step_label(app, angle_inputs, key, label):
     """Update number of steps based on selected angle and measurement type."""
     step_deg = float(angle_inputs[key].get())
-
-    # Get selected measurement type and its corresponding range
     mtype = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
     start, end = RANGE_MAP.get(mtype, (8, 175))
 
-    # Calculate number of steps and update label
-    count = int((end - start) / step_deg) + 1
+    # Count steps manually
+    count = 1
+    angle = start
+    while angle < end:
+        angle += step_deg
+        count += 1 if angle < end else 0
+    if angle != end:
+        count += 1  # Include end explicitly if not matched exactly
+
     label.config(text=f"Steps: {count}")
 
 def save_step_settings(app, angle_inputs):
@@ -83,23 +88,34 @@ def save_step_settings(app, angle_inputs):
     generate_angle_lists(app)
 
 def generate_angle_lists(app):
-    """Generate angle lists based on selected step sizes."""
+    """Generate angle lists based on selected step sizes, ensuring start and end are included."""
     mtype = app.measurement_type.get() if hasattr(app, "measurement_type") else "BRDF"
     start, end = RANGE_MAP.get(mtype, (8, 175))
 
+    def generate_steps(step_deg):
+        angles = []
+        angle = start
+        while angle < end:
+            angles.append(round(angle))
+            angle += step_deg
+        if angles[-1] != end:
+            angles.append(end)
+        return angles
+
     # Light Source - Azimuthal (Incidence Angles)
     ls_az_step = app.angle_step_sizes.get("ls_az", 5)
-    app.incidence_angles = [angle for angle in range(start, end + 1, int(ls_az_step))]
+    app.incidence_angles = generate_steps(ls_az_step)
 
     # Light Source - Radial (Sample Rotation)
     ls_rad_step = app.angle_step_sizes.get("ls_rad", 5)
-    app.light_radial_angles = [angle for angle in range(start, end + 1, int(ls_rad_step))]
+    app.light_radial_angles = generate_steps(ls_rad_step)
 
     # Detector - Azimuthal
     det_az_step = app.angle_step_sizes.get("det_az", 5)
-    app.det_azimuth_angles = [angle for angle in range(start, end + 1, int(det_az_step))]
+    app.det_azimuth_angles = generate_steps(det_az_step)
 
     # Detector - Radial
     det_rad_step = app.angle_step_sizes.get("det_rad", 5)
-    app.det_radial_angles = [angle for angle in range(start, end + 1, int(det_rad_step))]
+    app.det_radial_angles = generate_steps(det_rad_step)
+
 
