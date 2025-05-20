@@ -1,0 +1,1498 @@
+2025-05-16 13:31:11,434 - Initialization successful.
+2025-05-16 13:31:11,435 - Camera now open.
+2025-05-16 13:31:11,442 - Camera configuration has been adjusted!
+2025-05-16 13:31:11,459 - Configuration successful!
+2025-05-16 13:31:12,050 - Camera started
+2025-05-16 13:31:16,601 - Mean intensity (dark_value): 59.88838654452165
+2025-05-16 13:31:34,660 - Measurement Type: BRDF
+
+Light Source - Azimuthal Step: 100.0° (3 positions)
+Light Source - Radial Step: 100.0° (3 positions)
+Detector - Azimuthal Step: 100.0° (3 positions)
+Detector - Radial Step: 100.0° (3 positions)
+
+2025-05-16 13:31:40,126 - Arduino response: Detector motor controller (absolute mode) ready.
+2025-05-16 13:31:40,129 - Command: Go to light radial 8°
+2025-05-16 13:31:40,177 - Arduino response: Position reset to 8 degrees on both axes.
+2025-05-16 13:31:42,178 - Command: Go to light azimuthal 8°
+2025-05-16 13:31:42,180 - Arduino response: OK
+2025-05-16 13:31:44,183 - Command: Go to detector azimuthal 8°
+2025-05-16 13:31:44,184 - Arduino response: Unknown command.
+2025-05-16 13:31:46,187 - Skipping blocked configuration at LS(8, 8) ≈ DET(8, 8)
+
+2025-05-16 13:31:46,189 - Command: Go to detector radial 108°
+2025-05-16 13:31:46,192 - Arduino response: Unknown command.
+2025-05-16 13:31:49,256 - Dominant channel: G
+2025-05-16 13:31:49,303 - Top 5% mean: 60.55, median: 60.50
+2025-05-16 13:31:49,336 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:31:49,337 - Adjusting exposure: 43 → 143
+2025-05-16 13:31:50,340 - Actual exposure time from metadata: 43
+2025-05-16 13:31:50,407 - Dominant channel: G
+2025-05-16 13:31:50,473 - Top 5% mean: 60.94, median: 61.00
+2025-05-16 13:31:50,479 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:31:50,480 - Adjusting exposure: 132 → 232
+2025-05-16 13:31:51,482 - Actual exposure time from metadata: 132
+2025-05-16 13:31:51,595 - Dominant channel: G
+2025-05-16 13:31:51,669 - Top 5% mean: 61.04, median: 61.00
+2025-05-16 13:31:51,686 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:31:51,687 - Adjusting exposure: 221 → 321
+2025-05-16 13:31:52,689 - Actual exposure time from metadata: 221
+2025-05-16 13:31:52,746 - Dominant channel: G
+2025-05-16 13:31:52,819 - Top 5% mean: 61.31, median: 61.50
+2025-05-16 13:31:52,863 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:31:52,865 - Adjusting exposure: 310 → 410
+2025-05-16 13:31:53,867 - Actual exposure time from metadata: 310
+2025-05-16 13:31:53,896 - Dominant channel: G
+2025-05-16 13:31:53,955 - Top 5% mean: 61.58, median: 61.50
+2025-05-16 13:31:53,971 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:31:53,972 - Adjusting exposure: 399 → 499
+2025-05-16 13:31:54,974 - Actual exposure time from metadata: 399
+2025-05-16 13:31:55,005 - Dominant channel: G
+2025-05-16 13:31:55,060 - Top 5% mean: 61.90, median: 62.00
+2025-05-16 13:31:55,080 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:31:55,081 - Adjusting exposure: 488 → 588
+2025-05-16 13:31:56,083 - Actual exposure time from metadata: 488
+2025-05-16 13:31:56,115 - Dominant channel: G
+2025-05-16 13:31:56,173 - Top 5% mean: 62.06, median: 62.00
+2025-05-16 13:31:56,191 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:31:56,191 - Adjusting exposure: 577 → 677
+2025-05-16 13:31:57,193 - Actual exposure time from metadata: 577
+2025-05-16 13:31:57,291 - Dominant channel: G
+2025-05-16 13:31:57,356 - Top 5% mean: 62.29, median: 62.50
+2025-05-16 13:31:57,398 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:31:57,399 - Adjusting exposure: 666 → 766
+2025-05-16 13:31:58,400 - Actual exposure time from metadata: 666
+2025-05-16 13:31:58,434 - Dominant channel: G
+2025-05-16 13:31:58,493 - Top 5% mean: 62.57, median: 62.50
+2025-05-16 13:31:58,507 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:31:58,508 - Adjusting exposure: 755 → 855
+2025-05-16 13:31:59,509 - Actual exposure time from metadata: 755
+2025-05-16 13:31:59,549 - Dominant channel: G
+2025-05-16 13:31:59,604 - Top 5% mean: 62.81, median: 63.00
+2025-05-16 13:31:59,620 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:31:59,621 - Adjusting exposure: 843 → 943
+2025-05-16 13:32:00,623 - Actual exposure time from metadata: 843
+2025-05-16 13:32:00,626 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:32:00,626 - Command: Go to detector radial 175°
+2025-05-16 13:32:00,628 - Arduino response: Moved AZ to 8.00 degrees.
+2025-05-16 13:32:03,698 - Dominant channel: G
+2025-05-16 13:32:03,775 - Top 5% mean: 63.08, median: 63.00
+2025-05-16 13:32:03,813 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:32:03,814 - Adjusting exposure: 932 → 1032
+2025-05-16 13:32:04,817 - Actual exposure time from metadata: 932
+2025-05-16 13:32:04,866 - Dominant channel: G
+2025-05-16 13:32:04,917 - Top 5% mean: 63.39, median: 63.50
+2025-05-16 13:32:04,937 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:32:04,938 - Adjusting exposure: 1021 → 1121
+2025-05-16 13:32:05,939 - Actual exposure time from metadata: 1021
+2025-05-16 13:32:05,988 - Dominant channel: G
+2025-05-16 13:32:06,047 - Top 5% mean: 63.61, median: 63.50
+2025-05-16 13:32:06,064 - Too dark → Increasing exposure by 102 µs
+2025-05-16 13:32:06,065 - Adjusting exposure: 1110 → 1212
+2025-05-16 13:32:07,066 - Actual exposure time from metadata: 1110
+2025-05-16 13:32:07,097 - Dominant channel: G
+2025-05-16 13:32:07,151 - Top 5% mean: 63.93, median: 64.00
+2025-05-16 13:32:07,174 - Too dark → Increasing exposure by 111 µs
+2025-05-16 13:32:07,175 - Adjusting exposure: 1199 → 1310
+2025-05-16 13:32:08,177 - Actual exposure time from metadata: 1199
+2025-05-16 13:32:08,230 - Dominant channel: G
+2025-05-16 13:32:08,284 - Top 5% mean: 64.16, median: 64.00
+2025-05-16 13:32:08,298 - Too dark → Increasing exposure by 120 µs
+2025-05-16 13:32:08,299 - Adjusting exposure: 1303 → 1423
+2025-05-16 13:32:09,301 - Actual exposure time from metadata: 1303
+2025-05-16 13:32:09,355 - Dominant channel: G
+2025-05-16 13:32:09,406 - Top 5% mean: 64.56, median: 64.50
+2025-05-16 13:32:09,424 - Too dark → Increasing exposure by 131 µs
+2025-05-16 13:32:09,426 - Adjusting exposure: 1421 → 1552
+2025-05-16 13:32:10,428 - Actual exposure time from metadata: 1421
+2025-05-16 13:32:10,481 - Dominant channel: G
+2025-05-16 13:32:10,539 - Top 5% mean: 64.80, median: 65.00
+2025-05-16 13:32:10,551 - Too dark → Increasing exposure by 142 µs
+2025-05-16 13:32:10,552 - Adjusting exposure: 1540 → 1682
+2025-05-16 13:32:11,553 - Actual exposure time from metadata: 1540
+2025-05-16 13:32:11,606 - Dominant channel: G
+2025-05-16 13:32:11,662 - Top 5% mean: 65.17, median: 65.00
+2025-05-16 13:32:11,677 - Too dark → Increasing exposure by 154 µs
+2025-05-16 13:32:11,678 - Adjusting exposure: 1673 → 1827
+2025-05-16 13:32:12,680 - Actual exposure time from metadata: 1673
+2025-05-16 13:32:12,710 - Dominant channel: G
+2025-05-16 13:32:12,766 - Top 5% mean: 65.61, median: 65.50
+2025-05-16 13:32:12,787 - Too dark → Increasing exposure by 168 µs
+2025-05-16 13:32:12,787 - Adjusting exposure: 1821 → 1989
+2025-05-16 13:32:13,789 - Actual exposure time from metadata: 1821
+2025-05-16 13:32:13,845 - Dominant channel: G
+2025-05-16 13:32:13,892 - Top 5% mean: 66.09, median: 66.00
+2025-05-16 13:32:13,913 - Too dark → Increasing exposure by 183 µs
+2025-05-16 13:32:13,914 - Adjusting exposure: 1984 → 2167
+2025-05-16 13:32:14,916 - Actual exposure time from metadata: 1984
+2025-05-16 13:32:14,919 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:32:14,920 - Command: Go to detector azimuthal 108°
+2025-05-16 13:32:14,921 - Arduino response: OK
+2025-05-16 13:32:16,923 - Command: Go to detector radial 8°
+2025-05-16 13:32:16,927 - Arduino response: Moved RAD to 108.00 degrees.
+2025-05-16 13:32:19,965 - Dominant channel: G
+2025-05-16 13:32:20,012 - Top 5% mean: 66.61, median: 66.50
+2025-05-16 13:32:20,041 - Too dark → Increasing exposure by 199 µs
+2025-05-16 13:32:20,042 - Adjusting exposure: 2162 → 2361
+2025-05-16 13:32:21,043 - Actual exposure time from metadata: 2162
+2025-05-16 13:32:21,073 - Dominant channel: G
+2025-05-16 13:32:21,127 - Top 5% mean: 67.12, median: 67.00
+2025-05-16 13:32:21,152 - Too dark → Increasing exposure by 217 µs
+2025-05-16 13:32:21,153 - Adjusting exposure: 2355 → 2572
+2025-05-16 13:32:22,154 - Actual exposure time from metadata: 2355
+2025-05-16 13:32:22,196 - Dominant channel: G
+2025-05-16 13:32:22,263 - Top 5% mean: 67.66, median: 67.50
+2025-05-16 13:32:22,278 - Too dark → Increasing exposure by 236 µs
+2025-05-16 13:32:22,279 - Adjusting exposure: 2562 → 2798
+2025-05-16 13:32:23,281 - Actual exposure time from metadata: 2562
+2025-05-16 13:32:23,333 - Dominant channel: G
+2025-05-16 13:32:23,388 - Top 5% mean: 68.38, median: 68.50
+2025-05-16 13:32:23,404 - Too dark → Increasing exposure by 256 µs
+2025-05-16 13:32:23,404 - Adjusting exposure: 2784 → 3040
+2025-05-16 13:32:24,405 - Actual exposure time from metadata: 2784
+2025-05-16 13:32:24,455 - Dominant channel: G
+2025-05-16 13:32:24,511 - Top 5% mean: 69.10, median: 69.00
+2025-05-16 13:32:24,530 - Too dark → Increasing exposure by 279 µs
+2025-05-16 13:32:24,531 - Adjusting exposure: 3036 → 3315
+2025-05-16 13:32:25,533 - Actual exposure time from metadata: 3036
+2025-05-16 13:32:25,563 - Dominant channel: G
+2025-05-16 13:32:25,620 - Top 5% mean: 69.80, median: 70.00
+2025-05-16 13:32:25,639 - Too dark → Increasing exposure by 303 µs
+2025-05-16 13:32:25,639 - Adjusting exposure: 3303 → 3606
+2025-05-16 13:32:26,641 - Actual exposure time from metadata: 3303
+2025-05-16 13:32:26,697 - Dominant channel: G
+2025-05-16 13:32:26,756 - Top 5% mean: 70.63, median: 70.50
+2025-05-16 13:32:26,764 - Too dark → Increasing exposure by 330 µs
+2025-05-16 13:32:26,765 - Adjusting exposure: 3599 → 3929
+2025-05-16 13:32:27,766 - Actual exposure time from metadata: 3599
+2025-05-16 13:32:27,868 - Dominant channel: G
+2025-05-16 13:32:27,916 - Top 5% mean: 71.60, median: 71.50
+2025-05-16 13:32:27,926 - Too dark → Increasing exposure by 360 µs
+2025-05-16 13:32:27,927 - Adjusting exposure: 3925 → 4285
+2025-05-16 13:32:28,929 - Actual exposure time from metadata: 3925
+2025-05-16 13:32:28,980 - Dominant channel: G
+2025-05-16 13:32:29,040 - Top 5% mean: 72.66, median: 72.50
+2025-05-16 13:32:29,052 - Too dark → Increasing exposure by 392 µs
+2025-05-16 13:32:29,053 - Adjusting exposure: 4280 → 4672
+2025-05-16 13:32:30,055 - Actual exposure time from metadata: 4280
+2025-05-16 13:32:30,085 - Dominant channel: G
+2025-05-16 13:32:30,146 - Top 5% mean: 73.67, median: 73.50
+2025-05-16 13:32:30,161 - Too dark → Increasing exposure by 427 µs
+2025-05-16 13:32:30,162 - Adjusting exposure: 4666 → 5093
+2025-05-16 13:32:31,164 - Actual exposure time from metadata: 4666
+2025-05-16 13:32:31,167 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:32:31,168 - Command: Go to detector radial 108°
+2025-05-16 13:32:31,169 - Arduino response: OK
+2025-05-16 13:32:34,253 - Dominant channel: G
+2025-05-16 13:32:34,315 - Top 5% mean: 74.71, median: 74.50
+2025-05-16 13:32:34,320 - Too dark → Increasing exposure by 464 µs
+2025-05-16 13:32:34,321 - Adjusting exposure: 5080 → 5544
+2025-05-16 13:32:35,322 - Actual exposure time from metadata: 5080
+2025-05-16 13:32:35,352 - Dominant channel: G
+2025-05-16 13:32:35,406 - Top 5% mean: 75.99, median: 76.00
+2025-05-16 13:32:35,428 - Too dark → Increasing exposure by 505 µs
+2025-05-16 13:32:35,429 - Adjusting exposure: 5540 → 6045
+2025-05-16 13:32:36,430 - Actual exposure time from metadata: 5540
+2025-05-16 13:32:36,463 - Dominant channel: G
+2025-05-16 13:32:36,514 - Top 5% mean: 77.36, median: 77.50
+2025-05-16 13:32:36,540 - Too dark → Increasing exposure by 550 µs
+2025-05-16 13:32:36,541 - Adjusting exposure: 6043 → 6593
+2025-05-16 13:32:37,543 - Actual exposure time from metadata: 6043
+2025-05-16 13:32:37,573 - Dominant channel: G
+2025-05-16 13:32:37,626 - Top 5% mean: 78.89, median: 79.00
+2025-05-16 13:32:37,649 - Too dark → Increasing exposure by 599 µs
+2025-05-16 13:32:37,650 - Adjusting exposure: 6592 → 7191
+2025-05-16 13:32:38,651 - Actual exposure time from metadata: 6592
+2025-05-16 13:32:38,702 - Dominant channel: G
+2025-05-16 13:32:38,762 - Top 5% mean: 80.52, median: 80.50
+2025-05-16 13:32:38,774 - Too dark → Increasing exposure by 651 µs
+2025-05-16 13:32:38,775 - Adjusting exposure: 7184 → 7835
+2025-05-16 13:32:39,778 - Actual exposure time from metadata: 7184
+2025-05-16 13:32:39,808 - Dominant channel: G
+2025-05-16 13:32:39,866 - Top 5% mean: 82.29, median: 82.00
+2025-05-16 13:32:39,884 - Too dark → Increasing exposure by 708 µs
+2025-05-16 13:32:39,884 - Adjusting exposure: 7821 → 8529
+2025-05-16 13:32:40,886 - Actual exposure time from metadata: 7821
+2025-05-16 13:32:40,917 - Dominant channel: G
+2025-05-16 13:32:40,973 - Top 5% mean: 84.27, median: 84.00
+2025-05-16 13:32:40,993 - Too dark → Increasing exposure by 769 µs
+2025-05-16 13:32:40,994 - Adjusting exposure: 8517 → 9286
+2025-05-16 13:32:41,996 - Actual exposure time from metadata: 8517
+2025-05-16 13:32:42,029 - Dominant channel: G
+2025-05-16 13:32:42,089 - Top 5% mean: 86.33, median: 86.00
+2025-05-16 13:32:42,105 - Too dark → Increasing exposure by 835 µs
+2025-05-16 13:32:42,105 - Adjusting exposure: 9273 → 10108
+2025-05-16 13:32:43,108 - Actual exposure time from metadata: 9273
+2025-05-16 13:32:43,163 - Dominant channel: G
+2025-05-16 13:32:43,218 - Top 5% mean: 88.63, median: 88.50
+2025-05-16 13:32:43,230 - Too dark → Increasing exposure by 907 µs
+2025-05-16 13:32:43,231 - Adjusting exposure: 10103 → 11010
+2025-05-16 13:32:44,233 - Actual exposure time from metadata: 10103
+2025-05-16 13:32:44,263 - Dominant channel: G
+2025-05-16 13:32:44,314 - Top 5% mean: 91.12, median: 91.00
+2025-05-16 13:32:44,340 - Too dark → Increasing exposure by 985 µs
+2025-05-16 13:32:44,341 - Adjusting exposure: 11006 → 11991
+2025-05-16 13:32:45,343 - Actual exposure time from metadata: 11006
+2025-05-16 13:32:45,345 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:32:45,346 - Command: Go to detector radial 175°
+2025-05-16 13:32:45,348 - Arduino response: Moved RAD to 175.00 degrees.
+2025-05-16 13:32:48,390 - Dominant channel: G
+2025-05-16 13:32:48,438 - Top 5% mean: 93.85, median: 93.50
+2025-05-16 13:32:48,465 - Too dark → Increasing exposure by 1069 µs
+2025-05-16 13:32:48,465 - Adjusting exposure: 11984 → 13053
+2025-05-16 13:32:49,466 - Actual exposure time from metadata: 11984
+2025-05-16 13:32:49,523 - Dominant channel: G
+2025-05-16 13:32:49,573 - Top 5% mean: 96.71, median: 96.50
+2025-05-16 13:32:49,591 - Too dark → Increasing exposure by 1159 µs
+2025-05-16 13:32:49,593 - Adjusting exposure: 13051 → 14210
+2025-05-16 13:32:50,595 - Actual exposure time from metadata: 13051
+2025-05-16 13:32:50,645 - Dominant channel: G
+2025-05-16 13:32:50,701 - Top 5% mean: 99.81, median: 99.50
+2025-05-16 13:32:50,715 - Too dark → Increasing exposure by 1257 µs
+2025-05-16 13:32:50,716 - Adjusting exposure: 14206 → 15463
+2025-05-16 13:32:51,718 - Actual exposure time from metadata: 14206
+2025-05-16 13:32:51,755 - Dominant channel: G
+2025-05-16 13:32:51,821 - Top 5% mean: 103.20, median: 103.00
+2025-05-16 13:32:51,827 - Too dark → Increasing exposure by 1361 µs
+2025-05-16 13:32:51,831 - Adjusting exposure: 15451 → 16812
+2025-05-16 13:32:52,833 - Actual exposure time from metadata: 15451
+2025-05-16 13:32:52,882 - Dominant channel: G
+2025-05-16 13:32:52,938 - Top 5% mean: 106.99, median: 107.00
+2025-05-16 13:32:52,953 - Too dark → Increasing exposure by 1473 µs
+2025-05-16 13:32:52,953 - Adjusting exposure: 16799 → 18272
+2025-05-16 13:32:53,955 - Actual exposure time from metadata: 16799
+2025-05-16 13:32:54,017 - Dominant channel: G
+2025-05-16 13:32:54,073 - Top 5% mean: 110.97, median: 111.00
+2025-05-16 13:32:54,081 - Too dark → Increasing exposure by 1593 µs
+2025-05-16 13:32:54,082 - Adjusting exposure: 18266 → 19859
+2025-05-16 13:32:55,084 - Actual exposure time from metadata: 18266
+2025-05-16 13:32:55,151 - Dominant channel: G
+2025-05-16 13:32:55,201 - Top 5% mean: 115.32, median: 115.00
+2025-05-16 13:32:55,230 - Too dark → Increasing exposure by 1721 µs
+2025-05-16 13:32:55,231 - Adjusting exposure: 19851 → 21572
+2025-05-16 13:32:56,233 - Actual exposure time from metadata: 19851
+2025-05-16 13:32:56,266 - Dominant channel: G
+2025-05-16 13:32:56,325 - Top 5% mean: 120.05, median: 120.00
+2025-05-16 13:32:56,350 - Too dark → Increasing exposure by 1859 µs
+2025-05-16 13:32:56,351 - Adjusting exposure: 21569 → 23428
+2025-05-16 13:32:57,353 - Actual exposure time from metadata: 21569
+2025-05-16 13:32:57,394 - Dominant channel: G
+2025-05-16 13:32:57,449 - Top 5% mean: 125.13, median: 125.00
+2025-05-16 13:32:57,489 - Too dark → Increasing exposure by 2005 µs
+2025-05-16 13:32:57,490 - Adjusting exposure: 23421 → 25426
+2025-05-16 13:32:58,492 - Actual exposure time from metadata: 23421
+2025-05-16 13:32:58,573 - Dominant channel: G
+2025-05-16 13:32:58,622 - Top 5% mean: 130.55, median: 130.50
+2025-05-16 13:32:58,672 - Too dark → Increasing exposure by 2160 µs
+2025-05-16 13:32:58,674 - Adjusting exposure: 25421 → 27581
+2025-05-16 13:32:59,677 - Actual exposure time from metadata: 25421
+2025-05-16 13:32:59,679 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:32:59,680 - Command: Go to detector azimuthal 175°
+2025-05-16 13:32:59,681 - Arduino response: OK
+2025-05-16 13:33:01,682 - Command: Go to detector radial 8°
+2025-05-16 13:33:01,684 - Arduino response: Moved AZ to 108.00 degrees.
+2025-05-16 13:33:04,756 - Dominant channel: G
+2025-05-16 13:33:04,807 - Top 5% mean: 136.46, median: 136.50
+2025-05-16 13:33:04,846 - Too dark → Increasing exposure by 2324 µs
+2025-05-16 13:33:04,847 - Adjusting exposure: 27569 → 29893
+2025-05-16 13:33:05,848 - Actual exposure time from metadata: 27569
+2025-05-16 13:33:05,909 - Dominant channel: G
+2025-05-16 13:33:05,977 - Top 5% mean: 142.74, median: 142.50
+2025-05-16 13:33:05,998 - Too dark → Increasing exposure by 2497 µs
+2025-05-16 13:33:05,998 - Adjusting exposure: 29880 → 32377
+2025-05-16 13:33:07,000 - Actual exposure time from metadata: 29880
+2025-05-16 13:33:07,043 - Dominant channel: G
+2025-05-16 13:33:07,102 - Top 5% mean: 149.53, median: 149.50
+2025-05-16 13:33:07,151 - Too dark → Increasing exposure by 2680 µs
+2025-05-16 13:33:07,152 - Adjusting exposure: 32369 → 35049
+2025-05-16 13:33:08,154 - Actual exposure time from metadata: 32369
+2025-05-16 13:33:08,213 - Dominant channel: G
+2025-05-16 13:33:08,275 - Top 5% mean: 156.88, median: 156.50
+2025-05-16 13:33:08,327 - Too dark → Increasing exposure by 2871 µs
+2025-05-16 13:33:08,328 - Adjusting exposure: 35036 → 37907
+2025-05-16 13:33:09,331 - Actual exposure time from metadata: 35036
+2025-05-16 13:33:09,408 - Dominant channel: G
+2025-05-16 13:33:09,464 - Top 5% mean: 164.61, median: 164.50
+2025-05-16 13:33:09,526 - Too dark → Increasing exposure by 3072 µs
+2025-05-16 13:33:09,527 - Adjusting exposure: 37895 → 40967
+2025-05-16 13:33:10,529 - Actual exposure time from metadata: 37895
+2025-05-16 13:33:10,608 - Dominant channel: G
+2025-05-16 13:33:10,666 - Top 5% mean: 173.07, median: 173.00
+2025-05-16 13:33:10,738 - Too dark → Increasing exposure by 3280 µs
+2025-05-16 13:33:10,738 - Adjusting exposure: 40962 → 44242
+2025-05-16 13:33:11,740 - Actual exposure time from metadata: 40962
+2025-05-16 13:33:11,814 - Dominant channel: G
+2025-05-16 13:33:11,864 - Top 5% mean: 182.06, median: 182.00
+2025-05-16 13:33:11,871 - Too dark → Increasing exposure by 3497 µs
+2025-05-16 13:33:11,872 - Adjusting exposure: 44236 → 47733
+2025-05-16 13:33:12,873 - Actual exposure time from metadata: 44236
+2025-05-16 13:33:12,943 - Dominant channel: G
+2025-05-16 13:33:13,007 - Top 5% mean: 191.43, median: 191.00
+2025-05-16 13:33:13,091 - Too dark → Increasing exposure by 3721 µs
+2025-05-16 13:33:13,091 - Adjusting exposure: 47717 → 51438
+2025-05-16 13:33:14,093 - Actual exposure time from metadata: 47717
+2025-05-16 13:33:14,140 - Dominant channel: G
+2025-05-16 13:33:14,210 - Top 5% mean: 201.74, median: 201.50
+2025-05-16 13:33:14,305 - Too dark → Increasing exposure by 3950 µs
+2025-05-16 13:33:14,306 - Adjusting exposure: 51436 → 55386
+2025-05-16 13:33:15,308 - Actual exposure time from metadata: 51436
+2025-05-16 13:33:15,431 - Dominant channel: G
+2025-05-16 13:33:15,493 - Top 5% mean: 212.65, median: 212.50
+2025-05-16 13:33:15,501 - Too dark → Increasing exposure by 4183 µs
+2025-05-16 13:33:15,502 - Adjusting exposure: 55377 → 59560
+2025-05-16 13:33:16,504 - Actual exposure time from metadata: 55377
+2025-05-16 13:33:16,510 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:33:16,511 - Command: Go to detector radial 108°
+2025-05-16 13:33:16,513 - Arduino response: OK
+2025-05-16 13:33:19,551 - Dominant channel: G
+2025-05-16 13:33:19,604 - Top 5% mean: 224.13, median: 224.00
+2025-05-16 13:33:19,649 - Too dark → Increasing exposure by 4420 µs
+2025-05-16 13:33:19,650 - Adjusting exposure: 59555 → 63975
+2025-05-16 13:33:20,651 - Actual exposure time from metadata: 59555
+2025-05-16 13:33:20,810 - Dominant channel: G
+2025-05-16 13:33:20,871 - Top 5% mean: 236.29, median: 236.00
+2025-05-16 13:33:20,903 - Too dark → Increasing exposure by 4658 µs
+2025-05-16 13:33:20,904 - Adjusting exposure: 63969 → 68627
+2025-05-16 13:33:21,906 - Actual exposure time from metadata: 63969
+2025-05-16 13:33:22,047 - Dominant channel: G
+2025-05-16 13:33:22,117 - Top 5% mean: 249.04, median: 248.50
+2025-05-16 13:33:22,247 - Too dark → Increasing exposure by 4896 µs
+2025-05-16 13:33:22,247 - Adjusting exposure: 68621 → 73517
+2025-05-16 13:33:23,248 - Actual exposure time from metadata: 68621
+2025-05-16 13:33:23,431 - Dominant channel: G
+2025-05-16 13:33:23,490 - Top 5% mean: 262.39, median: 262.00
+2025-05-16 13:33:23,542 - Too dark → Increasing exposure by 5132 µs
+2025-05-16 13:33:23,543 - Adjusting exposure: 73510 → 78642
+2025-05-16 13:33:24,545 - Actual exposure time from metadata: 73510
+2025-05-16 13:33:24,653 - Dominant channel: G
+2025-05-16 13:33:24,716 - Top 5% mean: 276.52, median: 276.00
+2025-05-16 13:33:24,771 - Too dark → Increasing exposure by 5362 µs
+2025-05-16 13:33:24,772 - Adjusting exposure: 78636 → 83998
+2025-05-16 13:33:25,773 - Actual exposure time from metadata: 78636
+2025-05-16 13:33:25,949 - Dominant channel: G
+2025-05-16 13:33:26,014 - Top 5% mean: 291.17, median: 291.00
+2025-05-16 13:33:26,087 - Too dark → Increasing exposure by 5586 µs
+2025-05-16 13:33:26,088 - Adjusting exposure: 83984 → 89570
+2025-05-16 13:33:27,089 - Actual exposure time from metadata: 83984
+2025-05-16 13:33:27,186 - Dominant channel: G
+2025-05-16 13:33:27,254 - Top 5% mean: 306.57, median: 306.00
+2025-05-16 13:33:27,307 - Too dark → Increasing exposure by 5797 µs
+2025-05-16 13:33:27,307 - Adjusting exposure: 89555 → 95352
+2025-05-16 13:33:28,309 - Actual exposure time from metadata: 89555
+2025-05-16 13:33:28,451 - Dominant channel: G
+2025-05-16 13:33:28,516 - Top 5% mean: 322.51, median: 322.00
+2025-05-16 13:33:28,605 - Too dark → Increasing exposure by 5998 µs
+2025-05-16 13:33:28,605 - Adjusting exposure: 95347 → 101345
+2025-05-16 13:33:29,606 - Actual exposure time from metadata: 95347
+2025-05-16 13:33:29,818 - Dominant channel: G
+2025-05-16 13:33:29,875 - Top 5% mean: 339.08, median: 338.50
+2025-05-16 13:33:29,986 - Too dark → Increasing exposure by 6181 µs
+2025-05-16 13:33:29,987 - Adjusting exposure: 101332 → 107513
+2025-05-16 13:33:30,988 - Actual exposure time from metadata: 101332
+2025-05-16 13:33:31,067 - Dominant channel: G
+2025-05-16 13:33:31,131 - Top 5% mean: 356.13, median: 355.50
+2025-05-16 13:33:31,245 - Too dark → Increasing exposure by 6347 µs
+2025-05-16 13:33:31,246 - Adjusting exposure: 107510 → 113857
+2025-05-16 13:33:32,248 - Actual exposure time from metadata: 107510
+2025-05-16 13:33:32,253 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:33:32,255 - Command: Go to detector radial 175°
+2025-05-16 13:33:32,258 - Arduino response: Moved RAD to 8.00 degrees.
+2025-05-16 13:33:35,327 - Dominant channel: G
+2025-05-16 13:33:35,377 - Top 5% mean: 373.65, median: 373.00
+2025-05-16 13:33:35,532 - Too dark → Increasing exposure by 6492 µs
+2025-05-16 13:33:35,533 - Adjusting exposure: 113851 → 120343
+2025-05-16 13:33:36,534 - Actual exposure time from metadata: 113851
+2025-05-16 13:33:36,728 - Dominant channel: G
+2025-05-16 13:33:36,779 - Top 5% mean: 391.44, median: 391.00
+2025-05-16 13:33:36,937 - Too dark → Increasing exposure by 6616 µs
+2025-05-16 13:33:36,937 - Adjusting exposure: 120340 → 126956
+2025-05-16 13:33:37,938 - Actual exposure time from metadata: 120340
+2025-05-16 13:33:38,192 - Dominant channel: G
+2025-05-16 13:33:38,247 - Top 5% mean: 409.54, median: 409.00
+2025-05-16 13:33:38,421 - Too dark → Increasing exposure by 6715 µs
+2025-05-16 13:33:38,421 - Adjusting exposure: 126947 → 133662
+2025-05-16 13:33:39,422 - Actual exposure time from metadata: 126947
+2025-05-16 13:33:39,497 - Dominant channel: G
+2025-05-16 13:33:39,562 - Top 5% mean: 427.86, median: 427.50
+2025-05-16 13:33:39,720 - Too dark → Increasing exposure by 6788 µs
+2025-05-16 13:33:39,720 - Adjusting exposure: 133658 → 140446
+2025-05-16 13:33:40,722 - Actual exposure time from metadata: 133658
+2025-05-16 13:33:40,846 - Dominant channel: G
+2025-05-16 13:33:40,911 - Top 5% mean: 446.76, median: 446.00
+2025-05-16 13:33:41,083 - Too dark → Increasing exposure by 6828 µs
+2025-05-16 13:33:41,084 - Adjusting exposure: 140443 → 147271
+2025-05-16 13:33:42,085 - Actual exposure time from metadata: 140443
+2025-05-16 13:33:42,252 - Dominant channel: G
+2025-05-16 13:33:42,320 - Top 5% mean: 465.49, median: 465.00
+2025-05-16 13:33:42,515 - Too dark → Increasing exposure by 6842 µs
+2025-05-16 13:33:42,515 - Adjusting exposure: 147258 → 154100
+2025-05-16 13:33:43,517 - Actual exposure time from metadata: 147258
+2025-05-16 13:33:43,731 - Dominant channel: G
+2025-05-16 13:33:43,785 - Top 5% mean: 484.21, median: 483.50
+2025-05-16 13:33:44,015 - Too dark → Increasing exposure by 6827 µs
+2025-05-16 13:33:44,016 - Adjusting exposure: 154088 → 160915
+2025-05-16 13:33:45,017 - Actual exposure time from metadata: 154088
+2025-05-16 13:33:45,287 - Dominant channel: G
+2025-05-16 13:33:45,340 - Top 5% mean: 503.02, median: 502.50
+2025-05-16 13:33:45,584 - Too dark → Increasing exposure by 6781 µs
+2025-05-16 13:33:45,584 - Adjusting exposure: 160903 → 167684
+2025-05-16 13:33:46,586 - Actual exposure time from metadata: 160903
+2025-05-16 13:33:46,911 - Dominant channel: G
+2025-05-16 13:33:46,966 - Top 5% mean: 521.47, median: 521.00
+2025-05-16 13:33:47,221 - Too dark → Increasing exposure by 6711 µs
+2025-05-16 13:33:47,222 - Adjusting exposure: 167673 → 174384
+2025-05-16 13:33:48,224 - Actual exposure time from metadata: 167673
+2025-05-16 13:33:48,253 - Dominant channel: G
+2025-05-16 13:33:48,311 - Top 5% mean: 521.47, median: 521.00
+2025-05-16 13:33:48,576 - Too dark → Increasing exposure by 6979 µs
+2025-05-16 13:33:48,576 - Adjusting exposure: 174369 → 181348
+2025-05-16 13:33:49,578 - Actual exposure time from metadata: 174369
+2025-05-16 13:33:49,583 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:33:49,593 - Command: Go to detector azimuthal 8°
+2025-05-16 13:33:49,595 - Arduino response: OK
+2025-05-16 13:33:51,598 - Command: Go to detector radial 8°
+2025-05-16 13:33:51,599 - Arduino response: Moved RAD to 108.00 degrees.
+2025-05-16 13:33:54,603 - Command: Go to light azimuthal 108°
+2025-05-16 13:33:54,604 - Arduino response: OK
+2025-05-16 13:33:56,606 - Command: Go to detector azimuthal 8°
+2025-05-16 13:33:56,608 - Arduino response: Moved RAD to 175.00 degrees.
+2025-05-16 13:33:58,610 - Command: Go to detector radial 8°
+2025-05-16 13:33:58,611 - Arduino response: OK
+2025-05-16 13:34:02,018 - Dominant channel: G
+2025-05-16 13:34:02,081 - Top 5% mean: 559.31, median: 558.50
+2025-05-16 13:34:02,320 - Too dark → Increasing exposure by 6468 µs
+2025-05-16 13:34:02,321 - Adjusting exposure: 181332 → 187800
+2025-05-16 13:34:03,322 - Actual exposure time from metadata: 181332
+2025-05-16 13:34:03,435 - Dominant channel: G
+2025-05-16 13:34:03,486 - Top 5% mean: 559.28, median: 558.50
+2025-05-16 13:34:03,784 - Too dark → Increasing exposure by 6700 µs
+2025-05-16 13:34:03,785 - Adjusting exposure: 187792 → 194492
+2025-05-16 13:34:04,786 - Actual exposure time from metadata: 187792
+2025-05-16 13:34:04,935 - Dominant channel: G
+2025-05-16 13:34:04,989 - Top 5% mean: 576.96, median: 576.50
+2025-05-16 13:34:05,300 - Too dark → Increasing exposure by 6543 µs
+2025-05-16 13:34:05,301 - Adjusting exposure: 194488 → 201031
+2025-05-16 13:34:06,302 - Actual exposure time from metadata: 194488
+2025-05-16 13:34:06,492 - Dominant channel: G
+2025-05-16 13:34:06,547 - Top 5% mean: 595.25, median: 594.50
+2025-05-16 13:34:06,870 - Too dark → Increasing exposure by 6340 µs
+2025-05-16 13:34:06,870 - Adjusting exposure: 201021 → 207361
+2025-05-16 13:34:07,872 - Actual exposure time from metadata: 201021
+2025-05-16 13:34:08,101 - Dominant channel: G
+2025-05-16 13:34:08,156 - Top 5% mean: 613.14, median: 612.50
+2025-05-16 13:34:08,492 - Too dark → Increasing exposure by 6113 µs
+2025-05-16 13:34:08,492 - Adjusting exposure: 207347 → 213460
+2025-05-16 13:34:09,493 - Actual exposure time from metadata: 207347
+2025-05-16 13:34:09,760 - Dominant channel: G
+2025-05-16 13:34:09,813 - Top 5% mean: 630.32, median: 629.50
+2025-05-16 13:34:10,163 - Too dark → Increasing exposure by 5871 µs
+2025-05-16 13:34:10,163 - Adjusting exposure: 213451 → 219322
+2025-05-16 13:34:11,165 - Actual exposure time from metadata: 213451
+2025-05-16 13:34:11,468 - Dominant channel: G
+2025-05-16 13:34:11,521 - Top 5% mean: 646.84, median: 646.00
+2025-05-16 13:34:11,883 - Too dark → Increasing exposure by 5616 µs
+2025-05-16 13:34:11,883 - Adjusting exposure: 219317 → 224933
+2025-05-16 13:34:12,885 - Actual exposure time from metadata: 219317
+2025-05-16 13:34:13,262 - Dominant channel: G
+2025-05-16 13:34:13,332 - Top 5% mean: 662.85, median: 662.00
+2025-05-16 13:34:13,649 - Too dark → Increasing exposure by 5345 µs
+2025-05-16 13:34:13,649 - Adjusting exposure: 224917 → 230262
+2025-05-16 13:34:14,651 - Actual exposure time from metadata: 224917
+2025-05-16 13:34:15,023 - Dominant channel: G
+2025-05-16 13:34:15,079 - Top 5% mean: 677.70, median: 677.00
+2025-05-16 13:34:15,459 - Too dark → Increasing exposure by 5079 µs
+2025-05-16 13:34:15,460 - Adjusting exposure: 230251 → 235330
+2025-05-16 13:34:16,461 - Actual exposure time from metadata: 230251
+2025-05-16 13:34:16,865 - Dominant channel: G
+2025-05-16 13:34:16,924 - Top 5% mean: 691.86, median: 691.00
+2025-05-16 13:34:17,312 - Too dark → Increasing exposure by 4807 µs
+2025-05-16 13:34:17,313 - Adjusting exposure: 235317 → 240124
+2025-05-16 13:34:18,314 - Actual exposure time from metadata: 235317
+2025-05-16 13:34:18,319 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:34:18,319 - Command: Go to detector radial 108°
+2025-05-16 13:34:18,323 - Arduino response: Moved AZ to 175.00 degrees.
+2025-05-16 13:34:21,631 - Dominant channel: G
+2025-05-16 13:34:21,687 - Top 5% mean: 719.52, median: 719.00
+2025-05-16 13:34:22,087 - Too dark → Increasing exposure by 4141 µs
+2025-05-16 13:34:22,087 - Adjusting exposure: 240117 → 244258
+2025-05-16 13:34:23,089 - Actual exposure time from metadata: 240117
+2025-05-16 13:34:23,590 - Dominant channel: G
+2025-05-16 13:34:23,660 - Top 5% mean: 719.47, median: 718.50
+2025-05-16 13:34:24,017 - Too dark → Increasing exposure by 4214 µs
+2025-05-16 13:34:24,017 - Adjusting exposure: 244251 → 248465
+2025-05-16 13:34:25,018 - Actual exposure time from metadata: 244251
+2025-05-16 13:34:25,506 - Dominant channel: G
+2025-05-16 13:34:25,560 - Top 5% mean: 730.61, median: 730.00
+2025-05-16 13:34:25,981 - Too dark → Increasing exposure by 3968 µs
+2025-05-16 13:34:25,981 - Adjusting exposure: 248458 → 252426
+2025-05-16 13:34:26,982 - Actual exposure time from metadata: 248458
+2025-05-16 13:34:27,495 - Dominant channel: G
+2025-05-16 13:34:27,554 - Top 5% mean: 742.00, median: 741.00
+2025-05-16 13:34:27,976 - Too dark → Increasing exposure by 3701 µs
+2025-05-16 13:34:27,976 - Adjusting exposure: 252414 → 256115
+2025-05-16 13:34:28,978 - Actual exposure time from metadata: 252414
+2025-05-16 13:34:29,057 - Dominant channel: G
+2025-05-16 13:34:29,145 - Top 5% mean: 752.74, median: 752.00
+2025-05-16 13:34:29,491 - Too dark → Increasing exposure by 3389 µs
+2025-05-16 13:34:29,491 - Adjusting exposure: 252414 → 255803
+2025-05-16 13:34:30,492 - Actual exposure time from metadata: 252414
+2025-05-16 13:34:30,553 - Dominant channel: G
+2025-05-16 13:34:30,620 - Top 5% mean: 762.68, median: 762.00
+2025-05-16 13:34:31,027 - Too dark → Increasing exposure by 3146 µs
+2025-05-16 13:34:31,028 - Adjusting exposure: 256103 → 259249
+2025-05-16 13:34:32,028 - Actual exposure time from metadata: 256103
+2025-05-16 13:34:32,094 - Dominant channel: G
+2025-05-16 13:34:32,161 - Top 5% mean: 761.70, median: 761.00
+2025-05-16 13:34:32,563 - Too dark → Increasing exposure by 3171 µs
+2025-05-16 13:34:32,563 - Adjusting exposure: 255792 → 258963
+2025-05-16 13:34:33,565 - Actual exposure time from metadata: 255792
+2025-05-16 13:34:33,641 - Dominant channel: G
+2025-05-16 13:34:33,708 - Top 5% mean: 771.15, median: 770.50
+2025-05-16 13:34:34,125 - Too dark → Increasing exposure by 2932 µs
+2025-05-16 13:34:34,126 - Adjusting exposure: 259243 → 262175
+2025-05-16 13:34:35,130 - Actual exposure time from metadata: 259243
+2025-05-16 13:34:35,198 - Dominant channel: G
+2025-05-16 13:34:35,265 - Top 5% mean: 770.46, median: 769.50
+2025-05-16 13:34:35,672 - Too dark → Increasing exposure by 2949 µs
+2025-05-16 13:34:35,673 - Adjusting exposure: 258962 → 261911
+2025-05-16 13:34:36,674 - Actual exposure time from metadata: 258962
+2025-05-16 13:34:36,763 - Dominant channel: G
+2025-05-16 13:34:36,833 - Top 5% mean: 779.17, median: 778.50
+2025-05-16 13:34:37,248 - Too dark → Increasing exposure by 2723 µs
+2025-05-16 13:34:37,248 - Adjusting exposure: 262162 → 264885
+2025-05-16 13:34:38,250 - Actual exposure time from metadata: 262162
+2025-05-16 13:34:38,253 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:34:38,254 - Command: Go to detector radial 175°
+2025-05-16 13:34:38,254 - Arduino response: OK
+2025-05-16 13:34:41,491 - Dominant channel: G
+2025-05-16 13:34:41,545 - Top 5% mean: 786.57, median: 786.00
+2025-05-16 13:34:41,997 - Too dark → Increasing exposure by 2526 µs
+2025-05-16 13:34:41,997 - Adjusting exposure: 264873 → 267399
+2025-05-16 13:34:42,998 - Actual exposure time from metadata: 264873
+2025-05-16 13:34:43,100 - Dominant channel: G
+2025-05-16 13:34:43,165 - Top 5% mean: 786.80, median: 786.00
+2025-05-16 13:34:43,587 - Too dark → Increasing exposure by 2519 µs
+2025-05-16 13:34:43,587 - Adjusting exposure: 264873 → 267392
+2025-05-16 13:34:44,588 - Actual exposure time from metadata: 264873
+2025-05-16 13:34:44,700 - Dominant channel: G
+2025-05-16 13:34:44,768 - Top 5% mean: 794.23, median: 793.50
+2025-05-16 13:34:45,191 - Too dark → Increasing exposure by 2314 µs
+2025-05-16 13:34:45,192 - Adjusting exposure: 267392 → 269706
+2025-05-16 13:34:46,193 - Actual exposure time from metadata: 267392
+2025-05-16 13:34:46,312 - Dominant channel: G
+2025-05-16 13:34:46,421 - Top 5% mean: 794.10, median: 793.50
+2025-05-16 13:34:46,796 - Too dark → Increasing exposure by 2318 µs
+2025-05-16 13:34:46,797 - Adjusting exposure: 267377 → 269695
+2025-05-16 13:34:47,798 - Actual exposure time from metadata: 267377
+2025-05-16 13:34:47,918 - Dominant channel: G
+2025-05-16 13:34:47,983 - Top 5% mean: 800.33, median: 799.50
+2025-05-16 13:34:48,414 - Too dark → Increasing exposure by 2145 µs
+2025-05-16 13:34:48,415 - Adjusting exposure: 269703 → 271848
+2025-05-16 13:34:49,416 - Actual exposure time from metadata: 269703
+2025-05-16 13:34:49,534 - Dominant channel: G
+2025-05-16 13:34:49,597 - Top 5% mean: 800.19, median: 799.50
+2025-05-16 13:34:50,033 - Too dark → Increasing exposure by 2149 µs
+2025-05-16 13:34:50,033 - Adjusting exposure: 269688 → 271837
+2025-05-16 13:34:51,034 - Actual exposure time from metadata: 269688
+2025-05-16 13:34:51,166 - Dominant channel: G
+2025-05-16 13:34:51,232 - Top 5% mean: 805.83, median: 805.00
+2025-05-16 13:34:51,672 - Too dark → Increasing exposure by 1990 µs
+2025-05-16 13:34:51,673 - Adjusting exposure: 271836 → 273826
+2025-05-16 13:34:52,674 - Actual exposure time from metadata: 271836
+2025-05-16 13:34:52,825 - Dominant channel: G
+2025-05-16 13:34:52,893 - Top 5% mean: 805.87, median: 805.00
+2025-05-16 13:34:53,296 - Too dark → Increasing exposure by 1989 µs
+2025-05-16 13:34:53,296 - Adjusting exposure: 271821 → 273810
+2025-05-16 13:34:54,298 - Actual exposure time from metadata: 271821
+2025-05-16 13:34:54,432 - Dominant channel: G
+2025-05-16 13:34:54,499 - Top 5% mean: 811.18, median: 810.50
+2025-05-16 13:34:54,939 - Too dark → Increasing exposure by 1836 µs
+2025-05-16 13:34:54,939 - Adjusting exposure: 273821 → 275657
+2025-05-16 13:34:55,941 - Actual exposure time from metadata: 273821
+2025-05-16 13:34:56,075 - Dominant channel: G
+2025-05-16 13:34:56,143 - Top 5% mean: 811.16, median: 810.50
+2025-05-16 13:34:56,582 - Too dark → Increasing exposure by 1837 µs
+2025-05-16 13:34:56,582 - Adjusting exposure: 273806 → 275643
+2025-05-16 13:34:57,584 - Actual exposure time from metadata: 273806
+2025-05-16 13:34:57,587 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:34:57,588 - Command: Go to detector azimuthal 108°
+2025-05-16 13:34:57,590 - Arduino response: Moved RAD to 8.00 degrees.
+2025-05-16 13:34:59,592 - Skipping blocked configuration at LS(108, 8) ≈ DET(108, 8)
+
+2025-05-16 13:34:59,593 - Command: Go to detector radial 108°
+2025-05-16 13:34:59,595 - Arduino response: OK
+2025-05-16 13:35:02,672 - Dominant channel: G
+2025-05-16 13:35:02,728 - Top 5% mean: 816.10, median: 815.50
+2025-05-16 13:35:03,199 - Too dark → Increasing exposure by 1692 µs
+2025-05-16 13:35:03,199 - Adjusting exposure: 275629 → 277321
+2025-05-16 13:35:04,201 - Actual exposure time from metadata: 275629
+2025-05-16 13:35:04,338 - Dominant channel: G
+2025-05-16 13:35:04,402 - Top 5% mean: 816.44, median: 815.50
+2025-05-16 13:35:04,860 - Too dark → Increasing exposure by 1681 µs
+2025-05-16 13:35:04,861 - Adjusting exposure: 275629 → 277310
+2025-05-16 13:35:05,862 - Actual exposure time from metadata: 275629
+2025-05-16 13:35:06,001 - Dominant channel: G
+2025-05-16 13:35:06,070 - Top 5% mean: 820.80, median: 820.00
+2025-05-16 13:35:06,517 - Exposure is acceptable.
+
+2025-05-16 13:35:07,133 - Variance Value: 1121.6964538337197
+2025-05-16 13:35:07,376 - Entropy Value: 6.6772434569949155
+2025-05-16 13:35:07,378 - Attempt 1: Image rejected due to static noise.
+
+2025-05-16 13:35:07,642 - Variance Value: 1122.7865762114525
+2025-05-16 13:35:07,861 - Entropy Value: 6.678559817855525
+2025-05-16 13:35:07,862 - Attempt 2: Image rejected due to static noise.
+
+2025-05-16 13:35:08,197 - Variance Value: 1121.3841483627912
+2025-05-16 13:35:08,411 - Entropy Value: 6.678813496854006
+2025-05-16 13:35:08,413 - Attempt 3: Image rejected due to static noise.
+
+2025-05-16 13:35:08,752 - Variance Value: 1122.5654413364828
+2025-05-16 13:35:08,972 - Entropy Value: 6.678808190628682
+2025-05-16 13:35:08,973 - Attempt 4: Image rejected due to static noise.
+
+2025-05-16 13:35:09,306 - Variance Value: 1120.3079739650711
+2025-05-16 13:35:09,522 - Entropy Value: 6.679091687221759
+2025-05-16 13:35:09,523 - Attempt 5: Image rejected due to static noise.
+
+2025-05-16 13:35:09,861 - Variance Value: 1120.7361553274095
+2025-05-16 13:35:10,097 - Entropy Value: 6.67840594324972
+2025-05-16 13:35:10,098 - Attempt 6: Image rejected due to static noise.
+
+2025-05-16 13:35:10,416 - Variance Value: 1121.9671557992697
+2025-05-16 13:35:10,639 - Entropy Value: 6.678458057306936
+2025-05-16 13:35:10,640 - Attempt 7: Image rejected due to static noise.
+
+2025-05-16 13:35:10,978 - Variance Value: 1121.4475667476654
+2025-05-16 13:35:11,229 - Entropy Value: 6.677883645317404
+2025-05-16 13:35:11,231 - Attempt 8: Image rejected due to static noise.
+
+2025-05-16 13:35:11,525 - Variance Value: 1120.678486544406
+2025-05-16 13:35:11,749 - Entropy Value: 6.678780586842303
+2025-05-16 13:35:11,750 - Attempt 9: Image rejected due to static noise.
+
+2025-05-16 13:35:12,080 - Variance Value: 1121.4723606461193
+2025-05-16 13:35:12,301 - Entropy Value: 6.677668299253168
+2025-05-16 13:35:12,302 - Attempt 10: Image rejected due to static noise.
+
+2025-05-16 13:35:12,635 - Variance Value: 1122.5977539084852
+2025-05-16 13:35:12,853 - Entropy Value: 6.679522579426444
+2025-05-16 13:35:12,854 - Attempt 11: Image rejected due to static noise.
+
+2025-05-16 13:35:13,188 - Variance Value: 1122.8226370641496
+2025-05-16 13:35:13,407 - Entropy Value: 6.679653936507385
+2025-05-16 13:35:13,408 - Attempt 12: Image rejected due to static noise.
+
+2025-05-16 13:35:13,743 - Variance Value: 1121.6301064407453
+2025-05-16 13:35:13,961 - Entropy Value: 6.679315155769221
+2025-05-16 13:35:13,963 - Attempt 13: Image rejected due to static noise.
+
+2025-05-16 13:35:14,298 - Variance Value: 1122.288872178644
+2025-05-16 13:35:14,515 - Entropy Value: 6.677862813986353
+2025-05-16 13:35:14,517 - Attempt 14: Image rejected due to static noise.
+
+2025-05-16 13:35:14,853 - Variance Value: 1120.7557571770158
+2025-05-16 13:35:15,074 - Entropy Value: 6.677944528487167
+2025-05-16 13:35:15,075 - Attempt 15: Image rejected due to static noise.
+
+2025-05-16 13:35:15,407 - Variance Value: 1122.243645336479
+2025-05-16 13:35:15,631 - Entropy Value: 6.678355624907657
+2025-05-16 13:35:15,632 - Attempt 16: Image rejected due to static noise.
+
+2025-05-16 13:35:15,962 - Variance Value: 1123.2194155445322
+2025-05-16 13:35:16,251 - Entropy Value: 6.679240065624827
+2025-05-16 13:35:16,252 - Attempt 17: Image rejected due to static noise.
+
+2025-05-16 13:35:16,516 - Variance Value: 1122.9385767243803
+2025-05-16 13:35:16,760 - Entropy Value: 6.67870628176164
+2025-05-16 13:35:16,761 - Attempt 18: Image rejected due to static noise.
+
+2025-05-16 13:35:17,071 - Variance Value: 1120.801700051641
+2025-05-16 13:35:17,294 - Entropy Value: 6.678449852552415
+2025-05-16 13:35:17,295 - Attempt 19: Image rejected due to static noise.
+
+2025-05-16 13:35:17,626 - Variance Value: 1121.8375971203204
+2025-05-16 13:35:17,868 - Entropy Value: 6.678938667308723
+2025-05-16 13:35:17,870 - Attempt 20: Image rejected due to static noise.
+
+2025-05-16 13:35:18,181 - Variance Value: 1123.8776578567922
+2025-05-16 13:35:18,408 - Entropy Value: 6.679924875334215
+2025-05-16 13:35:18,409 - Attempt 21: Image rejected due to static noise.
+
+2025-05-16 13:35:18,735 - Variance Value: 1122.14821594744
+2025-05-16 13:35:18,965 - Entropy Value: 6.678838416993321
+2025-05-16 13:35:18,966 - Attempt 22: Image rejected due to static noise.
+
+2025-05-16 13:35:19,290 - Variance Value: 1122.584071678808
+2025-05-16 13:35:19,530 - Entropy Value: 6.6787984882827205
+2025-05-16 13:35:19,531 - Attempt 23: Image rejected due to static noise.
+
+2025-05-16 13:35:19,845 - Variance Value: 1120.9874327124562
+2025-05-16 13:35:20,066 - Entropy Value: 6.678378835077469
+2025-05-16 13:35:20,068 - Attempt 24: Image rejected due to static noise.
+
+2025-05-16 13:35:20,400 - Variance Value: 1122.5261755548418
+2025-05-16 13:35:20,624 - Entropy Value: 6.678681371775096
+2025-05-16 13:35:20,625 - Attempt 25: Image rejected due to static noise.
+
+2025-05-16 13:35:20,954 - Variance Value: 1122.0941238962114
+2025-05-16 13:35:21,209 - Entropy Value: 6.677897857487466
+2025-05-16 13:35:21,211 - Attempt 26: Image rejected due to static noise.
+
+2025-05-16 13:35:21,509 - Variance Value: 1121.6239340284374
+2025-05-16 13:35:21,737 - Entropy Value: 6.678523049358892
+2025-05-16 13:35:21,738 - Attempt 27: Image rejected due to static noise.
+
+2025-05-16 13:35:22,064 - Variance Value: 1122.1571992924437
+2025-05-16 13:35:22,289 - Entropy Value: 6.678890047112009
+2025-05-16 13:35:22,291 - Attempt 28: Image rejected due to static noise.
+
+2025-05-16 13:35:22,619 - Variance Value: 1122.193533818936
+2025-05-16 13:35:22,848 - Entropy Value: 6.6792409980660725
+2025-05-16 13:35:22,850 - Attempt 29: Image rejected due to static noise.
+
+2025-05-16 13:35:23,173 - Variance Value: 1120.973646786064
+2025-05-16 13:35:23,397 - Entropy Value: 6.6778225828260265
+2025-05-16 13:35:23,399 - Attempt 30: Image rejected due to static noise.
+
+2025-05-16 13:35:23,399 - Warning: Only 0 valid images collected (out of 10 required)
+
+2025-05-16 13:35:23,399 - Command: Go to detector radial 175°
+2025-05-16 13:35:23,401 - Arduino response: Moved RAD to 108.00 degrees.
+2025-05-16 13:35:26,542 - Dominant channel: G
+2025-05-16 13:35:26,615 - Top 5% mean: 819.62, median: 819.00
+2025-05-16 13:35:27,042 - Exposure is acceptable.
+
+2025-05-16 13:35:27,622 - Variance Value: 1116.4171352440026
+2025-05-16 13:35:27,861 - Entropy Value: 6.676618396128737
+2025-05-16 13:35:27,863 - Attempt 1: Image rejected due to static noise.
+
+2025-05-16 13:35:28,167 - Variance Value: 1118.8156355535612
+2025-05-16 13:35:28,384 - Entropy Value: 6.67703194603202
+2025-05-16 13:35:28,386 - Attempt 2: Image rejected due to static noise.
+
+2025-05-16 13:35:28,722 - Variance Value: 1118.7543587898836
+2025-05-16 13:35:28,938 - Entropy Value: 6.678271728604944
+2025-05-16 13:35:28,940 - Attempt 3: Image rejected due to static noise.
+
+2025-05-16 13:35:29,276 - Variance Value: 1118.0659454462584
+2025-05-16 13:35:29,503 - Entropy Value: 6.677597323342979
+2025-05-16 13:35:29,504 - Attempt 4: Image rejected due to static noise.
+
+2025-05-16 13:35:29,830 - Variance Value: 1119.2301420008298
+2025-05-16 13:35:30,045 - Entropy Value: 6.677732394052157
+2025-05-16 13:35:30,047 - Attempt 5: Image rejected due to static noise.
+
+2025-05-16 13:35:30,385 - Variance Value: 1117.4167745073792
+2025-05-16 13:35:30,601 - Entropy Value: 6.676112374550843
+2025-05-16 13:35:30,602 - Attempt 6: Image rejected due to static noise.
+
+2025-05-16 13:35:30,940 - Variance Value: 1118.5978426784277
+2025-05-16 13:35:31,159 - Entropy Value: 6.677422381703186
+2025-05-16 13:35:31,161 - Attempt 7: Image rejected due to static noise.
+
+2025-05-16 13:35:31,495 - Variance Value: 1115.6840755259618
+2025-05-16 13:35:31,765 - Entropy Value: 6.676349818525688
+2025-05-16 13:35:31,766 - Attempt 8: Image rejected due to static noise.
+
+2025-05-16 13:35:32,049 - Variance Value: 1116.1141092441976
+2025-05-16 13:35:32,277 - Entropy Value: 6.676854311997144
+2025-05-16 13:35:32,278 - Attempt 9: Image rejected due to static noise.
+
+2025-05-16 13:35:32,605 - Variance Value: 1116.0162272097077
+2025-05-16 13:35:32,830 - Entropy Value: 6.676897002763853
+2025-05-16 13:35:32,832 - Attempt 10: Image rejected due to static noise.
+
+2025-05-16 13:35:33,160 - Variance Value: 1116.3116343633737
+2025-05-16 13:35:33,386 - Entropy Value: 6.676376806451762
+2025-05-16 13:35:33,387 - Attempt 11: Image rejected due to static noise.
+
+2025-05-16 13:35:33,714 - Variance Value: 1115.8725955297705
+2025-05-16 13:35:33,936 - Entropy Value: 6.676538227293539
+2025-05-16 13:35:33,938 - Attempt 12: Image rejected due to static noise.
+
+2025-05-16 13:35:34,268 - Variance Value: 1115.41633568611
+2025-05-16 13:35:34,491 - Entropy Value: 6.677420089170523
+2025-05-16 13:35:34,493 - Attempt 13: Image rejected due to static noise.
+
+2025-05-16 13:35:34,822 - Variance Value: 1115.6196739522275
+2025-05-16 13:35:35,054 - Entropy Value: 6.676386228327389
+2025-05-16 13:35:35,056 - Attempt 14: Image rejected due to static noise.
+
+2025-05-16 13:35:35,378 - Variance Value: 1115.471558346413
+2025-05-16 13:35:35,598 - Entropy Value: 6.676472929643498
+2025-05-16 13:35:35,600 - Attempt 15: Image rejected due to static noise.
+
+2025-05-16 13:35:35,932 - Variance Value: 1115.2744687786326
+2025-05-16 13:35:36,165 - Entropy Value: 6.676597176679816
+2025-05-16 13:35:36,167 - Attempt 16: Image rejected due to static noise.
+
+2025-05-16 13:35:36,488 - Variance Value: 1117.568911104463
+2025-05-16 13:35:36,740 - Entropy Value: 6.676086130553165
+2025-05-16 13:35:36,743 - Attempt 17: Image rejected due to static noise.
+
+2025-05-16 13:35:37,042 - Variance Value: 1120.4285432239994
+2025-05-16 13:35:37,261 - Entropy Value: 6.676855483111257
+2025-05-16 13:35:37,263 - Attempt 18: Image rejected due to static noise.
+
+2025-05-16 13:35:37,596 - Variance Value: 1118.383299957728
+2025-05-16 13:35:37,818 - Entropy Value: 6.6768255913110375
+2025-05-16 13:35:37,819 - Attempt 19: Image rejected due to static noise.
+
+2025-05-16 13:35:38,152 - Variance Value: 1117.3604295921978
+2025-05-16 13:35:38,373 - Entropy Value: 6.676569109162909
+2025-05-16 13:35:38,375 - Attempt 20: Image rejected due to static noise.
+
+2025-05-16 13:35:38,707 - Variance Value: 1120.2349170201924
+2025-05-16 13:35:38,929 - Entropy Value: 6.6768648763572065
+2025-05-16 13:35:38,931 - Attempt 21: Image rejected due to static noise.
+
+2025-05-16 13:35:39,262 - Variance Value: 1120.6942282281816
+2025-05-16 13:35:39,483 - Entropy Value: 6.6783445013238065
+2025-05-16 13:35:39,485 - Attempt 22: Image rejected due to static noise.
+
+2025-05-16 13:35:39,817 - Variance Value: 1118.0701093801763
+2025-05-16 13:35:40,046 - Entropy Value: 6.677185094124942
+2025-05-16 13:35:40,047 - Attempt 23: Image rejected due to static noise.
+
+2025-05-16 13:35:40,370 - Variance Value: 1119.4163751006126
+2025-05-16 13:35:40,586 - Entropy Value: 6.678192318877614
+2025-05-16 13:35:40,588 - Attempt 24: Image rejected due to static noise.
+
+2025-05-16 13:35:40,925 - Variance Value: 1117.9651817642152
+2025-05-16 13:35:41,139 - Entropy Value: 6.678285168538404
+2025-05-16 13:35:41,141 - Attempt 25: Image rejected due to static noise.
+
+2025-05-16 13:35:41,479 - Variance Value: 1120.1299468241632
+2025-05-16 13:35:41,696 - Entropy Value: 6.679400235902828
+2025-05-16 13:35:41,697 - Attempt 26: Image rejected due to static noise.
+
+2025-05-16 13:35:42,058 - Variance Value: 1119.6505357287824
+2025-05-16 13:35:42,343 - Entropy Value: 6.678382896141518
+2025-05-16 13:35:42,344 - Attempt 27: Image rejected due to static noise.
+
+2025-05-16 13:35:42,590 - Variance Value: 1120.3109121583402
+2025-05-16 13:35:42,814 - Entropy Value: 6.678211405258485
+2025-05-16 13:35:42,816 - Attempt 28: Image rejected due to static noise.
+
+2025-05-16 13:35:43,145 - Variance Value: 1120.5065389533993
+2025-05-16 13:35:43,366 - Entropy Value: 6.677819197908566
+2025-05-16 13:35:43,368 - Attempt 29: Image rejected due to static noise.
+
+2025-05-16 13:35:43,700 - Variance Value: 1118.5024537444115
+2025-05-16 13:35:43,921 - Entropy Value: 6.678111181938903
+2025-05-16 13:35:43,922 - Attempt 30: Image rejected due to static noise.
+
+2025-05-16 13:35:43,923 - Warning: Only 0 valid images collected (out of 10 required)
+
+2025-05-16 13:35:43,923 - Command: Go to detector azimuthal 175°
+2025-05-16 13:35:43,924 - Arduino response: OK
+2025-05-16 13:35:45,926 - Command: Go to detector radial 8°
+2025-05-16 13:35:45,928 - Arduino response: Moved RAD to 175.00 degrees.
+2025-05-16 13:35:49,256 - Dominant channel: G
+2025-05-16 13:35:49,307 - Top 5% mean: 820.31, median: 819.50
+2025-05-16 13:35:49,786 - Exposure is acceptable.
+
+2025-05-16 13:35:50,366 - Variance Value: 1121.5054958080873
+2025-05-16 13:35:50,605 - Entropy Value: 6.677428944520888
+2025-05-16 13:35:50,606 - Attempt 1: Image rejected due to static noise.
+
+2025-05-16 13:35:50,910 - Variance Value: 1121.2706237414386
+2025-05-16 13:35:51,131 - Entropy Value: 6.677441937582202
+2025-05-16 13:35:51,132 - Attempt 2: Image rejected due to static noise.
+
+2025-05-16 13:35:51,466 - Variance Value: 1117.70509657613
+2025-05-16 13:35:51,688 - Entropy Value: 6.677291899141352
+2025-05-16 13:35:51,689 - Attempt 3: Image rejected due to static noise.
+
+2025-05-16 13:35:52,019 - Variance Value: 1122.1227372875437
+2025-05-16 13:35:52,246 - Entropy Value: 6.677041530686612
+2025-05-16 13:35:52,248 - Attempt 4: Image rejected due to static noise.
+
+2025-05-16 13:35:52,600 - Variance Value: 1121.054291448556
+2025-05-16 13:35:52,872 - Entropy Value: 6.677324710756016
+2025-05-16 13:35:52,874 - Attempt 5: Image rejected due to static noise.
+
+2025-05-16 13:35:53,129 - Variance Value: 1119.0608084888663
+2025-05-16 13:35:53,350 - Entropy Value: 6.676958540210654
+2025-05-16 13:35:53,352 - Attempt 6: Image rejected due to static noise.
+
+2025-05-16 13:35:53,683 - Variance Value: 1119.8356052970048
+2025-05-16 13:35:53,912 - Entropy Value: 6.677632558909105
+2025-05-16 13:35:53,914 - Attempt 7: Image rejected due to static noise.
+
+2025-05-16 13:35:54,238 - Variance Value: 1118.64597134199
+2025-05-16 13:35:54,462 - Entropy Value: 6.677696600359693
+2025-05-16 13:35:54,463 - Attempt 8: Image rejected due to static noise.
+
+2025-05-16 13:35:54,793 - Variance Value: 1119.666820028564
+2025-05-16 13:35:55,007 - Entropy Value: 6.67810233059479
+2025-05-16 13:35:55,009 - Attempt 9: Image rejected due to static noise.
+
+2025-05-16 13:35:55,347 - Variance Value: 1118.4066676849034
+2025-05-16 13:35:55,582 - Entropy Value: 6.679412365640513
+2025-05-16 13:35:55,584 - Attempt 10: Image rejected due to static noise.
+
+2025-05-16 13:35:55,902 - Variance Value: 1118.7402843795717
+2025-05-16 13:35:56,130 - Entropy Value: 6.678089268434055
+2025-05-16 13:35:56,132 - Attempt 11: Image rejected due to static noise.
+
+2025-05-16 13:35:56,457 - Variance Value: 1118.6901819610503
+2025-05-16 13:35:56,683 - Entropy Value: 6.67805521667852
+2025-05-16 13:35:56,685 - Attempt 12: Image rejected due to static noise.
+
+2025-05-16 13:35:57,012 - Variance Value: 1119.824520111084
+2025-05-16 13:35:57,232 - Entropy Value: 6.676912705253636
+2025-05-16 13:35:57,233 - Attempt 13: Image rejected due to static noise.
+
+2025-05-16 13:35:57,566 - Variance Value: 1119.750824317336
+2025-05-16 13:35:57,822 - Entropy Value: 6.67733548290039
+2025-05-16 13:35:57,824 - Attempt 14: Image rejected due to static noise.
+
+2025-05-16 13:35:58,121 - Variance Value: 1119.3977600780781
+2025-05-16 13:35:58,340 - Entropy Value: 6.677514698201769
+2025-05-16 13:35:58,342 - Attempt 15: Image rejected due to static noise.
+
+2025-05-16 13:35:58,676 - Variance Value: 1118.1082760484423
+2025-05-16 13:35:58,900 - Entropy Value: 6.678448164079697
+2025-05-16 13:35:58,902 - Attempt 16: Image rejected due to static noise.
+
+2025-05-16 13:35:59,231 - Variance Value: 1119.8333663509693
+2025-05-16 13:35:59,455 - Entropy Value: 6.677099231773852
+2025-05-16 13:35:59,456 - Attempt 17: Image rejected due to static noise.
+
+2025-05-16 13:35:59,785 - Variance Value: 1120.3183218082413
+2025-05-16 13:36:00,008 - Entropy Value: 6.67704614773793
+2025-05-16 13:36:00,009 - Attempt 18: Image rejected due to static noise.
+
+2025-05-16 13:36:00,341 - Variance Value: 1117.0766258239746
+2025-05-16 13:36:00,559 - Entropy Value: 6.677474287766401
+2025-05-16 13:36:00,560 - Attempt 19: Image rejected due to static noise.
+
+2025-05-16 13:36:00,895 - Variance Value: 1117.827938674949
+2025-05-16 13:36:01,112 - Entropy Value: 6.67773406728885
+2025-05-16 13:36:01,114 - Attempt 20: Image rejected due to static noise.
+
+2025-05-16 13:36:01,450 - Variance Value: 1118.5548636370804
+2025-05-16 13:36:01,667 - Entropy Value: 6.678275893753414
+2025-05-16 13:36:01,668 - Attempt 21: Image rejected due to static noise.
+
+2025-05-16 13:36:02,008 - Variance Value: 1115.2933565040585
+2025-05-16 13:36:02,238 - Entropy Value: 6.676669718440179
+2025-05-16 13:36:02,239 - Attempt 22: Image rejected due to static noise.
+
+2025-05-16 13:36:02,565 - Variance Value: 1116.1227346509695
+2025-05-16 13:36:02,793 - Entropy Value: 6.676124399186082
+2025-05-16 13:36:02,795 - Attempt 23: Image rejected due to static noise.
+
+2025-05-16 13:36:03,124 - Variance Value: 1117.5427419682965
+2025-05-16 13:36:03,373 - Entropy Value: 6.675517712482261
+2025-05-16 13:36:03,375 - Attempt 24: Image rejected due to static noise.
+
+2025-05-16 13:36:03,669 - Variance Value: 1113.742861332139
+2025-05-16 13:36:03,906 - Entropy Value: 6.676771351024593
+2025-05-16 13:36:03,908 - Attempt 25: Image rejected due to static noise.
+
+2025-05-16 13:36:04,223 - Variance Value: 1115.058443207061
+2025-05-16 13:36:04,436 - Entropy Value: 6.675761705896733
+2025-05-16 13:36:04,437 - Attempt 26: Image rejected due to static noise.
+
+2025-05-16 13:36:04,781 - Variance Value: 1114.724044769071
+2025-05-16 13:36:05,015 - Entropy Value: 6.676503927073647
+2025-05-16 13:36:05,027 - Attempt 27: Image rejected due to static noise.
+
+2025-05-16 13:36:05,344 - Variance Value: 1115.9426183961332
+2025-05-16 13:36:05,594 - Entropy Value: 6.6747465292194486
+2025-05-16 13:36:05,597 - Attempt 28: Image rejected due to static noise.
+
+2025-05-16 13:36:05,891 - Variance Value: 1115.460688609397
+2025-05-16 13:36:06,140 - Entropy Value: 6.675791493509006
+2025-05-16 13:36:06,143 - Attempt 29: Image rejected due to static noise.
+
+2025-05-16 13:36:06,460 - Variance Value: 1114.8428334593773
+2025-05-16 13:36:06,718 - Entropy Value: 6.677035853404157
+2025-05-16 13:36:06,720 - Attempt 30: Image rejected due to static noise.
+
+2025-05-16 13:36:06,721 - Warning: Only 0 valid images collected (out of 10 required)
+
+2025-05-16 13:36:06,722 - Command: Go to detector radial 108°
+2025-05-16 13:36:06,723 - Arduino response: OK
+2025-05-16 13:36:09,785 - Dominant channel: G
+2025-05-16 13:36:09,841 - Top 5% mean: 818.04, median: 817.00
+2025-05-16 13:36:10,314 - Exposure is acceptable.
+
+2025-05-16 13:36:10,908 - Variance Value: 1113.8831000616774
+2025-05-16 13:36:11,153 - Entropy Value: 6.675635222130505
+2025-05-16 13:36:11,155 - Attempt 1: Image rejected due to static noise.
+
+2025-05-16 13:36:11,437 - Variance Value: 1113.4453152269125
+2025-05-16 13:36:11,665 - Entropy Value: 6.675308767390719
+2025-05-16 13:36:11,666 - Attempt 2: Image rejected due to static noise.
+
+2025-05-16 13:36:11,990 - Variance Value: 1116.3391391837504
+2025-05-16 13:36:12,218 - Entropy Value: 6.674508681694245
+2025-05-16 13:36:12,219 - Attempt 3: Image rejected due to static noise.
+
+2025-05-16 13:36:12,545 - Variance Value: 1114.1657241096254
+2025-05-16 13:36:12,782 - Entropy Value: 6.673903774087525
+2025-05-16 13:36:12,784 - Attempt 4: Image rejected due to static noise.
+
+2025-05-16 13:36:13,099 - Variance Value: 1114.1281735897064
+2025-05-16 13:36:13,366 - Entropy Value: 6.675458263066647
+2025-05-16 13:36:13,368 - Attempt 5: Image rejected due to static noise.
+
+2025-05-16 13:36:13,654 - Variance Value: 1111.5449162041768
+2025-05-16 13:36:13,893 - Entropy Value: 6.67381523989768
+2025-05-16 13:36:13,894 - Attempt 6: Image rejected due to static noise.
+
+2025-05-16 13:36:14,209 - Variance Value: 1113.8703763447702
+2025-05-16 13:36:14,444 - Entropy Value: 6.674853909365784
+2025-05-16 13:36:14,446 - Attempt 7: Image rejected due to static noise.
+
+2025-05-16 13:36:14,763 - Variance Value: 1112.6716567864642
+2025-05-16 13:36:14,981 - Entropy Value: 6.674377670690762
+2025-05-16 13:36:14,982 - Attempt 8: Image rejected due to static noise.
+
+2025-05-16 13:36:15,318 - Variance Value: 1114.2688318674918
+2025-05-16 13:36:15,537 - Entropy Value: 6.675480748427911
+2025-05-16 13:36:15,538 - Attempt 9: Image rejected due to static noise.
+
+2025-05-16 13:36:15,873 - Variance Value: 1115.9605316033121
+2025-05-16 13:36:16,090 - Entropy Value: 6.675623949519141
+2025-05-16 13:36:16,092 - Attempt 10: Image rejected due to static noise.
+
+2025-05-16 13:36:16,428 - Variance Value: 1114.1109644435346
+2025-05-16 13:36:16,670 - Entropy Value: 6.676414675572462
+2025-05-16 13:36:16,671 - Attempt 11: Image rejected due to static noise.
+
+2025-05-16 13:36:16,982 - Variance Value: 1115.864667262882
+2025-05-16 13:36:17,222 - Entropy Value: 6.675398027751566
+2025-05-16 13:36:17,224 - Attempt 12: Image rejected due to static noise.
+
+2025-05-16 13:36:17,537 - Variance Value: 1114.872245695442
+2025-05-16 13:36:17,767 - Entropy Value: 6.674905416867588
+2025-05-16 13:36:17,768 - Attempt 13: Image rejected due to static noise.
+
+2025-05-16 13:36:18,092 - Variance Value: 1115.6655409426894
+2025-05-16 13:36:18,334 - Entropy Value: 6.67743401709684
+2025-05-16 13:36:18,336 - Attempt 14: Image rejected due to static noise.
+
+2025-05-16 13:36:18,671 - Variance Value: 1114.259847694775
+2025-05-16 13:36:18,937 - Entropy Value: 6.6754994409795385
+2025-05-16 13:36:18,939 - Attempt 15: Image rejected due to static noise.
+
+2025-05-16 13:36:19,201 - Variance Value: 1115.3558847969398
+2025-05-16 13:36:19,416 - Entropy Value: 6.675479433504261
+2025-05-16 13:36:19,418 - Attempt 16: Image rejected due to static noise.
+
+2025-05-16 13:36:19,756 - Variance Value: 1116.7155034223106
+2025-05-16 13:36:19,993 - Entropy Value: 6.675527895071467
+2025-05-16 13:36:19,995 - Attempt 17: Image rejected due to static noise.
+
+2025-05-16 13:36:20,312 - Variance Value: 1119.0834784542676
+2025-05-16 13:36:20,552 - Entropy Value: 6.67646234643762
+2025-05-16 13:36:20,553 - Attempt 18: Image rejected due to static noise.
+
+2025-05-16 13:36:20,866 - Variance Value: 1117.2272600939032
+2025-05-16 13:36:21,092 - Entropy Value: 6.677244899330479
+2025-05-16 13:36:21,094 - Attempt 19: Image rejected due to static noise.
+
+2025-05-16 13:36:21,421 - Variance Value: 1115.931472077733
+2025-05-16 13:36:21,652 - Entropy Value: 6.676698365509401
+2025-05-16 13:36:21,653 - Attempt 20: Image rejected due to static noise.
+
+2025-05-16 13:36:21,975 - Variance Value: 1116.45964717865
+2025-05-16 13:36:22,202 - Entropy Value: 6.676923204977599
+2025-05-16 13:36:22,203 - Attempt 21: Image rejected due to static noise.
+
+2025-05-16 13:36:22,529 - Variance Value: 1116.7052945494652
+2025-05-16 13:36:22,766 - Entropy Value: 6.675378991457744
+2025-05-16 13:36:22,768 - Attempt 22: Image rejected due to static noise.
+
+2025-05-16 13:36:23,084 - Variance Value: 1117.2577523437794
+2025-05-16 13:36:23,320 - Entropy Value: 6.675695260773346
+2025-05-16 13:36:23,322 - Attempt 23: Image rejected due to static noise.
+
+2025-05-16 13:36:23,639 - Variance Value: 1117.5267717035022
+2025-05-16 13:36:23,914 - Entropy Value: 6.67736006346178
+2025-05-16 13:36:23,915 - Attempt 24: Image rejected due to static noise.
+
+2025-05-16 13:36:24,194 - Variance Value: 1114.612703666091
+2025-05-16 13:36:24,425 - Entropy Value: 6.675735474113977
+2025-05-16 13:36:24,426 - Attempt 25: Image rejected due to static noise.
+
+2025-05-16 13:36:24,748 - Variance Value: 1114.2118534445763
+2025-05-16 13:36:24,986 - Entropy Value: 6.676121747721364
+2025-05-16 13:36:24,988 - Attempt 26: Image rejected due to static noise.
+
+2025-05-16 13:36:25,303 - Variance Value: 1113.438194617629
+2025-05-16 13:36:25,530 - Entropy Value: 6.676959061610503
+2025-05-16 13:36:25,532 - Attempt 27: Image rejected due to static noise.
+
+2025-05-16 13:36:25,858 - Variance Value: 1115.2993259867653
+2025-05-16 13:36:26,081 - Entropy Value: 6.674930644127532
+2025-05-16 13:36:26,082 - Attempt 28: Image rejected due to static noise.
+
+2025-05-16 13:36:26,415 - Variance Value: 1114.1036246633157
+2025-05-16 13:36:26,653 - Entropy Value: 6.675250007100794
+2025-05-16 13:36:26,654 - Attempt 29: Image rejected due to static noise.
+
+2025-05-16 13:36:26,968 - Variance Value: 1114.598845361732
+2025-05-16 13:36:27,199 - Entropy Value: 6.6757690054016265
+2025-05-16 13:36:27,201 - Attempt 30: Image rejected due to static noise.
+
+2025-05-16 13:36:27,201 - Warning: Only 0 valid images collected (out of 10 required)
+
+2025-05-16 13:36:27,202 - Command: Go to detector radial 175°
+2025-05-16 13:36:27,204 - Arduino response: Moved AZ to 8.00 degrees.
+2025-05-16 13:36:30,324 - Dominant channel: G
+2025-05-16 13:36:30,389 - Top 5% mean: 819.30, median: 818.50
+2025-05-16 13:36:30,837 - Exposure is acceptable.
+
+2025-05-16 13:36:31,407 - Variance Value: 1117.175271000713
+2025-05-16 13:36:31,634 - Entropy Value: 6.676850380675714
+2025-05-16 13:36:31,636 - Attempt 1: Image rejected due to static noise.
+
+2025-05-16 13:36:31,960 - Variance Value: 1119.1128121083602
+2025-05-16 13:36:32,181 - Entropy Value: 6.676071378671359
+2025-05-16 13:36:32,182 - Attempt 2: Image rejected due to static noise.
+
+2025-05-16 13:36:32,515 - Variance Value: 1116.3617924244609
+2025-05-16 13:36:32,736 - Entropy Value: 6.676931212673389
+2025-05-16 13:36:32,738 - Attempt 3: Image rejected due to static noise.
+
+2025-05-16 13:36:33,070 - Variance Value: 1118.024256839417
+2025-05-16 13:36:33,293 - Entropy Value: 6.676573043772823
+2025-05-16 13:36:33,294 - Attempt 4: Image rejected due to static noise.
+
+2025-05-16 13:36:33,625 - Variance Value: 1116.9122381655034
+2025-05-16 13:36:33,848 - Entropy Value: 6.675072612204225
+2025-05-16 13:36:33,849 - Attempt 5: Image rejected due to static noise.
+
+2025-05-16 13:36:34,180 - Variance Value: 1117.589284173213
+2025-05-16 13:36:34,401 - Entropy Value: 6.67584647625017
+2025-05-16 13:36:34,403 - Attempt 6: Image rejected due to static noise.
+
+2025-05-16 13:36:34,734 - Variance Value: 1118.3919815642294
+2025-05-16 13:36:34,956 - Entropy Value: 6.6777739983957245
+2025-05-16 13:36:34,957 - Attempt 7: Image rejected due to static noise.
+
+2025-05-16 13:36:35,288 - Variance Value: 1114.4349506637082
+2025-05-16 13:36:35,570 - Entropy Value: 6.676657485593534
+2025-05-16 13:36:35,571 - Attempt 8: Image rejected due to static noise.
+
+2025-05-16 13:36:35,844 - Variance Value: 1118.8868598602712
+2025-05-16 13:36:36,071 - Entropy Value: 6.677096905334233
+2025-05-16 13:36:36,072 - Attempt 9: Image rejected due to static noise.
+
+2025-05-16 13:36:36,399 - Variance Value: 1115.198001023382
+2025-05-16 13:36:36,625 - Entropy Value: 6.677383386354838
+2025-05-16 13:36:36,627 - Attempt 10: Image rejected due to static noise.
+
+2025-05-16 13:36:36,953 - Variance Value: 1117.462889074348
+2025-05-16 13:36:37,175 - Entropy Value: 6.676380494412767
+2025-05-16 13:36:37,177 - Attempt 11: Image rejected due to static noise.
+
+2025-05-16 13:36:37,507 - Variance Value: 1114.4646491555031
+2025-05-16 13:36:37,731 - Entropy Value: 6.677638853965142
+2025-05-16 13:36:37,733 - Attempt 12: Image rejected due to static noise.
+
+2025-05-16 13:36:38,062 - Variance Value: 1116.0939814464655
+2025-05-16 13:36:38,292 - Entropy Value: 6.6742222130336515
+2025-05-16 13:36:38,293 - Attempt 13: Image rejected due to static noise.
+
+2025-05-16 13:36:38,617 - Variance Value: 1116.3740910254419
+2025-05-16 13:36:38,841 - Entropy Value: 6.676062315118731
+2025-05-16 13:36:38,843 - Attempt 14: Image rejected due to static noise.
+
+2025-05-16 13:36:39,171 - Variance Value: 1112.9943333528936
+2025-05-16 13:36:39,392 - Entropy Value: 6.67490547799075
+2025-05-16 13:36:39,394 - Attempt 15: Image rejected due to static noise.
+
+2025-05-16 13:36:39,736 - Variance Value: 1114.8908183069434
+2025-05-16 13:36:39,979 - Entropy Value: 6.6753312175794814
+2025-05-16 13:36:39,981 - Attempt 16: Image rejected due to static noise.
+
+2025-05-16 13:36:40,282 - Variance Value: 1117.8376114135608
+2025-05-16 13:36:40,541 - Entropy Value: 6.6757291093741244
+2025-05-16 13:36:40,544 - Attempt 17: Image rejected due to static noise.
+
+2025-05-16 13:36:40,837 - Variance Value: 1115.8183888660278
+2025-05-16 13:36:41,054 - Entropy Value: 6.676267149453527
+2025-05-16 13:36:41,056 - Attempt 18: Image rejected due to static noise.
+
+2025-05-16 13:36:41,391 - Variance Value: 1114.7632969468832
+2025-05-16 13:36:41,617 - Entropy Value: 6.676593852941583
+2025-05-16 13:36:41,619 - Attempt 19: Image rejected due to static noise.
+
+2025-05-16 13:36:41,947 - Variance Value: 1115.6868792471942
+2025-05-16 13:36:42,170 - Entropy Value: 6.675101386941142
+2025-05-16 13:36:42,171 - Attempt 20: Image rejected due to static noise.
+
+2025-05-16 13:36:42,501 - Variance Value: 1115.427483521169
+2025-05-16 13:36:42,734 - Entropy Value: 6.674977659762668
+2025-05-16 13:36:42,736 - Attempt 21: Image rejected due to static noise.
+
+2025-05-16 13:36:43,055 - Variance Value: 1114.5268115808722
+2025-05-16 13:36:43,280 - Entropy Value: 6.675814622873759
+2025-05-16 13:36:43,281 - Attempt 22: Image rejected due to static noise.
+
+2025-05-16 13:36:43,612 - Variance Value: 1115.018678692868
+2025-05-16 13:36:43,832 - Entropy Value: 6.674834567023354
+2025-05-16 13:36:43,834 - Attempt 23: Image rejected due to static noise.
+
+2025-05-16 13:36:44,168 - Variance Value: 1116.1160232936963
+2025-05-16 13:36:44,418 - Entropy Value: 6.674162620772644
+2025-05-16 13:36:44,421 - Attempt 24: Image rejected due to static noise.
+
+2025-05-16 13:36:44,729 - Variance Value: 1114.9245014467742
+2025-05-16 13:36:44,985 - Entropy Value: 6.67509805948625
+2025-05-16 13:36:44,987 - Attempt 25: Image rejected due to static noise.
+
+2025-05-16 13:36:45,285 - Variance Value: 1115.3825465382542
+2025-05-16 13:36:45,511 - Entropy Value: 6.677321544319381
+2025-05-16 13:36:45,513 - Attempt 26: Image rejected due to static noise.
+
+2025-05-16 13:36:45,856 - Variance Value: 1113.934434771305
+2025-05-16 13:36:46,125 - Entropy Value: 6.675783450078965
+2025-05-16 13:36:46,127 - Attempt 27: Image rejected due to static noise.
+
+2025-05-16 13:36:46,385 - Variance Value: 1114.8881216114387
+2025-05-16 13:36:46,620 - Entropy Value: 6.675114083302186
+2025-05-16 13:36:46,623 - Attempt 28: Image rejected due to static noise.
+
+2025-05-16 13:36:46,950 - Variance Value: 1114.663764221361
+2025-05-16 13:36:47,195 - Entropy Value: 6.675263881464966
+2025-05-16 13:36:47,197 - Attempt 29: Image rejected due to static noise.
+
+2025-05-16 13:36:47,519 - Variance Value: 1115.2276936164126
+2025-05-16 13:36:47,786 - Entropy Value: 6.676334398566418
+2025-05-16 13:36:47,789 - Attempt 30: Image rejected due to static noise.
+
+2025-05-16 13:36:47,790 - Warning: Only 0 valid images collected (out of 10 required)
+
+2025-05-16 13:36:47,790 - Command: Go to detector azimuthal 8°
+2025-05-16 13:36:47,791 - Arduino response: OK
+2025-05-16 13:36:49,794 - Command: Go to detector radial 8°
+2025-05-16 13:36:49,796 - Arduino response: Moved RAD to 8.00 degrees.
+2025-05-16 13:36:52,799 - Command: Go to light azimuthal 175°
+2025-05-16 13:36:52,800 - Arduino response: OK
+2025-05-16 13:36:54,803 - Command: Go to detector azimuthal 8°
+2025-05-16 13:36:54,804 - Arduino response: Unknown command.
+2025-05-16 13:36:56,805 - Command: Go to detector radial 8°
+2025-05-16 13:36:56,810 - Arduino response: Moved AZ to 8.00 degrees.
+2025-05-16 13:37:00,291 - Dominant channel: G
+2025-05-16 13:37:00,379 - Top 5% mean: 818.52, median: 817.50
+2025-05-16 13:37:00,792 - Exposure is acceptable.
+
+2025-05-16 13:37:01,363 - Variance Value: 1114.8735368826892
+2025-05-16 13:37:01,582 - Entropy Value: 6.6763932522604135
+2025-05-16 13:37:01,583 - Attempt 1: Image rejected due to static noise.
+
+2025-05-16 13:37:01,916 - Variance Value: 1114.75935068354
+2025-05-16 13:37:02,133 - Entropy Value: 6.675522581848363
+2025-05-16 13:37:02,134 - Attempt 2: Image rejected due to static noise.
+
+2025-05-16 13:37:02,472 - Variance Value: 1115.4301918409765
+2025-05-16 13:37:02,699 - Entropy Value: 6.675444464331536
+2025-05-16 13:37:02,700 - Attempt 3: Image rejected due to static noise.
+
+2025-05-16 13:37:03,027 - Variance Value: 1114.0576551472768
+2025-05-16 13:37:03,255 - Entropy Value: 6.674257965060276
+2025-05-16 13:37:03,257 - Attempt 4: Image rejected due to static noise.
+
+2025-05-16 13:37:03,580 - Variance Value: 1116.0938900613692
+2025-05-16 13:37:03,810 - Entropy Value: 6.675540850258039
+2025-05-16 13:37:03,811 - Attempt 5: Image rejected due to static noise.
+
+2025-05-16 13:37:04,136 - Variance Value: 1114.963194928132
+2025-05-16 13:37:04,353 - Entropy Value: 6.676290113261983
+2025-05-16 13:37:04,355 - Attempt 6: Image rejected due to static noise.
+
+2025-05-16 13:37:04,691 - Variance Value: 1116.3144759600982
+2025-05-16 13:37:04,923 - Entropy Value: 6.6771209799675475
+2025-05-16 13:37:04,924 - Attempt 7: Image rejected due to static noise.
+
+2025-05-16 13:37:05,245 - Variance Value: 1114.0098055265844
+2025-05-16 13:37:05,517 - Entropy Value: 6.675495469622514
+2025-05-16 13:37:05,518 - Attempt 8: Image rejected due to static noise.
+
+2025-05-16 13:37:05,801 - Variance Value: 1114.7129083608743
+2025-05-16 13:37:06,028 - Entropy Value: 6.676287811291106
+2025-05-16 13:37:06,030 - Attempt 9: Image rejected due to static noise.
+
+2025-05-16 13:37:06,355 - Variance Value: 1112.3598803689238
+2025-05-16 13:37:06,593 - Entropy Value: 6.673629639204754
+2025-05-16 13:37:06,595 - Attempt 10: Image rejected due to static noise.
+
+2025-05-16 13:37:06,910 - Variance Value: 1112.621045510983
+2025-05-16 13:37:07,143 - Entropy Value: 6.675452012569618
+2025-05-16 13:37:07,144 - Attempt 11: Image rejected due to static noise.
+
+2025-05-16 13:37:07,463 - Variance Value: 1113.0744019411504
+2025-05-16 13:37:07,683 - Entropy Value: 6.674551464923735
+2025-05-16 13:37:07,685 - Attempt 12: Image rejected due to static noise.
+
+2025-05-16 13:37:08,018 - Variance Value: 1112.6167477758136
+2025-05-16 13:37:08,249 - Entropy Value: 6.675204241856204
+2025-05-16 13:37:08,250 - Attempt 13: Image rejected due to static noise.
+
+2025-05-16 13:37:08,572 - Variance Value: 1114.1318113468587
+2025-05-16 13:37:08,799 - Entropy Value: 6.674722396819691
+2025-05-16 13:37:08,801 - Attempt 14: Image rejected due to static noise.
+
+2025-05-16 13:37:09,128 - Variance Value: 1117.4654351694044
+2025-05-16 13:37:09,352 - Entropy Value: 6.675629554752284
+2025-05-16 13:37:09,353 - Attempt 15: Image rejected due to static noise.
+
+2025-05-16 13:37:09,683 - Variance Value: 1118.182990655303
+2025-05-16 13:37:09,902 - Entropy Value: 6.6762916744925676
+2025-05-16 13:37:09,904 - Attempt 16: Image rejected due to static noise.
+
+2025-05-16 13:37:10,237 - Variance Value: 1116.3654717111494
+2025-05-16 13:37:10,460 - Entropy Value: 6.676692124297567
+2025-05-16 13:37:10,462 - Attempt 17: Image rejected due to static noise.
+
+2025-05-16 13:37:10,817 - Variance Value: 1116.623506333679
+2025-05-16 13:37:11,079 - Entropy Value: 6.675154098204524
+2025-05-16 13:37:11,080 - Attempt 18: Image rejected due to static noise.
+
+2025-05-16 13:37:11,346 - Variance Value: 1114.2518618367612
+2025-05-16 13:37:11,574 - Entropy Value: 6.677739096769745
+2025-05-16 13:37:11,575 - Attempt 19: Image rejected due to static noise.
+
+2025-05-16 13:37:11,901 - Variance Value: 1115.0922593837604
+2025-05-16 13:37:12,123 - Entropy Value: 6.675545741466228
+2025-05-16 13:37:12,124 - Attempt 20: Image rejected due to static noise.
+
+2025-05-16 13:37:12,455 - Variance Value: 1114.2805558284745
+2025-05-16 13:37:12,686 - Entropy Value: 6.674397692703045
+2025-05-16 13:37:12,687 - Attempt 21: Image rejected due to static noise.
+
+2025-05-16 13:37:13,011 - Variance Value: 1115.624859190546
+2025-05-16 13:37:13,230 - Entropy Value: 6.67607125083588
+2025-05-16 13:37:13,231 - Attempt 22: Image rejected due to static noise.
+
+2025-05-16 13:37:13,565 - Variance Value: 1118.0266348158475
+2025-05-16 13:37:13,780 - Entropy Value: 6.6764908615271015
+2025-05-16 13:37:13,782 - Attempt 23: Image rejected due to static noise.
+
+2025-05-16 13:37:14,120 - Variance Value: 1117.3000236654188
+2025-05-16 13:37:14,338 - Entropy Value: 6.676707328964498
+2025-05-16 13:37:14,340 - Attempt 24: Image rejected due to static noise.
+
+2025-05-16 13:37:14,676 - Variance Value: 1117.3603855704423
+2025-05-16 13:37:14,892 - Entropy Value: 6.675473166464949
+2025-05-16 13:37:14,894 - Attempt 25: Image rejected due to static noise.
+
+2025-05-16 13:37:15,230 - Variance Value: 1119.5733825229108
+2025-05-16 13:37:15,463 - Entropy Value: 6.676474057617956
+2025-05-16 13:37:15,464 - Attempt 26: Image rejected due to static noise.
+
+2025-05-16 13:37:15,784 - Variance Value: 1116.9355330131948
+2025-05-16 13:37:16,053 - Entropy Value: 6.678034461852684
+2025-05-16 13:37:16,055 - Attempt 27: Image rejected due to static noise.
+
+2025-05-16 13:37:16,340 - Variance Value: 1119.6039699909743
+2025-05-16 13:37:16,563 - Entropy Value: 6.677644806920369
+2025-05-16 13:37:16,565 - Attempt 28: Image rejected due to static noise.
+
+2025-05-16 13:37:16,895 - Variance Value: 1120.58790480881
+2025-05-16 13:37:17,121 - Entropy Value: 6.67767659587191
+2025-05-16 13:37:17,123 - Attempt 29: Image rejected due to static noise.
+
+2025-05-16 13:37:17,449 - Variance Value: 1119.039283403894
+2025-05-16 13:37:17,671 - Entropy Value: 6.678119400209993
+2025-05-16 13:37:17,673 - Attempt 30: Image rejected due to static noise.
+
+2025-05-16 13:37:17,673 - Warning: Only 0 valid images collected (out of 10 required)
+
+2025-05-16 13:37:17,674 - Command: Go to detector radial 108°
+2025-05-16 13:37:17,675 - Arduino response: OK
+2025-05-16 13:37:20,787 - Dominant channel: G
+2025-05-16 13:37:20,842 - Top 5% mean: 819.35, median: 818.50
+2025-05-16 13:37:21,317 - Exposure is acceptable.
+
+2025-05-16 13:37:21,887 - Variance Value: 1114.3109430065379
+2025-05-16 13:37:22,106 - Entropy Value: 6.675652259298138
+2025-05-16 13:37:22,108 - Attempt 1: Image rejected due to static noise.
+
+2025-05-16 13:37:22,442 - Variance Value: 1115.01992591843
+2025-05-16 13:37:22,663 - Entropy Value: 6.676423975508394
+2025-05-16 13:37:22,664 - Attempt 2: Image rejected due to static noise.
+
+2025-05-16 13:37:22,997 - Variance Value: 1113.9272567294538
+2025-05-16 13:37:23,221 - Entropy Value: 6.676036520861713
+2025-05-16 13:37:23,223 - Attempt 3: Image rejected due to static noise.
+
+2025-05-16 13:37:23,550 - Variance Value: 1115.427251511952
+2025-05-16 13:37:23,777 - Entropy Value: 6.6760271153268045
+2025-05-16 13:37:23,779 - Attempt 4: Image rejected due to static noise.
+
+2025-05-16 13:37:24,106 - Variance Value: 1115.3501122556627
+2025-05-16 13:37:24,329 - Entropy Value: 6.676330291388342
+2025-05-16 13:37:24,331 - Attempt 5: Image rejected due to static noise.
+
+2025-05-16 13:37:24,660 - Variance Value: 1115.6122462113854
+2025-05-16 13:37:24,890 - Entropy Value: 6.67687159999756
+2025-05-16 13:37:24,891 - Attempt 6: Image rejected due to static noise.
+
+2025-05-16 13:37:25,214 - Variance Value: 1114.5321983760223
+2025-05-16 13:37:25,449 - Entropy Value: 6.675190361685746
+2025-05-16 13:37:25,451 - Attempt 7: Image rejected due to static noise.
+
+2025-05-16 13:37:25,769 - Variance Value: 1114.867232154822
+2025-05-16 13:37:26,007 - Entropy Value: 6.675215022607282
+2025-05-16 13:37:26,009 - Attempt 8: Image rejected due to static noise.
+
+2025-05-16 13:37:26,335 - Variance Value: 1116.3246002197266
+2025-05-16 13:37:26,613 - Entropy Value: 6.676065802947161
+2025-05-16 13:37:26,614 - Attempt 9: Image rejected due to static noise.
+
+2025-05-16 13:37:26,878 - Variance Value: 1114.8161371313035
+2025-05-16 13:37:27,111 - Entropy Value: 6.6735538901441425
+2025-05-16 13:37:27,112 - Attempt 10: Image rejected due to static noise.
+
+2025-05-16 13:37:27,433 - Variance Value: 1116.8941640777048
+2025-05-16 13:37:27,656 - Entropy Value: 6.676737580035574
+2025-05-16 13:37:27,657 - Attempt 11: Image rejected due to static noise.
+
+2025-05-16 13:37:27,999 - Variance Value: 1115.0427707617637
+2025-05-16 13:37:28,244 - Entropy Value: 6.675177258674749
+2025-05-16 13:37:28,247 - Attempt 12: Image rejected due to static noise.
+
+2025-05-16 13:37:28,552 - Variance Value: 1117.841891852906
+2025-05-16 13:37:28,807 - Entropy Value: 6.675223201220442
+2025-05-16 13:37:28,809 - Attempt 13: Image rejected due to static noise.
+
+2025-05-16 13:37:29,100 - Variance Value: 1115.9568111440167
+2025-05-16 13:37:29,337 - Entropy Value: 6.675036074914983
+2025-05-16 13:37:29,339 - Attempt 14: Image rejected due to static noise.
+
+2025-05-16 13:37:29,653 - Variance Value: 1115.3954134844244
+2025-05-16 13:37:29,879 - Entropy Value: 6.675245381277245
+2025-05-16 13:37:29,881 - Attempt 15: Image rejected due to static noise.
+
+2025-05-16 13:37:30,207 - Variance Value: 1114.09389451053
+2025-05-16 13:37:30,426 - Entropy Value: 6.675775077242981
+2025-05-16 13:37:30,428 - Attempt 16: Image rejected due to static noise.
+
+2025-05-16 13:37:30,763 - Variance Value: 1113.7252338898834
+2025-05-16 13:37:30,982 - Entropy Value: 6.676400401995905
+2025-05-16 13:37:30,984 - Attempt 17: Image rejected due to static noise.
+
+2025-05-16 13:37:31,318 - Variance Value: 1115.496677160263
+2025-05-16 13:37:31,588 - Entropy Value: 6.674877121615391
+2025-05-16 13:37:31,590 - Attempt 18: Image rejected due to static noise.
+

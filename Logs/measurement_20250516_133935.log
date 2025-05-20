@@ -1,0 +1,223 @@
+2025-05-16 13:39:57,745 - Initialization successful.
+2025-05-16 13:39:57,746 - Camera now open.
+2025-05-16 13:39:57,754 - Camera configuration has been adjusted!
+2025-05-16 13:39:57,758 - Configuration successful!
+2025-05-16 13:39:58,354 - Camera started
+2025-05-16 13:40:03,403 - Mean intensity (dark_value): 59.902475052521005
+2025-05-16 13:40:11,908 - Measurement Type: BRDF
+
+Light Source - Azimuthal Step: 100.0° (3 positions)
+Light Source - Radial Step: 100.0° (3 positions)
+Detector - Azimuthal Step: 100.0° (3 positions)
+Detector - Radial Step: 100.0° (3 positions)
+
+2025-05-16 13:40:15,486 - Arduino response: Detector motor controller (absolute mode) ready.
+2025-05-16 13:40:15,487 - Command: Go to light radial 8°
+2025-05-16 13:40:15,542 - Arduino response: Position reset to 8 degrees on both axes.
+2025-05-16 13:40:17,545 - Command: Go to light azimuthal 8°
+2025-05-16 13:40:17,547 - Arduino response: OK
+2025-05-16 13:40:19,550 - Command: Go to detector azimuthal 8°
+2025-05-16 13:40:19,552 - Arduino response: Unknown command.
+2025-05-16 13:40:21,554 - Skipping blocked configuration at LS(8, 8) ≈ DET(8, 8)
+
+2025-05-16 13:40:21,555 - Command: Go to detector radial 108°
+2025-05-16 13:40:21,556 - Arduino response: Unknown command.
+2025-05-16 13:40:24,632 - Dominant channel: G
+2025-05-16 13:40:24,722 - Top 5% mean: 60.56, median: 60.50
+2025-05-16 13:40:24,756 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:40:24,757 - Adjusting exposure: 43 → 143
+2025-05-16 13:40:25,758 - Actual exposure time from metadata: 43
+2025-05-16 13:40:25,790 - Dominant channel: G
+2025-05-16 13:40:25,848 - Top 5% mean: 61.00, median: 61.00
+2025-05-16 13:40:25,868 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:40:25,869 - Adjusting exposure: 132 → 232
+2025-05-16 13:40:26,870 - Actual exposure time from metadata: 132
+2025-05-16 13:40:26,934 - Dominant channel: G
+2025-05-16 13:40:27,009 - Top 5% mean: 61.05, median: 61.00
+2025-05-16 13:40:27,060 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:40:27,061 - Adjusting exposure: 221 → 321
+2025-05-16 13:40:28,063 - Actual exposure time from metadata: 221
+2025-05-16 13:40:28,115 - Dominant channel: G
+2025-05-16 13:40:28,174 - Top 5% mean: 61.35, median: 61.50
+2025-05-16 13:40:28,182 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:40:28,182 - Adjusting exposure: 310 → 410
+2025-05-16 13:40:29,184 - Actual exposure time from metadata: 310
+2025-05-16 13:40:29,219 - Dominant channel: G
+2025-05-16 13:40:29,284 - Top 5% mean: 61.59, median: 61.50
+2025-05-16 13:40:29,298 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:40:29,299 - Adjusting exposure: 399 → 499
+2025-05-16 13:40:30,301 - Actual exposure time from metadata: 399
+2025-05-16 13:40:30,396 - Dominant channel: G
+2025-05-16 13:40:30,470 - Top 5% mean: 61.91, median: 62.00
+2025-05-16 13:40:30,503 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:40:30,504 - Adjusting exposure: 488 → 588
+2025-05-16 13:40:31,505 - Actual exposure time from metadata: 488
+2025-05-16 13:40:31,561 - Dominant channel: G
+2025-05-16 13:40:31,613 - Top 5% mean: 62.08, median: 62.00
+2025-05-16 13:40:31,630 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:40:31,631 - Adjusting exposure: 577 → 677
+2025-05-16 13:40:32,632 - Actual exposure time from metadata: 577
+2025-05-16 13:40:32,685 - Dominant channel: G
+2025-05-16 13:40:32,742 - Top 5% mean: 62.34, median: 62.50
+2025-05-16 13:40:32,754 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:40:32,755 - Adjusting exposure: 666 → 766
+2025-05-16 13:40:33,757 - Actual exposure time from metadata: 666
+2025-05-16 13:40:33,808 - Dominant channel: G
+2025-05-16 13:40:33,867 - Top 5% mean: 62.58, median: 62.50
+2025-05-16 13:40:33,881 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:40:33,882 - Adjusting exposure: 755 → 855
+2025-05-16 13:40:34,884 - Actual exposure time from metadata: 755
+2025-05-16 13:40:34,944 - Dominant channel: G
+2025-05-16 13:40:35,003 - Top 5% mean: 62.87, median: 63.00
+2025-05-16 13:40:35,007 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:40:35,007 - Adjusting exposure: 843 → 943
+2025-05-16 13:40:36,009 - Actual exposure time from metadata: 843
+2025-05-16 13:40:36,013 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:40:36,014 - Command: Go to detector radial 175°
+2025-05-16 13:40:36,017 - Arduino response: Moved AZ to 8.00 degrees.
+2025-05-16 13:40:39,084 - Dominant channel: G
+2025-05-16 13:40:39,151 - Top 5% mean: 63.10, median: 63.00
+2025-05-16 13:40:39,202 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:40:39,203 - Adjusting exposure: 932 → 1032
+2025-05-16 13:40:40,205 - Actual exposure time from metadata: 932
+2025-05-16 13:40:40,276 - Dominant channel: G
+2025-05-16 13:40:40,323 - Top 5% mean: 63.41, median: 63.50
+2025-05-16 13:40:40,325 - Too dark → Increasing exposure by 100 µs
+2025-05-16 13:40:40,325 - Adjusting exposure: 1021 → 1121
+2025-05-16 13:40:41,328 - Actual exposure time from metadata: 1021
+2025-05-16 13:40:41,436 - Dominant channel: G
+2025-05-16 13:40:41,500 - Top 5% mean: 63.64, median: 63.50
+2025-05-16 13:40:41,517 - Too dark → Increasing exposure by 102 µs
+2025-05-16 13:40:41,518 - Adjusting exposure: 1110 → 1212
+2025-05-16 13:40:42,520 - Actual exposure time from metadata: 1110
+2025-05-16 13:40:42,549 - Dominant channel: G
+2025-05-16 13:40:42,604 - Top 5% mean: 63.98, median: 64.00
+2025-05-16 13:40:42,627 - Too dark → Increasing exposure by 111 µs
+2025-05-16 13:40:42,628 - Adjusting exposure: 1199 → 1310
+2025-05-16 13:40:43,630 - Actual exposure time from metadata: 1199
+2025-05-16 13:40:43,660 - Dominant channel: G
+2025-05-16 13:40:43,720 - Top 5% mean: 64.18, median: 64.00
+2025-05-16 13:40:43,739 - Too dark → Increasing exposure by 120 µs
+2025-05-16 13:40:43,740 - Adjusting exposure: 1303 → 1423
+2025-05-16 13:40:44,742 - Actual exposure time from metadata: 1303
+2025-05-16 13:40:44,772 - Dominant channel: G
+2025-05-16 13:40:44,837 - Top 5% mean: 64.58, median: 64.50
+2025-05-16 13:40:44,847 - Too dark → Increasing exposure by 131 µs
+2025-05-16 13:40:44,849 - Adjusting exposure: 1421 → 1552
+2025-05-16 13:40:45,852 - Actual exposure time from metadata: 1421
+2025-05-16 13:40:45,907 - Dominant channel: G
+2025-05-16 13:40:45,967 - Top 5% mean: 64.91, median: 65.00
+2025-05-16 13:40:45,971 - Too dark → Increasing exposure by 142 µs
+2025-05-16 13:40:45,972 - Adjusting exposure: 1540 → 1682
+2025-05-16 13:40:46,973 - Actual exposure time from metadata: 1540
+2025-05-16 13:40:47,047 - Dominant channel: G
+2025-05-16 13:40:47,120 - Top 5% mean: 65.24, median: 65.00
+2025-05-16 13:40:47,164 - Too dark → Increasing exposure by 154 µs
+2025-05-16 13:40:47,165 - Adjusting exposure: 1673 → 1827
+2025-05-16 13:40:48,166 - Actual exposure time from metadata: 1673
+2025-05-16 13:40:48,224 - Dominant channel: G
+2025-05-16 13:40:48,277 - Top 5% mean: 65.67, median: 65.50
+2025-05-16 13:40:48,292 - Too dark → Increasing exposure by 168 µs
+2025-05-16 13:40:48,292 - Adjusting exposure: 1821 → 1989
+2025-05-16 13:40:49,294 - Actual exposure time from metadata: 1821
+2025-05-16 13:40:49,349 - Dominant channel: G
+2025-05-16 13:40:49,404 - Top 5% mean: 66.10, median: 66.00
+2025-05-16 13:40:49,420 - Too dark → Increasing exposure by 183 µs
+2025-05-16 13:40:49,421 - Adjusting exposure: 1984 → 2167
+2025-05-16 13:40:50,422 - Actual exposure time from metadata: 1984
+2025-05-16 13:40:50,426 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:40:50,427 - Command: Go to detector azimuthal 108°
+2025-05-16 13:40:50,430 - Arduino response: OK
+2025-05-16 13:40:52,433 - Command: Go to detector radial 8°
+2025-05-16 13:40:52,435 - Arduino response: Moved RAD to 108.00 degrees.
+2025-05-16 13:40:55,508 - Dominant channel: G
+2025-05-16 13:40:55,563 - Top 5% mean: 66.60, median: 66.50
+2025-05-16 13:40:55,580 - Too dark → Increasing exposure by 199 µs
+2025-05-16 13:40:55,581 - Adjusting exposure: 2162 → 2361
+2025-05-16 13:40:56,582 - Actual exposure time from metadata: 2162
+2025-05-16 13:40:56,641 - Dominant channel: G
+2025-05-16 13:40:56,714 - Top 5% mean: 67.12, median: 67.00
+2025-05-16 13:40:56,756 - Too dark → Increasing exposure by 217 µs
+2025-05-16 13:40:56,757 - Adjusting exposure: 2355 → 2572
+2025-05-16 13:40:57,758 - Actual exposure time from metadata: 2355
+2025-05-16 13:40:57,826 - Dominant channel: G
+2025-05-16 13:40:57,888 - Top 5% mean: 67.71, median: 67.50
+2025-05-16 13:40:57,900 - Too dark → Increasing exposure by 236 µs
+2025-05-16 13:40:57,900 - Adjusting exposure: 2562 → 2798
+2025-05-16 13:40:58,902 - Actual exposure time from metadata: 2562
+2025-05-16 13:40:58,967 - Dominant channel: G
+2025-05-16 13:40:59,033 - Top 5% mean: 68.41, median: 68.50
+2025-05-16 13:40:59,044 - Too dark → Increasing exposure by 256 µs
+2025-05-16 13:40:59,046 - Adjusting exposure: 2784 → 3040
+2025-05-16 13:41:00,047 - Actual exposure time from metadata: 2784
+2025-05-16 13:41:00,126 - Dominant channel: G
+2025-05-16 13:41:00,200 - Top 5% mean: 69.09, median: 69.00
+2025-05-16 13:41:00,236 - Too dark → Increasing exposure by 279 µs
+2025-05-16 13:41:00,237 - Adjusting exposure: 3036 → 3315
+2025-05-16 13:41:01,239 - Actual exposure time from metadata: 3036
+2025-05-16 13:41:01,299 - Dominant channel: G
+2025-05-16 13:41:01,368 - Top 5% mean: 69.75, median: 69.50
+2025-05-16 13:41:01,409 - Too dark → Increasing exposure by 303 µs
+2025-05-16 13:41:01,411 - Adjusting exposure: 3303 → 3606
+2025-05-16 13:41:02,413 - Actual exposure time from metadata: 3303
+2025-05-16 13:41:02,486 - Dominant channel: G
+2025-05-16 13:41:02,559 - Top 5% mean: 70.64, median: 70.50
+2025-05-16 13:41:02,586 - Too dark → Increasing exposure by 330 µs
+2025-05-16 13:41:02,587 - Adjusting exposure: 3599 → 3929
+2025-05-16 13:41:03,590 - Actual exposure time from metadata: 3599
+2025-05-16 13:41:03,677 - Dominant channel: G
+2025-05-16 13:41:03,749 - Top 5% mean: 71.51, median: 71.50
+2025-05-16 13:41:03,753 - Too dark → Increasing exposure by 360 µs
+2025-05-16 13:41:03,754 - Adjusting exposure: 3925 → 4285
+2025-05-16 13:41:04,756 - Actual exposure time from metadata: 3925
+2025-05-16 13:41:04,836 - Dominant channel: G
+2025-05-16 13:41:04,929 - Top 5% mean: 72.65, median: 72.50
+2025-05-16 13:41:04,941 - Too dark → Increasing exposure by 392 µs
+2025-05-16 13:41:04,942 - Adjusting exposure: 4280 → 4672
+2025-05-16 13:41:05,944 - Actual exposure time from metadata: 4280
+2025-05-16 13:41:05,987 - Dominant channel: G
+2025-05-16 13:41:06,057 - Top 5% mean: 73.60, median: 73.50
+2025-05-16 13:41:06,066 - Too dark → Increasing exposure by 427 µs
+2025-05-16 13:41:06,067 - Adjusting exposure: 4666 → 5093
+2025-05-16 13:41:07,069 - Actual exposure time from metadata: 4666
+2025-05-16 13:41:07,074 - Exposure tuning failed, skipping this position.
+
+2025-05-16 13:41:07,075 - Command: Go to detector radial 108°
+2025-05-16 13:41:07,076 - Arduino response: OK
+2025-05-16 13:41:10,135 - Dominant channel: G
+2025-05-16 13:41:10,185 - Top 5% mean: 74.83, median: 75.00
+2025-05-16 13:41:10,205 - Too dark → Increasing exposure by 464 µs
+2025-05-16 13:41:10,206 - Adjusting exposure: 5080 → 5544
+2025-05-16 13:41:11,208 - Actual exposure time from metadata: 5080
+2025-05-16 13:41:11,280 - Dominant channel: G
+2025-05-16 13:41:11,352 - Top 5% mean: 76.04, median: 76.00
+2025-05-16 13:41:11,400 - Too dark → Increasing exposure by 505 µs
+2025-05-16 13:41:11,401 - Adjusting exposure: 5540 → 6045
+2025-05-16 13:41:12,402 - Actual exposure time from metadata: 5540
+2025-05-16 13:41:12,477 - Dominant channel: G
+2025-05-16 13:41:12,554 - Top 5% mean: 77.48, median: 77.50
+2025-05-16 13:41:12,591 - Too dark → Increasing exposure by 550 µs
+2025-05-16 13:41:12,592 - Adjusting exposure: 6043 → 6593
+2025-05-16 13:41:13,594 - Actual exposure time from metadata: 6043
+2025-05-16 13:41:13,643 - Dominant channel: G
+2025-05-16 13:41:13,720 - Top 5% mean: 78.89, median: 79.00
+2025-05-16 13:41:13,767 - Too dark → Increasing exposure by 599 µs
+2025-05-16 13:41:13,768 - Adjusting exposure: 6592 → 7191
+2025-05-16 13:41:14,770 - Actual exposure time from metadata: 6592
+2025-05-16 13:41:14,854 - Dominant channel: G
+2025-05-16 13:41:14,942 - Top 5% mean: 80.53, median: 80.50
+2025-05-16 13:41:14,961 - Too dark → Increasing exposure by 651 µs
+2025-05-16 13:41:14,964 - Adjusting exposure: 7184 → 7835
+2025-05-16 13:41:15,966 - Actual exposure time from metadata: 7184
+2025-05-16 13:41:16,013 - Dominant channel: G
+2025-05-16 13:41:16,085 - Top 5% mean: 82.35, median: 82.00
+2025-05-16 13:41:16,090 - Too dark → Increasing exposure by 708 µs
+2025-05-16 13:41:16,092 - Adjusting exposure: 7821 → 8529
+2025-05-16 13:41:17,094 - Actual exposure time from metadata: 7821
+2025-05-16 13:41:17,170 - Dominant channel: G
+2025-05-16 13:41:17,252 - Top 5% mean: 84.29, median: 84.00
+2025-05-16 13:41:17,295 - Too dark → Increasing exposure by 769 µs
+2025-05-16 13:41:17,296 - Adjusting exposure: 8517 → 9286
+2025-05-16 13:41:18,298 - Actual exposure time from metadata: 8517
