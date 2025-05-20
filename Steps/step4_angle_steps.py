@@ -22,8 +22,9 @@ def create(app, container):
     angle_inputs = {}    # Store combobox widgets
     step_labels = {}     # Store step count labels
 
-    # Avilable step size options in degrees 
-    options = ["2", "5", "10", "100"]  
+    # Step size options
+    light_source_options = ["5", "10", "20", "30"]
+    detector_options = ["1", "2", "5", "10", "15", "20", "30", "45", "60"] 
 
     # Labels and keys for different step parameters
     labels = [
@@ -34,20 +35,26 @@ def create(app, container):
     ]
 
     for i, (label, key) in enumerate(labels):
-        ttk.Label(grid, text=label).grid(row=i, column=0, sticky="w", padx=5, pady=2)
+            ttk.Label(grid, text=label).grid(row=i, column=0, sticky="w", padx=5, pady=2)
 
-        # Combobox for selecting step size
-        combobox = ttk.Combobox(grid, values=options, width=8, state="readonly")
-        combobox.grid(row=i, column=1, padx=5, pady=2)
-        angle_inputs[key] = combobox
+            # Choose options depending on whether it's light source or detector
+            if key.startswith("ls_"):
+                options = light_source_options
+            else:
+                options = detector_options
 
-        # Label to show number of steps
-        step_label = ttk.Label(grid, text="Steps: ?", width=15)
-        step_label.grid(row=i, column=2, padx=5)
-        step_labels[key] = step_label
+            # Combobox for selecting step size
+            combobox = ttk.Combobox(grid, values=options, width=8, state="readonly")
+            combobox.grid(row=i, column=1, padx=5, pady=2)
+            angle_inputs[key] = combobox
 
-        # Update step count whe a value is selected
-        combobox.bind("<<ComboboxSelected>>", lambda e, k=key: update_step_label(app, angle_inputs, k, step_labels[k]))
+            # Label to show number of steps
+            step_label = ttk.Label(grid, text="Steps: ?", width=15)
+            step_label.grid(row=i, column=2, padx=5)
+            step_labels[key] = step_label
+
+            # Update step count when a value is selected
+            combobox.bind("<<ComboboxSelected>>", lambda e, k=key: update_step_label(app, angle_inputs, k, step_labels[k]))
     
     # Navigation buttons (Back and Next)
     nav_buttons = ttk.Frame(frame)
