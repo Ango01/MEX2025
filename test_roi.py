@@ -169,13 +169,20 @@ def main():
         actual_exp = picam2.capture_metadata().get("ExposureTime")
         print(f"Actual ExposureTime from metadata: {actual_exp} µs")
 
-        # Save raw image
-        raw_filename = f"angle_{angle}_raw.png"
-        raw_path = os.path.join("Captured_Images", raw_filename)
+        # Save raw image as PNG (normalized for viewing)
         os.makedirs("Captured_Images", exist_ok=True)
+        png_filename = f"angle_{angle}_raw.png"
+        png_path = os.path.join("Captured_Images", png_filename)
         normalized = cv2.normalize(raw_image, None, 0, 255, cv2.NORM_MINMAX)
-        cv2.imwrite(raw_path, normalized.astype(np.uint8))
-        print(f"Saved raw image to {raw_path}")
+        cv2.imwrite(png_path, normalized.astype(np.uint8))
+        print(f"Saved normalized PNG to {png_path}")
+
+        # Save raw image data as .npy
+        npy_filename = f"angle_{angle}_raw.npy"
+        npy_path = os.path.join("Captured_Images", npy_filename)
+        np.save(npy_path, raw_image)
+        print(f"Saved raw array to {npy_path}")
+
 
         roi_stats = circular_roi_mean(raw_image)
         print("ROI mean intensities and relative 1-sigma errors:")
