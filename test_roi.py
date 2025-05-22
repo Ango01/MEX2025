@@ -9,6 +9,7 @@ def capture_raw_image(picam2):
     raw = picam2.capture_array("raw").view(np.uint16)
     actual_exp = picam2.capture_metadata().get("ExposureTime")
     print(f"Actual ExposureTime from metadata: {actual_exp} µs")
+    print(f"Max pixel value: {np.max(raw)}")
     #print(f"Datatype: {raw.dtype}")
     #print(f"Size: {raw.shape}")
     return raw
@@ -132,7 +133,7 @@ def circular_roi_mean(image, diameter=20):
 
     return stats
 
-def visualize_roi(image, diameter=20, save_dir="Captured_Images", filename="roi_visualization.jpg"):
+def visualize_roi(image, diameter=20, save_dir="Captured_Images_2", filename="roi_visualization.jpg"):
     os.makedirs(save_dir, exist_ok=True)
     center_y, center_x = image.shape[0] // 2, image.shape[1] // 2
     radius = diameter // 2
@@ -149,7 +150,7 @@ def main():
     picam2.configure(picam2.create_still_configuration(raw={"format": "SRGGB10", "size": (1456, 1088)}))
     picam2.start()
     picam2.set_controls({
-        "ExposureTime": 5000,
+        "ExposureTime": 500000,
         "AeEnable": False,
         "AnalogueGain": 1.0,
         "AwbEnable": False
@@ -165,21 +166,21 @@ def main():
         raw_image = capture_raw_image(picam2)
 
         # Check and adjust exposure
-        raw_image = check_and_adjust_exposure(picam2, raw_image, angle)
+        #raw_image = check_and_adjust_exposure(picam2, raw_image, angle)
         actual_exp = picam2.capture_metadata().get("ExposureTime")
         print(f"Actual ExposureTime from metadata: {actual_exp} µs")
 
         # Save raw image as PNG (normalized for viewing)
-        os.makedirs("Captured_Images", exist_ok=True)
+        os.makedirs("Captured_Images_2", exist_ok=True)
         png_filename = f"angle_{angle}_raw.png"
-        png_path = os.path.join("Captured_Images", png_filename)
+        png_path = os.path.join("Captured_Images_2", png_filename)
         normalized = cv2.normalize(raw_image, None, 0, 255, cv2.NORM_MINMAX)
         cv2.imwrite(png_path, normalized.astype(np.uint8))
         print(f"Saved normalized PNG to {png_path}")
 
         # Save raw image data as .npy
         npy_filename = f"angle_{angle}_raw.npy"
-        npy_path = os.path.join("Captured_Images", npy_filename)
+        npy_path = os.path.join("Captured_Images_2", npy_filename)
         np.save(npy_path, raw_image)
         print(f"Saved raw array to {npy_path}")
 
