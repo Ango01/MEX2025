@@ -156,7 +156,7 @@ def main():
     })
     time.sleep(2)
 
-    angle = 10
+    angle = 0
     while True:
         user_input = input(f"Press Enter to capture image at angle {angle}° (or type 'q' to quit): ")
         if user_input.lower() == 'q':

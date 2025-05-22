@@ -23,8 +23,8 @@ def create(app, container):
     step_labels = {}     # Store step count labels
 
     # Step size options
-    light_source_options = ["5", "10", "20", "30"]
-    detector_options = ["1", "2", "5", "10", "15", "20", "30", "45", "60"] 
+    light_source_options = ["5", "10", "20", "30", "200"]
+    detector_options = ["1", "2", "5", "10", "15", "20", "30", "45", "60", "200"] 
 
     # Labels and keys for different step parameters
     labels = [
