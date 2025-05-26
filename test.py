@@ -79,22 +79,22 @@ def capture_exposure_curve(picam2, output_folder, start_us, step_us, count):
         print(f"Mean R: {mean_R[-1]:.2f}, G: {mean_G[-1]:.2f}, B: {mean_B[-1]:.2f}")
         print(f"Actual ExposureTime from metadata: {actual_exp} µs")
 
-        # Plot all three curves
-        plt.figure(figsize=(8, 6))
-        plt.plot(actual_exposures, mean_R, marker='o', color='red', label='Red Channel')
-        plt.plot(actual_exposures, mean_G, marker='o', color='green', label='Green Channel')
-        plt.plot(actual_exposures, mean_B, marker='o', color='blue', label='Blue Channel')
+    # Plot all three curves
+    plt.figure(figsize=(8, 6))
+    plt.plot(actual_exposures, mean_R, marker='o', color='red', label='Red Channel')
+    plt.plot(actual_exposures, mean_G, marker='o', color='green', label='Green Channel')
+    plt.plot(actual_exposures, mean_B, marker='o', color='blue', label='Blue Channel')
 
-        plt.title("Exposure Time vs Mean Pixel Intensity per Color Channel")
-        plt.xlabel("Exposure Time (µs)")
-        plt.ylabel("Mean Pixel Intensity (0-1023)")
-        plt.legend()
-        plt.grid(True)
+    plt.title("Exposure Time vs Mean Pixel Intensity per Color Channel")
+    plt.xlabel("Exposure Time (µs)")
+    plt.ylabel("Mean Pixel Intensity (0-1023)")
+    plt.legend()
+    plt.grid(True)
 
-        plot_path = os.path.join(output_folder, "exposure_vs_intensity_rgb.png")
-        plt.savefig(plot_path)
-        plt.show()
-        print(f"Saved RGB exposure curve to {plot_path}")
+    plot_path = os.path.join(output_folder, "exposure_vs_intensity_rgb_2.png")
+    plt.savefig(plot_path)
+    plt.show()
+    print(f"Saved RGB exposure curve to {plot_path}")
 
 
 def plot_heatmap_and_histogram(raw_array, save_path):
@@ -171,7 +171,7 @@ def main():
     #    save_path = os.path.join(output_folder, f"heatmap_histogram_test.png")
     #    plot_heatmap_and_histogram(raw_array, save_path)
 
-    capture_exposure_curve(picam2, output_folder, start_us=30, step_us=1000, count=20)
+    capture_exposure_curve(picam2, output_folder, start_us=30, step_us=1000, count=30)
 
     picam2.stop()
     print("Capture sequence completed.")
