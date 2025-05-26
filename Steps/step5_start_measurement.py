@@ -96,7 +96,7 @@ def stop_measurement(app):
     app.stop_requested = True
     app.set_status("Measurement stopped.", "warning")
     app.start_button.config(state="normal") # Allow restart
-    app.bsdf_button.config(state="normal")
+    app.save_bsdf_button.config(state="normal")
 
 def save_bsdf(app):
     """Save BSDF data to a file in Zemax format."""
