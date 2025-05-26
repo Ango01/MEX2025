@@ -15,7 +15,7 @@ def initialize_camera():
   time.sleep(1.0)
 
   picam2.set_controls({
-    "ExposureTime": 50,     # Set fixed exposure time (microseconds)
+    "ExposureTime": 100000,   # Set fixed exposure time (microseconds)
     "AeEnable": False,      # Disable auto-exposure
     "AwbEnable": False,     # Disable auto-white balance
     "AnalogueGain": 1.0,    # Set analog gain
