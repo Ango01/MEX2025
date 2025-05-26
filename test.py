@@ -38,50 +38,64 @@ def plot_color_histograms(R, G, B, angle):
   
 def capture_exposure_curve(picam2, output_folder, start_us, step_us, count):
     actual_exposures = []
-    mean_intensities = []
+    mean_R = []
+    mean_G = []
+    mean_B = []
 
     for i in range(count):
         intended_exp = start_us + i * step_us
         print(f"\nSetting exposure time to {intended_exp} µs...")
 
-        # Set exposure manually
         picam2.set_controls({"ExposureTime": intended_exp})
         time.sleep(5)  # Allow time for settings to apply
 
         input(f"Press Enter to capture image at {intended_exp} µs...")
 
-        raw = picam2.capture_array("raw")
-        print(raw.dtype, raw.shape)
-
         raw_array = picam2.capture_array("raw").view(np.uint16)
-        print(raw_array.dtype, raw_array.shape)
+        print(f"Captured RAW image - dtype: {raw_array.dtype}, shape: {raw_array.shape}")
         print(f"Min: {np.min(raw_array)}, Max: {np.max(raw_array)}")
 
+        # Save heatmap and histogram
         image_filename = f"heatmap_histogram_{intended_exp}us.png"
         save_path = os.path.join(output_folder, image_filename)
         plot_heatmap_and_histogram(raw_array, save_path)
 
-        mean_intensity = np.mean(raw_array)
-        mean_intensities.append(mean_intensity)
+        # Extract color channels from Bayer pattern
+        B = raw_array[0::2, 0::2]
+        G1 = raw_array[0::2, 1::2]
+        G2 = raw_array[1::2, 0::2]
+        R = raw_array[1::2, 1::2]
+        G = (G1 + G2) / 2
 
+        # Compute mean intensities for each channel
+        mean_R.append(np.mean(R))
+        mean_G.append(np.mean(G))
+        mean_B.append(np.mean(B))
+
+        # Record actual exposure time
         actual_exp = picam2.capture_metadata().get("ExposureTime", intended_exp)
         actual_exposures.append(actual_exp)
 
-        print(f"Captured. Mean intensity: {mean_intensity:.2f}")
+        print(f"Mean R: {mean_R[-1]:.2f}, G: {mean_G[-1]:.2f}, B: {mean_B[-1]:.2f}")
         print(f"Actual ExposureTime from metadata: {actual_exp} µs")
 
-    # Plot curve
-    plt.figure(figsize=(8, 6))
-    plt.plot(actual_exposures, mean_intensities, marker='o', color='blue')
-    plt.title("Exposure Time vs Mean Pixel Intensity")
-    plt.xlabel("Exposure Time (µs)")
-    plt.ylabel("Mean Pixel Intensity (0-1023)")
-    plt.grid(True)
+        # Plot all three curves
+        plt.figure(figsize=(8, 6))
+        plt.plot(actual_exposures, mean_R, marker='o', color='red', label='Red Channel')
+        plt.plot(actual_exposures, mean_G, marker='o', color='green', label='Green Channel')
+        plt.plot(actual_exposures, mean_B, marker='o', color='blue', label='Blue Channel')
 
-    plot_path = os.path.join(output_folder, "exposure_vs_intensity_higher_power_2.png")
-    plt.savefig(plot_path)
-    plt.show()
-    print(f"Saved exposure curve to {plot_path}")
+        plt.title("Exposure Time vs Mean Pixel Intensity per Color Channel")
+        plt.xlabel("Exposure Time (µs)")
+        plt.ylabel("Mean Pixel Intensity (0-1023)")
+        plt.legend()
+        plt.grid(True)
+
+        plot_path = os.path.join(output_folder, "exposure_vs_intensity_rgb.png")
+        plt.savefig(plot_path)
+        plt.show()
+        print(f"Saved RGB exposure curve to {plot_path}")
+
 
 def plot_heatmap_and_histogram(raw_array, save_path):
 
@@ -113,7 +127,7 @@ def plot_heatmap_and_histogram(raw_array, save_path):
 
     plt.tight_layout()
     plt.savefig(save_path)
-    plt.show()
+    plt.close(fig) 
     print(f"Saved heatmap + color channel histogram to {save_path}")
 
 
@@ -135,7 +149,7 @@ def main():
 
     time.sleep(1)
 
-    output_folder = "Captured_Images"
+    output_folder = "Exposure_test"
     os.makedirs(output_folder, exist_ok=True)
 
     #angles = range(0, 1, 1)  
@@ -165,4 +179,3 @@ def main():
 # ======== Run Main ========
 if __name__ == "__main__":
     main()
-
