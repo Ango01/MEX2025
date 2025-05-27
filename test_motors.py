@@ -43,9 +43,11 @@ def test_motor(axis_name, command_prefix, start=0, stop=90, step=10):
 # === MAIN TEST SEQUENCE ===
 if __name__ == "__main__":
     try:
-        print("Starting detector motor test. Ensure system is safe.")
+        print("Starting motor test. Ensure system is safe.")
         test_motor("Detector AZIMUTH", "DET_AZ_ABS")
         test_motor("Detector RADIAL", "DET_RAD_ABS")
+        test_motor("Light AZIMUTH", "LIGHT_AZ_ABS")
+        test_motor("Light RADIAL", "LIGHT_RAD_ABS")
     except KeyboardInterrupt:
         print("Test interrupted by user.")
     finally:
