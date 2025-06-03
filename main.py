@@ -19,5 +19,6 @@ if __name__ == "__main__":
         ]
     )
 
+    # Start GUI application
     app = ScatteringApp()
     app.mainloop()

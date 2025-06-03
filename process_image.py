@@ -27,7 +27,7 @@ def circular_roi_mean(image, diameter=20):
 
     # Mean and error estimation
     N = len(roi_values)
-    mean_val = np.mean(roi_values) # TODO: constant*BRDF
+    mean_val = np.mean(roi_values) # TODO: constant*mean_value = BSDF value
     std_val = np.std(roi_values)
     sigma = std_val / np.sqrt(N) 
     relative_error = sigma / mean_val 

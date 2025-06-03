@@ -1,6 +1,7 @@
 from tkinter import ttk
 
 # Angle ranges depending on the measurement type selected in the previous step
+# TODO: Change range according to what is mechanically/optically possible
 RANGE_MAP = {
     "BRDF": (8, 175),
     "BTDF": (188, 355),
@@ -22,7 +23,7 @@ def create(app, container):
     angle_inputs = {}    # Store combobox widgets
     step_labels = {}     # Store step count labels
 
-    # Step size options
+    # Step size options TODO: add desired options
     light_source_options = ["5", "10", "20", "30", "200"]
     detector_options = ["1", "2", "5", "10", "15", "20", "30", "45", "60", "200"] 
 

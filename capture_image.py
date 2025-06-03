@@ -90,7 +90,6 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
     det_radial_angles = app.det_radial_angles           
 
     motors = Motors()
-    # motors.home_detector_axes() # Homing by mechanical stop and then setting offset
     motors.reset_position()
 
     app.bsdf_measurements = {}  
@@ -142,10 +141,9 @@ def run_full_measurement(app, image_count=10, save_dir="Captured_Data"):
                     # Capture valid images
                     valid_count = 0 # How many good images are collected
                     attempts = 0
-                    max_attempts = image_count * 3 # Limit to prevent infinite loops
 
                     # Loop continues until desired number of valid images are captured/reached attempt limit
-                    while valid_count < image_count and attempts < max_attempts:
+                    while valid_count < image_count and attempts < image_count:
                         if check_stop(app): return
                         img = capture_raw_image(picam2)
                         attempts += 1

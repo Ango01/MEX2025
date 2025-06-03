@@ -15,10 +15,10 @@ def initialize_camera():
   time.sleep(1.0)
 
   picam2.set_controls({
-    "ExposureTime": 100000,   # Set fixed exposure time (microseconds)
-    "AeEnable": False,      # Disable auto-exposure
-    "AwbEnable": False,     # Disable auto-white balance
-    "AnalogueGain": 1.0,    # Set analog gain
+    "ExposureTime": 100000,   # Set fixed exposure time (microseconds). TODO: Change if necessary
+    "AeEnable": False,        # Disable auto-exposure
+    "AwbEnable": False,       # Disable auto-white balance
+    "AnalogueGain": 1.0,      # Set analog gain
   }) 
 
   time.sleep(2)  # TODO: should be removed and substituted with a thread that listens to camera commands

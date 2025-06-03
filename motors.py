@@ -9,7 +9,7 @@ class Motors:
         self.arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=1)  
         time.sleep(2)  # Allow time to initialize
 
-        # Default offset positions in degress
+        # Default offset positions in degress TODO: change if necessary depending on mechanical/optical setup
         self.light_az_offset = 8
         self.light_rad_offset = 8
         self.detector_az_offset = 8
@@ -20,21 +20,6 @@ class Motors:
         self.arduino.write(b"RESET_POS\n")
         response = self.arduino.readline().decode().strip()
         logging.info(f"Arduino response: {response}")
-
-    def home_detector_axes(self):
-        """Rough homing by moving detector axes slowly toward a mechanical stop."""
-        logging.info("Homing detector axes...")
-
-        # Move far in negative direction to hit mechanical stop (assumes safe)
-        for _ in range(100):  # Enough steps to reach stop
-            self.arduino.write(b"DET_AZ_ABS:0\n")
-            time.sleep(0.2)
-        for _ in range(100):
-            self.arduino.write(b"DET_RAD_ABS:0\n")
-            time.sleep(0.2)
-
-        logging.info("Homing move complete. Setting current position to 8° offset.")
-        self.reset_position()
 
     def move_light_to_offset(self):
         """Move light source axes (azimuthal and radial) to offset position."""
